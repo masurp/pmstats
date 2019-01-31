@@ -1,11 +1,16 @@
 #' Creates an html report based on a .rmd file
 #' 
-#' This function simply allows to render rmd. files into html reports. 
-#' To be used in a "run_all.r" syntax.
+#' This function simply allows to render RMarkdown files into html reports.
+#' The report will be saved in the folder of the Rmarkdown file. 
+#'
 #' 
-#' @param file path to the .rmd file that should be rendered
-#' @param name name for the final report
+#' @param file path to the file that should be rendered. File needs to be an RMarkdown script. 
+#' @param name name of the final report.
 #' @export
+#' 
+#' @examples 
+#' # Produces an html-file called "01_analysis.html"
+#' render_report("test.rmd", "01_analysis")
 render_report = function(file, name) {
   rmarkdown::render(
     file, params = list(

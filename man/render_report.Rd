@@ -7,11 +7,15 @@
 render_report(file, name)
 }
 \arguments{
-\item{file}{path to the .rmd file that should be rendered}
+\item{file}{path to the file that should be rendered. File needs to be an RMarkdown script.}
 
-\item{name}{name for the final report}
+\item{name}{name of the final report.}
 }
 \description{
-This function simply allows to render rmd. files into html reports. 
-To be used in a "run_all.r" syntax.
+This function simply allows to render RMarkdown files into html reports.
+The report will be saved in the folder of the Rmarkdown file.
+}
+\examples{
+# Produces an html-file called "01_analysis.html"
+render_report("test.rmd", "01_analysis")
 }
