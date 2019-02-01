@@ -1,14 +1,14 @@
-#' Variance reduction for two-level random intercept models
+#' Explained variance for two-level random intercept models
 #' 
 #' Function to compute the amount explained variance on each level by a random-intercept multilevel model. 
 #' The amount of explained variance is computed by comparing the relevant models to the baseline (null-) model (i.e., the bare random-intercept model without any predictors). 
 #'
 #' 
-#' @param base_model baseline model with no predictors
-#' @param ... up to four comparison models with predictors
-#' @param red a logical value indicating wether only the explained variance should be reported (defaults to TRUE).
+#' @param object An object of class merMod (more specifically, an object of subclass lmerMod). This first object needs to be the null model with no predictors. All other models will be compared to this baseline model. 
+#' @param ... Up to four objects of class merMod.
+#' @param red A logical value indicating wether only the explained variance should be reported (defaults to TRUE).
 #' @export
-variance_reduction <- function(base_model, ..., red = TRUE){
+variance_reduction <- function(object, ..., red = TRUE){
   
   # Subfunction
   get_var <- function(model, no = 0){
@@ -19,7 +19,7 @@ variance_reduction <- function(base_model, ..., red = TRUE){
     }
     
   # create list of additinal models
-  x <- list(...)
+  object_list <- list(...)
   
   # Check length of list
   if (length(x) == 0) {
@@ -27,10 +27,10 @@ variance_reduction <- function(base_model, ..., red = TRUE){
     
   } else if (length(x) == 1) {
   
-    tab_2 <- base_model %>% 
+    tab_2 <- object %>% 
       get_var %>%
       left_join(
-        x[[1]] %>%
+        object_list[[1]] %>%
           get_var(no = 1)
       ) %>% 
       mutate(m1_red = 1 - m1_var / m0_var) 
@@ -50,14 +50,14 @@ variance_reduction <- function(base_model, ..., red = TRUE){
     tab_2 <- m0 %>% 
       get_var %>%
       left_join(
-        x[[1]] %>%
+        object_list[[1]] %>%
           get_var(no = 1)
       ) %>% 
       mutate(m1_red = 1 - m1_var / m0_var) 
     
     tab_3 <- tab_2 %>%
       left_join(
-        x[[2]] %>%
+        object_list[[2]] %>%
           get_var(no = 2)
         ) %>%
       mutate(m2_red = 1 - m2_var / m0_var) 
@@ -76,21 +76,21 @@ variance_reduction <- function(base_model, ..., red = TRUE){
     tab_2 <- m0 %>% 
       get_var %>%
       left_join(
-        x[[1]] %>%
+        object_list[[1]] %>%
           get_var(no = 1)
       ) %>% 
       mutate(m1_red = 1 - m1_var / m0_var) 
     
     tab_3 <- tab_2 %>%
       left_join(
-        x[[2]] %>%
+        object_list[[2]] %>%
           get_var(no = 2)
       ) %>%
       mutate(m2_red = 1 - m2_var / m0_var)
     
     tab_4 <- tab_3 %>%
       left_join(
-        x[[3]] %>%
+        object_list[[3]] %>%
           get_var(no = 3)
       ) %>%
       mutate(m3_red = 1 - m3_var / m0_var)
@@ -109,28 +109,28 @@ variance_reduction <- function(base_model, ..., red = TRUE){
     tab_2 <- m0 %>% 
       get_var %>%
       left_join(
-        x[[1]] %>%
+        object_list[[1]] %>%
           get_var(no = 1)
       ) %>% 
       mutate(m1_red = 1 - m1_var / m0_var) 
     
     tab_3 <- tab_2 %>%
       left_join(
-        x[[2]] %>%
+        object_list[[2]] %>%
           get_var(no = 2)
       ) %>%
       mutate(m2_red = 1 - m2_var / m0_var)
     
     tab_4 <- tab_3 %>%
       left_join(
-        x[[3]] %>%
+        object_list[[3]] %>%
           get_var(no = 3)
       ) %>%
       mutate(m3_red = 1 - m3_var / m0_var)
     
     tab_5 <- tab_4 %>%
       left_join(
-        x[[4]] %>%
+        object_list[[4]] %>%
           get_var(no = 4)
       ) %>%
       mutate(m4_red = 1 - m4_var / m0_var)

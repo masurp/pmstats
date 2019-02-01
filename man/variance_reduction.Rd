@@ -2,16 +2,16 @@
 % Please edit documentation in R/variance_reduction.r
 \name{variance_reduction}
 \alias{variance_reduction}
-\title{Variance reduction for two-level random intercept models}
+\title{Explained variance for two-level random intercept models}
 \usage{
-variance_reduction(base_model, ..., red = TRUE)
+variance_reduction(object, ..., red = TRUE)
 }
 \arguments{
-\item{base_model}{baseline model with no predictors}
+\item{object}{An object of class merMod (more specifically, an object of subclass lmerMod). This first object needs to be the null model with no predictors. All other models will be compared to this baseline model.}
 
-\item{...}{up to four comparison models with predictors}
+\item{...}{Up to four objects of class merMod.}
 
-\item{red}{a logical value indicating wether only the explained variance should be reported (defaults to TRUE).}
+\item{red}{A logical value indicating wether only the explained variance should be reported (defaults to TRUE).}
 }
 \description{
 Function to compute the amount explained variance on each level by a random-intercept multilevel model. 
