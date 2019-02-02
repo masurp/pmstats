@@ -1,6 +1,6 @@
 Package: pmstats
 Type: Package
-Title: Collection of Convenient Functions for Data Wrangling, Result Extraction, and Reporting
+Title: Functions to create outputs from statistical models
 Version: 0.1.0
 Author: Philipp K. Masur
 Maintainer: Philipp K. Masur <phil.masur@gmail.com>
