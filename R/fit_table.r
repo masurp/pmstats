@@ -1,4 +1,4 @@
-#' Creates a table with relevant fit indices for an SEM
+#' Creates a table with relevant fit indices for an SEM of CFA
 #' 
 #' Coming soon
 #' 
@@ -30,6 +30,7 @@
 #' @export
 fit_table <- function(object,
                       indices = c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"),
+                      rmsea_ci = FALSE,
                       reliability = TRUE,
                       robust = FALSE) {
   # dependencies
@@ -70,6 +71,11 @@ fit_table <- function(object,
              ave = semTools::reliability(object)["avevar", "total"]) %>%
       mutate_at(vars(alpha, omega, ave), 
                 funs(printnum(., gt1 = F, zero = F)))
+  }
+  
+  if(isTRUE(rmsea_ci)){
+    fit_indices <- fit_indices %>%
+      select(-rmsea.ci.lower, -rmsea.ci.upper)
   }
   return(fit_indices)
 }

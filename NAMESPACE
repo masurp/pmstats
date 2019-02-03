@@ -3,4 +3,6 @@
 export(describe_vars)
 export(fit_table)
 export(print_fit)
+export(print_rel)
+export(rel_table)
 export(variance_reduction)

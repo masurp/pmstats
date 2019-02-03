@@ -36,7 +36,7 @@ print_fit <- function(fit_table,
   
   temp <- paste0(
     if(isTRUE("chisq" %in% indices)) {
-      paste0("$\\chi^2$(", fit_table$df, ") = ", ", \\textit{p} = ", fit_table$pvalue)
+      paste0("$\\chi^2$(", fit_table$df, ") = ", fit_table$chisq, ", \\textit{p} = ", fit_table$pvalue)
       },
     if(isTRUE("cfi" %in% indices)) {
       paste0("; CFI = ", fit_table$cfi)

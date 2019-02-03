@@ -2,10 +2,10 @@
 % Please edit documentation in R/fit_table.r
 \name{fit_table}
 \alias{fit_table}
-\title{Creates a table with relevant fit indices for an SEM}
+\title{Creates a table with relevant fit indices for an SEM of CFA}
 \usage{
 fit_table(object, indices = c("chisq", "df", "pvalue", "cfi", "tli",
-  "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"),
+  "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"), rmsea_ci = FALSE,
   reliability = TRUE, robust = FALSE)
 }
 \arguments{
