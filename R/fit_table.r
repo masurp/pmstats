@@ -48,23 +48,28 @@ fit_table <- function(object,
       indices_robust[indices_robust == "srmr.scaled"] <- "srmr_bentler"
     )
     
-    fit_indices <- inspect(object, what = "fit") %>% .[indices_robust] %>% 
+    fit_indices <- inspect(object, what = "fit") %>% 
+      .[indices_robust] %>% 
       set_names(indices)
   }
   
   # creating table
   fit_indices <- fit_indices %>%
     t %>% as.tibble %>%
-    mutate_at(vars(chisq), funs(printnum(.))) %>% 
-    mutate_at(vars(cfi, tli, rmsea, rmsea.ci.lower, rmsea.ci.upper, srmr), funs(printnum(., gt1 = F, zero = F))) %>% 
-    mutate_at(vars(pvalue), funs(printp(.)))
+    mutate_at(vars(chisq), 
+              funs(printnum(.))) %>% 
+    mutate_at(vars(cfi, tli, rmsea, rmsea.ci.lower, rmsea.ci.upper, srmr), 
+              funs(printnum(., gt1 = F, zero = F))) %>% 
+    mutate_at(vars(pvalue), 
+              funs(printp(.)))
   
   if(isTRUE(reliability)) {
   fit_indices <- fit_indices %>% 
-      mutate(alpha = semTools::reliability(object)["omega3", "total"],
-             omega = semTools::reliability(object)["alpha", "total"],
+      mutate(alpha = semTools::reliability(object)["alpha", "total"],
+             omega = semTools::reliability(object)["omega3", "total"],
              ave = semTools::reliability(object)["avevar", "total"]) %>%
-      mutate_at(vars(alpha, omega, ave), funs(printnum(., gt1 = F, zero = F)))
+      mutate_at(vars(alpha, omega, ave), 
+                funs(printnum(., gt1 = F, zero = F)))
   }
   return(fit_indices)
 }
