@@ -64,7 +64,7 @@ print_rel <- function(object,
     list(
       alpha = paste0("$\\alpha$ = ", temp$alpha),
       omega = paste0("$\\omega$ = ", temp$omega3),
-      AVE = paste0("; AVE = ", temp$avevar)
+      AVE = paste0("AVE = ", temp$avevar)
     )
   }
   }
