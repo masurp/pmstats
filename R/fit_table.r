@@ -56,7 +56,7 @@ fit_table <- function(object,
   fit_indices <- fit_indices %>%
     t %>% as.tibble %>%
     mutate_at(vars(chisq), funs(printnum(.))) %>% 
-    mutate_at(vars(cfi, tli, rmsea, rmsea.ci.lower, rmsea.ci.lower, srmr), funs(printnum(., gt1 = F, zero = F))) %>% 
+    mutate_at(vars(cfi, tli, rmsea, rmsea.ci.lower, rmsea.ci.upper, srmr), funs(printnum(., gt1 = F, zero = F))) %>% 
     mutate_at(vars(pvalue), funs(printp(.)))
   
   if(isTRUE(reliability)) {

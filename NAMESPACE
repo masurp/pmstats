@@ -2,4 +2,5 @@
 
 export(describe_vars)
 export(fit_table)
+export(print_fit)
 export(variance_reduction)
