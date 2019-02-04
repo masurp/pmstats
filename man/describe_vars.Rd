@@ -4,7 +4,7 @@
 \alias{describe_vars}
 \title{Customized version of the function describe (psych)}
 \usage{
-describe_vars(data, items = NULL, brief = FALSE)
+describe_vars(data, items = NULL, brief = FALSE, first_col = "code")
 }
 \arguments{
 \item{data}{A data frame that includes that variables that should be evaluated.}
