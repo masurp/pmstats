@@ -19,5 +19,5 @@ To install the package and latest developments, type the following commands into
 
 ```r
 library(devtools)
-devtools::install_github("strengejacke/sjstats")
+devtools::install_github("masurp/pmstats")
 ```
