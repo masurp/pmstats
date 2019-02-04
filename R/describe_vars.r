@@ -10,7 +10,7 @@
 #' 
 #' describe_vars(mtcars)
 #' @export
-describe_vars <- function(data, items = NULL, brief = FALSE) {
+describe_vars <- function(data, items = NULL, brief = FALSE, first_col = "code") {
   
   # dependencies
   library(psych)
@@ -19,7 +19,7 @@ describe_vars <- function(data, items = NULL, brief = FALSE) {
   temp <- data %>%
     describe %>%
     as.data.frame %>%
-    rownames_to_column("code") 
+    rownames_to_column(first_col) 
   
   if (!is.null(items)) {
     temp <- temp %>%
@@ -30,9 +30,13 @@ describe_vars <- function(data, items = NULL, brief = FALSE) {
       select(code, mean, sd, min, max, skew, kurtosis, n)
   }
   
-  if (brief == TRUE) {
+  if (isTRUE(brief) & !is.null(items)) {
     temp %>%
       select(code, item, mean, sd) %>%
+      as.tibble
+  } else if (isTRUE(brief) & is.null(items)){
+    temp %>%
+      select(code, mean, sd) %>%
       as.tibble
   } else {
     temp %>% 
