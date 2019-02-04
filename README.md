@@ -1,4 +1,4 @@
-# pmstats - Convenient Functions for Statistical Transformations, Result Extraction, and Reporting
+# pmstats - Customized Functions for Statistical Computations, Result Extractions, and Reporting
 
 This package includes some custom-made functions to facilitate some common statistical procedures as well as extracting and reporting results from various models in RMarkdown articles. Please note that most functions are highly costumized to my own workflow. They may hence break in more general frameworks or when used in a different way...
 
@@ -10,7 +10,7 @@ Most functions require the following packages:
 - For printing and typesetting: `papaja`
 - For SEM procedures: `lavaan` and `semTools`
 
-This packages should be installed prior to using this package. 
+These packages should be installed prior to using this package. 
 
 
 ## Installation
