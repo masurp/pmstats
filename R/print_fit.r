@@ -1,4 +1,4 @@
-#' Print fit indices 
+#' Prints fit indices for inline reporting
 #' 
 #' This function takes the output of \code{fit_table()} and transforms it into latex-code to be used in a rmarkdown file. 
 #' 
@@ -36,7 +36,12 @@ print_fit <- function(fit_table,
   
   temp <- paste0(
     if(isTRUE("chisq" %in% indices)) {
-      paste0("$\\chi^2$(", fit_table$df, ") = ", fit_table$chisq, ", \\textit{p} = ", fit_table$pvalue)
+      paste0("$\\chi^2$(", fit_table$df, ") = ", fit_table$chisq, ", \\textit{p} ", 
+             if (fit_table$pvalue != "< .001") {
+               paste0("= ", fit_table$pvalue)
+               } else {
+                 paste0(fit_table$pvalue)
+                 })
       },
     if(isTRUE("cfi" %in% indices)) {
       paste0("; CFI = ", fit_table$cfi)

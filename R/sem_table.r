@@ -4,9 +4,9 @@
 #' 
 #' @param object An object of class \code{lavaan} created by using \code{sem()} from the package 'lavaan'.
 #' @param effect Vector of specific effects in the model (need to be labelled)
-#' @param label A logical value specifying whether only effects with labels should be included
+#' @param labels A logical value specifying whether only effects with labels should be included
 #' @param regression A logical value specifying whether only regressions should be included
-#' @param hypotheses A vector that needs to have the length of the number of effects that can be used to included a separate column with Hypotheses labels. 
+#' @param new_labels A vector that needs to have the length of the number of effects that can be used to included a separate column with Hypotheses labels. 
 #' @param one_sided A logical value indicating whether the hypotheses was tested one-sided (p-values are divided by two). 
 #' @param beta Indicates which standarized coefficient should be used (defaults to "std.all").
 #' @param print A logical value indicating whether the printable numbers (rounding) should be displayed. 
@@ -32,15 +32,15 @@
 #' data = PoliticalDemocracy)
 #' 
 #' # Creating output table
-#' sem_table(fit, label = T, hypotheses = c("H1", "H2", "H3"))
+#' sem_table(fit, regressions = T, new_labels = c("H1", "H2", "H3"))
 #' @export
 sem_table <- function(object,
                       effect = NULL,
-                      label = FALSE,
+                      labels = FALSE,
                       regressions = FALSE,
-                      hypotheses = NULL,
+                      new_labels = NULL,
                       one_sided = FALSE,
-                      beta = "std.all",
+                      std = "std.all",
                       print = T){
   
   # dependencies
@@ -58,7 +58,7 @@ sem_table <- function(object,
     coeffs <- object %>%
       parameterEstimates(standardized = TRUE) %>%
       filter(op == "~")
-  } else if (isTRUE(label)) {
+  } else if (isTRUE(labels)) {
     coeffs <- object %>%
       parameterEstimates(standardized = TRUE) %>%
       subset(label != "")
@@ -73,13 +73,13 @@ sem_table <- function(object,
   
   coeffs <- coeffs %>% 
     select(outcome = lhs, 
-           predictor = rhs, 
-           b = est, 
+           predictor = rhs,
+           b = est,
            se,
            ll = ci.lower, 
            ul = ci.upper, 
            p = pvalue,
-           beta = beta) %>%
+           beta = std) %>%
     as.tibble
   
   if(isTRUE(print)) {
@@ -89,10 +89,20 @@ sem_table <- function(object,
       mutate(p = printp(p))
   }
   
-  if (!is.null(hypotheses)) {
+  if (isTRUE(labels)) {
     coeffs <- coeffs %>%
-      cbind(., hypotheses) %>%
-      select(outcome, predictor, hypotheses, everything()) %>%
+      cbind(., parameterEstimates(object, standardized = TRUE) %>%
+              subset(label != "") %>% select(label)) %>%
+      select(outcome, predictor, label, everything()) %>%
+      as.tibble
+  }
+  
+  
+  if (!is.null(new_labels)) {
+    coeffs <- coeffs %>%
+      cbind(., new_labels) %>%
+      mutate(label = as.character(new_labels)) %>%
+      select(outcome, predictor, label, everything(), -new_labels) %>%
       as.tibble
   }
   return(coeffs)

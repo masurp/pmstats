@@ -4,26 +4,25 @@
 \alias{sem_table}
 \title{Result table for SEM model}
 \usage{
-sem_table(object, effect = NULL, label = FALSE, regressions = FALSE,
-  hypotheses = NULL, one_sided = FALSE, beta = "std.all",
-  print = T)
+sem_table(object, effect = NULL, labels = FALSE, regressions = FALSE,
+  new_labels = NULL, one_sided = FALSE, std = "std.all", print = T)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{sem()} from the package 'lavaan'.}
 
 \item{effect}{Vector of specific effects in the model (need to be labelled)}
 
-\item{label}{A logical value specifying whether only effects with labels should be included}
+\item{labels}{A logical value specifying whether only effects with labels should be included}
 
-\item{hypotheses}{A vector that needs to have the length of the number of effects that can be used to included a separate column with Hypotheses labels.}
+\item{new_labels}{A vector that needs to have the length of the number of effects that can be used to included a separate column with Hypotheses labels.}
 
 \item{one_sided}{A logical value indicating whether the hypotheses was tested one-sided (p-values are divided by two).}
-
-\item{beta}{Indicates which standarized coefficient should be used (defaults to "std.all").}
 
 \item{print}{A logical value indicating whether the printable numbers (rounding) should be displayed.}
 
 \item{regression}{A logical value specifying whether only regressions should be included}
+
+\item{beta}{Indicates which standarized coefficient should be used (defaults to "std.all").}
 }
 \description{
 This function creates a printable results table based on an SEM model. Several arguments can be specified in order to customize the output.
@@ -50,5 +49,5 @@ fit <- sem(model,
 data = PoliticalDemocracy)
 
 # Creating output table
-sem_table(fit, label = T, hypotheses = c("H1", "H2", "H3"))
+sem_table(fit, regressions = T, new_labels = c("H1", "H2", "H3"))
 }

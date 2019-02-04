@@ -2,7 +2,7 @@
 % Please edit documentation in R/print_fit.r
 \name{print_fit}
 \alias{print_fit}
-\title{Print fit indices}
+\title{Prints fit indices for inline reporting}
 \usage{
 print_fit(fit_table, indices = c("chisq", "df", "pvalue", "cfi", "tli",
   "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
