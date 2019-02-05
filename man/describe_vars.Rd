@@ -4,12 +4,15 @@
 \alias{describe_vars}
 \title{Customized version of the function describe (psych)}
 \usage{
-describe_vars(data, items = NULL, brief = FALSE, first_col = "code")
+describe_vars(data, items = NULL, var_name = NULL, brief = FALSE,
+  first_col = "code")
 }
 \arguments{
-\item{data}{A data frame that includes that variables that should be evaluated.}
+\item{data}{A data frame that includes that variables that should be evaluated. Can also be a vector with numeric values.}
 
 \item{items}{A data frame containing the variable codes and item formulations.}
+
+\item{var_name}{If you are evaluating a single vector, you specify the variable name here.}
 
 \item{brief}{A logical value indicating wether all psychometrics or only the mean and the standard deviations should be printed}
 }
@@ -20,4 +23,5 @@ This function is essentially similar to the function \code{describe()} in the pa
 d <- mtcars
 
 describe_vars(mtcars)
+describe_vars(mtcars$cyl, var_name = "cylinder")
 }
