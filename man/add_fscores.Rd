@@ -4,30 +4,23 @@
 \alias{add_fscores}
 \title{Adds factor scores computed from CFA to data frame}
 \usage{
-add_fscores(data, object, rename_vars = NULL)
+add_fscores(data, id = NULL, object, to_wide = FALSE, group = NULL,
+  rename_vars = NULL)
 }
 \arguments{
-\item{data}{The data frame that passed to \code{cfa()} or \code{sem()}.}
+\item{data}{The data frame that was originally passed to \code{cfa()} or \code{sem()}.}
+
+\item{id}{Variable that identifies each individual case in the data frame. Only necessary if the data frame is in the long format.}
 
 \item{object}{An object of class \code{lavaan} created by using \code{cfa()}
 or \code{sem()}.}
 
-\item{rename_vars}{A vector including new names for the factor scores.}
+\item{to_wide}{A logical value indicating whether the multigroup factor scores should be passed to long or to a wide format data frame.}
+
+\item{group}{A vector representing the grouping variable in the long format that was passed to data.}
+
+\item{rename_vars}{A vector that represents new names for the factor scores.}
 }
 \description{
 Creates and adds factor scores to the data frame that was used to estimate the CFA.
-}
-\examples{
-d <- PoliticalDemocracy
-
-# Specifying model
-model <- '
-# latent variables
-ind60 =~ x1 + x2 + x3
-dem60 =~ y1 + y2 + y3 + y4
-dem65 =~ y5 + y6 + y7 + y8
-'
-fit <- sem(model, data = d)
-
-add_fscores(d, fit)
 }

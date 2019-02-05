@@ -33,8 +33,6 @@ cfa_table <- function(object,
   library(papaja)
   library(tidyverse)
   
-  
-  
   # function
   temp <- object %>%
     parameterEstimates(standardized = TRUE) %>%
