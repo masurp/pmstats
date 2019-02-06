@@ -22,10 +22,10 @@ variance_reduction <- function(object, ..., red = TRUE){
   object_list <- list(...)
   
   # Check length of list
-  if (length(x) == 0) {
-    print("You need to compare at least two models to obtain the variance reduction")
+  if (length(object_list) == 0) {
+    message("You need to compare at least two models to obtain the explained variance on each level!")
     
-  } else if (length(x) == 1) {
+  } else if (length(object_list) == 1) {
   
     tab_2 <- object %>% 
       get_var %>%
@@ -45,7 +45,7 @@ variance_reduction <- function(object, ..., red = TRUE){
                       m1_red)
     }
    
-  } else if (length(x) == 2) {
+  } else if (length(object_list) == 2) {
     
     tab_2 <- m0 %>% 
       get_var %>%
@@ -72,7 +72,7 @@ variance_reduction <- function(object, ..., red = TRUE){
                       m0_var, m1_var, m2_var,
                       m1_red, m2_red)
     }
-  } else if (length(x) == 3) {
+  } else if (length(object_list) == 3) {
     tab_2 <- m0 %>% 
       get_var %>%
       left_join(
