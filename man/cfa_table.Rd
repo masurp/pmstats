@@ -5,7 +5,7 @@
 \title{Table with items and factor loadings}
 \usage{
 cfa_table(object, latent_var = NULL, items = NULL, brief = TRUE,
-  print = TRUE, std = "std.all")
+  print = TRUE, std = "std.all", group = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{cfa} or \code{sem()}.}
