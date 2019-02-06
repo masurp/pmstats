@@ -5,6 +5,7 @@
 #' @param data A data frame containing all variables that should be investigated.
 #' @param var_names A vector with fitting variable names.
 #' @param upper_tri Should the upper triangle be omitted?
+#' @export
 #' @examples 
 #' d <- mtcars
 #' 
