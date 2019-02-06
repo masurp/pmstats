@@ -2,7 +2,7 @@
 #' 
 #' Creates a classical zero-order correlation table. A vector with variable names can be added.
 #' 
-#' @param data A data frame containing all variables that should be investigated
+#' @param data A data frame containing all variables that should be investigated.
 #' @param var_names A vector with fitting variable names.
 #' @param upper_tri Should the upper triangle be omitted?
 #' @examples 
