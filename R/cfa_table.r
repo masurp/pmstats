@@ -27,7 +27,8 @@ cfa_table <- function(object,
                       items = NULL,
                       brief = TRUE,
                       print = TRUE,
-                      std = "std.all"){
+                      std = "std.all",
+                      group = FALSE){
   # dependencies    
   library(lavaan)
   library(papaja)
@@ -67,6 +68,14 @@ cfa_table <- function(object,
     coeffs <- coeffs %>%
       left_join(items) %>%
       select(code, item, everything())
+  }
+  
+  if (isTRUE(group)) {
+    coeffs <- coeffs %>%
+      bind_cols(object %>%
+                  parameterEstimates(standardized = TRUE) %>%
+                  subset(op == "=~") %>% select(group)) %>%
+      select(group, everything())
   }
   
   return(coeffs)
