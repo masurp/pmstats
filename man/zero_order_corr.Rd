@@ -7,7 +7,7 @@
 zero_order_corr(data, var_names = NULL, upper_tri = T)
 }
 \arguments{
-\item{data}{A data frame containing all variables that should be investigated}
+\item{data}{A data frame containing all variables that should be investigated.}
 
 \item{var_names}{A vector with fitting variable names.}
 
