@@ -12,11 +12,13 @@
 #' @export
 zero_order_corr <- function(data,
                             var_names = NULL,
-                            upper_tri = T) {
+                            upper_tri = TRUE,
+                            print = FALSE) {
   # dependencies
   library(tidyverse)
   library(psych)
   library(magrittr)
+  library(papaja)
   
   # function
   temp <- corr.test(data)$r %>%
@@ -36,6 +38,13 @@ zero_order_corr <- function(data,
   
   if (isTRUE(upper_tri)) {
     temp[upper.tri(temp)] <- NA
+  }
+  
+  if (isTRUE(print)) {
+    temp <- temp %>%
+      mutate_at(vars(2:length(.)), function(x) printnum(x, gt1 = F)) %>%
+      mutate_at(vars(2:length(.)), 
+                funs(ifelse(. == "NA", "", .)))
   }
   
   return(temp)
