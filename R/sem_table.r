@@ -41,7 +41,7 @@ sem_table <- function(object,
                       new_labels = NULL,
                       one_sided = FALSE,
                       std = "std.all",
-                      print = T){
+                      print = FALSE){
   
   # dependencies
   library(lavaan)

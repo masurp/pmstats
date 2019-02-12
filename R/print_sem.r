@@ -62,7 +62,7 @@ print_sem <- function(object,
       paste0(", 95\\% CI $[", temp$ll, ", ", temp$ul, "]$")
     },
     if(isTRUE(p)){ 
-      paste0(", $p " , 
+      paste0(", $\\textit{p} " , 
              if (temp$p != "< .001") {
                paste0("= ", temp$p, "$")
              } else {paste0(temp$p, "$")})

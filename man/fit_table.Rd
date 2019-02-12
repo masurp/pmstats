@@ -6,7 +6,7 @@
 \usage{
 fit_table(object, indices = c("chisq", "df", "pvalue", "cfi", "tli",
   "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"), rmsea_ci = FALSE,
-  reliability = TRUE, robust = FALSE)
+  reliability = TRUE, robust = FALSE, print = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{cfa()} or \code{sem()} from the package 'lavaan'.}
@@ -16,6 +16,8 @@ fit_table(object, indices = c("chisq", "df", "pvalue", "cfi", "tli",
 \item{reliability}{Logical value indicating whether Cronbach's alpha, McDonald's omega (composite reliability), and the average variance extracted should be included-}
 
 \item{robust}{Logical value indicating whether the model was fitted with a robust estimator. If yes, scaled indices will be used.}
+
+\item{print}{Logical value indicating whether the table should be formatted according to APA guidelines.}
 }
 \description{
 Coming soon

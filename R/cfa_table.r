@@ -26,7 +26,7 @@ cfa_table <- function(object,
                       latent_var = NULL,
                       items = NULL,
                       brief = TRUE,
-                      print = TRUE,
+                      print = FALSE,
                       std = "std.all",
                       group = FALSE){
   # dependencies    

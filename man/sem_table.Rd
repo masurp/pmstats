@@ -5,7 +5,8 @@
 \title{Result table for SEM model}
 \usage{
 sem_table(object, effect = NULL, labels = FALSE, regressions = FALSE,
-  new_labels = NULL, one_sided = FALSE, std = "std.all", print = T)
+  new_labels = NULL, one_sided = FALSE, std = "std.all",
+  print = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{sem()} from the package 'lavaan'.}

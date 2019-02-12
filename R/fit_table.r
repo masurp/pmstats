@@ -6,6 +6,7 @@
 #' @param indices Vector of the indices that should be in the ouput.
 #' @param reliability Logical value indicating whether Cronbach's alpha, McDonald's omega (composite reliability), and the average variance extracted should be included-
 #' @param robust Logical value indicating whether the model was fitted with a robust estimator. If yes, scaled indices will be used. 
+#' @param print Logical value indicating whether the table should be formatted according to APA guidelines. 
 #' @examples 
 #' model <- '
 #' # latent variables
@@ -32,14 +33,15 @@ fit_table <- function(object,
                       indices = c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"),
                       rmsea_ci = FALSE,
                       reliability = TRUE,
-                      robust = FALSE) {
+                      robust = FALSE,
+                      print = FALSE) {
   # dependencies
   library(lavaan)
   library(semTools)
   library(tidyverse)
   library(papaja)
   
-  # function
+  # Check if robust estimator was used
   if(!isTRUE(robust)){
     fit_indices <- inspect(object, what = "fit") %>% 
       .[indices]
@@ -54,26 +56,35 @@ fit_table <- function(object,
       set_names(indices)
   }
   
-  # creating table
+  # Create table 
   fit_indices <- fit_indices %>%
-    t %>% as.tibble %>%
+    t %>% as.tibble
+  
+  if (isTRUE(reliability)) {
+      fit_indices <- fit_indices %>% 
+        mutate(alpha = semTools::reliability(object)["alpha", "total"],
+               omega = semTools::reliability(object)["omega3", "total"],
+               ave = semTools::reliability(object)["avevar", "total"])
+  }
+  
+  if (isTRUE(print)) {
+  # creating table
+   fit_indices <- fit_indices %>%
     mutate_at(vars(chisq), 
               funs(printnum(.))) %>% 
     mutate_at(vars(cfi, tli, rmsea, rmsea.ci.lower, rmsea.ci.upper, srmr), 
               funs(printnum(., gt1 = F, zero = F))) %>% 
     mutate_at(vars(pvalue), 
               funs(printp(.)))
+  }
   
-  if(isTRUE(reliability)) {
-  fit_indices <- fit_indices %>% 
-      mutate(alpha = semTools::reliability(object)["alpha", "total"],
-             omega = semTools::reliability(object)["omega3", "total"],
-             ave = semTools::reliability(object)["avevar", "total"]) %>%
+  if (isTRUE(reliability) & isTRUE(print)) {
+    fit_indices <- fit_indices %>%
       mutate_at(vars(alpha, omega, ave), 
                 funs(printnum(., gt1 = F, zero = F)))
   }
-  
-  if(isTRUE(rmsea_ci)){
+
+  if(!isTRUE(rmsea_ci)){
     fit_indices <- fit_indices %>%
       select(-rmsea.ci.lower, -rmsea.ci.upper)
   }
