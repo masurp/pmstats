@@ -41,7 +41,7 @@ print_rel <- function(object,
   library(papaja)
   
   if (is.null(var)) {
-    print("You need to provide a valid variable name")
+    message("You need to provide a valid variable name")
   } else {
   
   temp <- object %>%

@@ -6,7 +6,7 @@
 #' @param print A logical value indicating whether table shoud be formatted according to APA.
 #' @export
 cfa_invariance_test <- function(...,
-                                print = T){
+                                print = FALSE){
   # dependencies
   library(lavaan)
   library(tidyverse)

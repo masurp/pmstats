@@ -26,8 +26,8 @@ cfa_table <- function(object,
                       latent_var = NULL,
                       items = NULL,
                       brief = TRUE,
-                      print = FALSE,
                       std = "std.all",
+                      print = FALSE,
                       group = FALSE){
   # dependencies    
   library(lavaan)

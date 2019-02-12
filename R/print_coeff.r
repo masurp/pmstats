@@ -36,7 +36,7 @@
 #' 
 #' # Second step
 #' print_coeff(results, effect = "H1)
-#' print_coeff(results, "H2", se = F, beta = F)
+#' print_coeff(results, "H2", se = F, beta = T)
 #' @export
 print_coeff <- function(object,
                         effect = NULL,
