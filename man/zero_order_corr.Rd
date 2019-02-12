@@ -4,7 +4,8 @@
 \alias{zero_order_corr}
 \title{Creates a zero-order correlation table}
 \usage{
-zero_order_corr(data, var_names = NULL, upper_tri = T)
+zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
+  print = FALSE)
 }
 \arguments{
 \item{data}{A data frame containing all variables that should be investigated.}

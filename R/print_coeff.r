@@ -1,15 +1,15 @@
 #' Prints individual coefficients for inline reporting
 #' 
-#' This function takes the output of \code{sem_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Only one coefficient at a time can be printed.
+#' This function takes the output of \code{sem_table()} or \code{lmer_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Alternatively, the predictor variable can be named. Only one coefficient at a time can be printed.
 #' 
 #' @param object A dataframe resulting from \code{sem_table()}.
 #' @param effect A character value indicating which coefficient should be printed (draws from the label column in the dataframe).
+#' @param variable Predictor variable that should be printed.
 #' @param b Should the unstandardized effect be printed?
 #' @param se Should the standard error be printed?
 #' @param ci Should the confidence intervals be printed?
 #' @param p Should the p-value be printed?
 #' @param beta Should the standarized coefficient be printed?
-#' @param ... arguments passed to sem_table()
 #' @examples 
 #' model <- '
 #' # latent variables

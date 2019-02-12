@@ -75,7 +75,7 @@ sem_table <- function(object,
     select(outcome = lhs, 
            predictor = rhs,
            b = est,
-           se,
+           SE = se,
            ll = ci.lower, 
            ul = ci.upper, 
            p = pvalue,
@@ -84,7 +84,7 @@ sem_table <- function(object,
   
   if(isTRUE(print)) {
     coeffs <- coeffs %>% 
-      mutate_at(vars(b, se, ll, ul), funs(printnum(.))) %>% 
+      mutate_at(vars(b, SE, ll, ul), funs(printnum(.))) %>% 
       mutate(beta = printnum(beta, gt1 = F)) %>% 
       mutate(p = printp(p))
   }
