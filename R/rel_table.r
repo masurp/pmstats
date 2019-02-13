@@ -5,6 +5,7 @@
 #' @param object An object of class \code{lavaan} created by using \code{cfa()} or \code{sem()} from the package 'lavaan'.
 #' @param var Character value that indicates which variables should be printed.
 #' @param total Logical value indicating if total estimates should be printed. 
+#' @param print Logical value indicating whether the resulting table should be formatted acccording to APA guidelines. 
 #' @examples 
 #' model <- '
 #' # latent variables
@@ -30,7 +31,8 @@
 #' @export
 rel_table <- function(object,
                       var = NULL,
-                      total = TRUE){
+                      total = TRUE,
+                      print = FALSE){
   
   # dependencies
   library(semTools)
@@ -41,9 +43,13 @@ rel_table <- function(object,
   temp <- object %>%
     reliability %>% t %>%
     as.data.frame %>%
-    rownames_to_column("variable") %>%
-    mutate_at(vars(alpha, omega, omega2, omega3, avevar),
-              funs(printnum(., gt1 = F)))
+    rownames_to_column("variable") 
+  
+  if (isTRUE(print)) {
+    temp <- temp %>%
+      mutate_at(vars(alpha, omega, omega2, omega3, avevar),
+                funs(printnum(., gt1 = F)))
+  }
   
   if (!isTRUE(total)) {
     temp <- temp %>%
