@@ -6,6 +6,7 @@
 #' @param print A logical value indicating whether table shoud be formatted according to APA.
 #' @export
 cfa_invariance_test <- function(...,
+                                model_names = NULL,
                                 print = FALSE){
   # dependencies
   library(lavaan)
@@ -13,10 +14,20 @@ cfa_invariance_test <- function(...,
   library(magrittr)
   library(papaja)
   
+  # subfunctions
+  names_from_dots <- function(...) sapply(substitute(list(...))[-1], deparse)
+  
+  # Getting model names
+  model <- names_from_dots(...)
+  
   # function
   temp <- anova(...) %>%
     as.tibble %>%
     set_colnames(c("df", "aic", "bic", "chisq", "diff_chisq", "diff_df", "p"))
+  
+  temp <- temp %>%
+    bind_cols(model = model) %>%
+    select(model, everything())
   
   if (isTRUE(print)) {
     
@@ -25,9 +36,14 @@ cfa_invariance_test <- function(...,
       set_colnames(c("df", "AIC", "BIC", "Chisq", "\\Delta Chisq", "\\Delta df", "\\textit{p}"))
     temp2[2:4,7] <- temp[2:4,7] %>% 
       mutate(p = printp(p))
-    
-    
+    temp <- temp2
   }
-  return(temp2)
+  
+  if (!is.null(model_names)) {
+    temp <- temp %>%
+      mutate(model = model_names)
+  }
+  
+  return(temp)
   
 }
