@@ -4,7 +4,7 @@
 \alias{cfa_invariance_test}
 \title{Create results from invariance test}
 \usage{
-cfa_invariance_test(..., print = T)
+cfa_invariance_test(..., print = FALSE)
 }
 \arguments{
 \item{...}{Four lavaan fit objects with base, weak, strong and strict invariance constraints.}

@@ -5,7 +5,7 @@
 \title{Table with items and factor loadings}
 \usage{
 cfa_table(object, latent_var = NULL, items = NULL, brief = TRUE,
-  print = FALSE, std = "std.all", group = FALSE)
+  std = "std.all", print = FALSE, group = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{cfa} or \code{sem()}.}
@@ -16,9 +16,9 @@ cfa_table(object, latent_var = NULL, items = NULL, brief = TRUE,
 
 \item{brief}{A logical value specifying whether only standardized factor loadings should be shown.}
 
-\item{print}{A logical value indicating whether the values should formatted according to APA-guidelines.}
-
 \item{std}{Indicates which standarized coefficient should be used (defaults to "std.all").}
+
+\item{print}{A logical value indicating whether the values should formatted according to APA-guidelines.}
 
 \item{new_labels}{A vector that needs to have the length of the number of effects that can be used to included a separate column with Hypotheses labels.}
 }

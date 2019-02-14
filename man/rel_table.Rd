@@ -4,7 +4,7 @@
 \alias{rel_table}
 \title{Creates a table with the reliability estimates of a SEM or CFA}
 \usage{
-rel_table(object, var = NULL, total = TRUE)
+rel_table(object, var = NULL, total = TRUE, print = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{cfa()} or \code{sem()} from the package 'lavaan'.}
@@ -12,6 +12,8 @@ rel_table(object, var = NULL, total = TRUE)
 \item{var}{Character value that indicates which variables should be printed.}
 
 \item{total}{Logical value indicating if total estimates should be printed.}
+
+\item{print}{Logical value indicating whether the resulting table should be formatted acccording to APA guidelines.}
 }
 \description{
 Creates a table in the tibble format that includes reliability values (Cronbach's alpha, omegas, and average variance extracted).
