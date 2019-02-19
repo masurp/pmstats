@@ -2,12 +2,14 @@
 % Please edit documentation in R/cfa_invariance_test.r
 \name{cfa_invariance_test}
 \alias{cfa_invariance_test}
-\title{Create results from invariance test}
+\title{Model comparison using ANOVA}
 \usage{
 cfa_invariance_test(..., model_names = NULL, print = FALSE)
 }
 \arguments{
 \item{...}{Four lavaan fit objects with base, weak, strong and strict invariance constraints.}
+
+\item{model_names}{Do you want to rename the models? Provide a vector with the respective model names.}
 
 \item{print}{A logical value indicating whether table shoud be formatted according to APA.}
 }
