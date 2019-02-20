@@ -5,7 +5,7 @@
 \title{Creates a zero-order correlation table}
 \usage{
 zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
-  print = FALSE)
+  print = FALSE, sig = TRUE)
 }
 \arguments{
 \item{data}{A data frame containing all variables that should be investigated.}
@@ -13,6 +13,8 @@ zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
 \item{var_names}{A vector with fitting variable names.}
 
 \item{upper_tri}{Should the upper triangle be omitted?}
+
+\item{sig}{Logical vector indicating whether stars should be printed when the effect is significant at alpha = .05.}
 }
 \description{
 Creates a classical zero-order correlation table. A vector with variable names can be added.
@@ -21,4 +23,5 @@ Creates a classical zero-order correlation table. A vector with variable names c
 d <- mtcars
 
 zero_order_corr(d)
+zero_order_corr(d, print = T, sig = TRUE)
 }

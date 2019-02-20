@@ -5,22 +5,30 @@
 #' @param data A data frame containing all variables that should be investigated.
 #' @param var_names A vector with fitting variable names.
 #' @param upper_tri Should the upper triangle be omitted?
+#' @param sig Logical vector indicating whether stars should be printed when the effect is significant at alpha = .05.
 #' @examples 
 #' d <- mtcars
 #' 
 #' zero_order_corr(d)
+#' zero_order_corr(d, print = T, sig = TRUE)
 #' @export
 zero_order_corr <- function(data,
                             var_names = NULL,
                             upper_tri = TRUE,
-                            print = FALSE) {
+                            print = FALSE,
+                            sig = TRUE) {
   # dependencies
   library(tidyverse)
   library(psych)
   library(magrittr)
   library(papaja)
   
-  # function
+  stars <- corr.test(data)$p %>%
+    as.data.frame %>%
+    rownames_to_column("Variables") %>%
+    as.tibble
+  stars[upper.tri(stars)] <- NA
+  
   temp <- corr.test(data)$r %>%
     as.data.frame %>%
     rownames_to_column("Variables") %>%
@@ -47,6 +55,22 @@ zero_order_corr <- function(data,
                 funs(ifelse(. == "NA", "", .)))
   }
   
+  if (isTRUE(sig)) {
+    stars <- as.data.frame(stars < .05)
+  
+    for(i in 1:length(temp)) {
+      for(j in 1:nrow(temp)){
+      if (isTRUE(stars[i,j])) {
+      temp[i, j] <- paste0(temp[i, j], "*")
+      } else {
+      temp[i, j]
+      }
+    } 
+   }
+  }
+  
   return(temp)
   
 }
+
+zero_order_corr(d, print = T, sig = .001)
