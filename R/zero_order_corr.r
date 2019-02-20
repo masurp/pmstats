@@ -72,5 +72,3 @@ zero_order_corr <- function(data,
   return(temp)
   
 }
-
-zero_order_corr(d, print = T, sig = .001)
