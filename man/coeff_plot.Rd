@@ -4,8 +4,8 @@
 \alias{coeff_plot}
 \title{Coefficient plot for a SEM}
 \usage{
-coeff_plot(object, effect = NULL, labels = FALSE, regressions = TRUE,
-  y_limits = NULL, one_sided = FALSE)
+coeff_plot(object, effect = NULL, labels = FALSE,
+  regressions = FALSE, y_limits = NULL, y_intercept = 0)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{sem()} from the package 'lavaan'.}
@@ -16,7 +16,7 @@ coeff_plot(object, effect = NULL, labels = FALSE, regressions = TRUE,
 
 \item{y_limits}{Change the limits of the x-axis.}
 
-\item{one_sided}{A logical value indicating whether the hypotheses was tested one-sided (p-values are divided by two).}
+\item{y_intercept}{Defaults to a dashed vertical line at y = 0.}
 
 \item{regression}{A logical value specifying whether only regressions should be plotted}
 }

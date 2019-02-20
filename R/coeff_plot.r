@@ -7,7 +7,7 @@
 #' @param labels A logical value specifying whether only effects with labels should be plotted
 #' @param regression A logical value specifying whether only regressions should be plotted
 #' @param y_limits Change the limits of the x-axis.
-#' @param one_sided A logical value indicating whether the hypotheses was tested one-sided (p-values are divided by two). 
+#' @param y_intercept Defaults to a dashed vertical line at y = 0.
 #' @examples 
 #' model <- '
 #' # latent variables
@@ -35,9 +35,9 @@
 coeff_plot <- function(object,
                        effect = NULL,
                        labels = FALSE,
-                       regressions = TRUE,
+                       regressions = FALSE,
                        y_limits = NULL,
-                       one_sided = FALSE){
+                       y_intercept = 0){
   
   # dependencies
   library(lavaan)
@@ -45,54 +45,63 @@ coeff_plot <- function(object,
   library(papaja)
   
   # function
-  
-  if(!is.null(effect)){
-    coeffs <- object %>%
-      parameterEstimates(standardized = TRUE) %>% 
-      filter(label %in% effect)
-  } else if (isTRUE(regressions)) {
-    coeffs <- object %>%
-      parameterEstimates(standardized = TRUE) %>%
-      filter(op == "~")
-  } else if (isTRUE(labels)) {
-    coeffs <- object %>%
-      parameterEstimates(standardized = TRUE) %>%
-      subset(label != "")
+  if (class(object) == "lavaan") {
+    if(!is.null(effect)){
+      coeffs <- object %>%
+        parameterEstimates(standardized = TRUE) %>% 
+        filter(label %in% effect)
+    } else if (isTRUE(regressions)) {
+      coeffs <- object %>%
+        parameterEstimates(standardized = TRUE) %>%
+        filter(op == "~")
+    } else if (isTRUE(labels)) {
+      coeffs <- object %>%
+        parameterEstimates(standardized = TRUE) %>%
+        subset(label != "")
+    } else {
+      coeffs <- object %>%
+        parameterEstimates(standardized = TRUE)
+    }
+    
+    coeffs <- coeffs %>% 
+      select(outcome = lhs, 
+             predictor = rhs,
+             b = est,
+             SE = se,
+             ll = ci.lower, 
+             ul = ci.upper, 
+             p = pvalue) 
+    
   } else {
-    coeffs <- object %>%
-      parameterEstimates(standardized = TRUE)
+    
+    coeffs <- object
+    
   }
   
-  if(isTRUE(one_sided)) {
-    coeffs["pvalue"] <- coeffs["pvalue"] / 2
-  }
-  
-  coeffs <- coeffs %>% 
-    select(outcome = lhs, 
-           predictor = rhs,
-           b = est,
-           SE = se,
-           ll = ci.lower, 
-           ul = ci.upper, 
-           p = pvalue) %>%
+  coeffs <- coeffs %>%
     as.tibble %>%
     unite(path, c("outcome", "predictor"), 
           sep = " <- ", remove = F)
   
- plot <- coeffs %>%
-   ggplot(aes(x = path,
-              y = b,
-              ymin = ll,
-              ymax = ul)) +
-   geom_pointrange() +
-   labs(x = "",
-        y = "Unstandardized coefficients") +
-   coord_flip()
- 
- if(!is.null(y_limits)) {
-   plot <- plot +
-     ylim(y_limits)
- }
+  plot <- coeffs %>%
+    ggplot(aes(x = path,
+               y = b,
+               ymin = ll,
+               ymax = ul)) +
+    geom_hline(yintercept = y_intercept, 
+               color = "grey", 
+               linetype = "dashed") +
+    geom_pointrange() +
+    labs(x = "",
+         y = "Unstandardized coefficients") +
+    coord_flip()
   
- return(plot)
+  if(!is.null(y_limits)) {
+    
+    plot <- plot +
+      ylim(y_limits)
+    
+  }
+  
+  return(plot)
 }
