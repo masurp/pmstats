@@ -1,4 +1,4 @@
-#' Creates a zero-order correlation table
+#' Zero-order correlation table
 #' 
 #' This function creates a zero-order correlation table. A vector with variables names can be included in order to replace the first column. Further arguments allow to transform the table into a APA-ready print format.
 #' 

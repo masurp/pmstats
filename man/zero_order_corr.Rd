@@ -2,7 +2,7 @@
 % Please edit documentation in R/zero_order_corr.r
 \name{zero_order_corr}
 \alias{zero_order_corr}
-\title{Creates a zero-order correlation table}
+\title{Zero-order correlation table}
 \usage{
 zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
   print = FALSE, digits = 2, sig = TRUE)
