@@ -5,7 +5,7 @@
 \title{Creates a zero-order correlation table}
 \usage{
 zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
-  print = FALSE, sig = TRUE)
+  print = FALSE, digits = 2, sig = TRUE)
 }
 \arguments{
 \item{data}{A data frame containing all variables that should be investigated.}
@@ -14,14 +14,21 @@ zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
 
 \item{upper_tri}{Should the upper triangle be omitted?}
 
-\item{sig}{Logical vector indicating whether stars should be printed when the effect is significant at alpha = .05.}
+\item{print}{A logical value indicating whether the table should be formatted according to APA guidelines.}
+
+\item{digits}{A number specifying how many digit should be printed.}
+
+\item{sig}{Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.}
 }
 \description{
-Creates a classical zero-order correlation table. A vector with variable names can be added.
+This function creates a zero-order correlation table. A vector with variables names can be included in order to replace the first column. Further arguments allow to transform the table into a APA-ready print format.
 }
 \examples{
 d <- mtcars
 
+# Default
 zero_order_corr(d)
-zero_order_corr(d, print = T, sig = TRUE)
+
+# Customized for printing
+zero_order_corr(d, print = T, digits = 3, sig = TRUE)
 }
