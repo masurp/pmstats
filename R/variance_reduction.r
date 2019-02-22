@@ -8,9 +8,15 @@
 #' @param ... Up to four objects of class merMod.
 #' @param red A logical value indicating wether only the explained variance should be reported (defaults to TRUE).
 #' @export
-variance_reduction <- function(object, ..., red = TRUE){
+variance_reduction <- function(object, 
+                               ..., 
+                               red = TRUE){
   
-  # Subfunction
+  # dependencies
+  library(tidyverse)
+  library(magrittr)
+  
+  # subfunction
   get_var <- function(model, no = 0){
     VarCorr(model) %>% 
       as.data.frame %>% 

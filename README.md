@@ -6,7 +6,7 @@ This package includes some custom-made functions to facilitate some common stati
 
 Most functions require the following packages:
 
-- For data wrangling procedure: `tidyverse`
+- For data wrangling procedures: `tidyverse` and `magrittr`
 - For printing and typesetting: `papaja`
 - For SEM procedures: `lavaan` and `semTools`
 
