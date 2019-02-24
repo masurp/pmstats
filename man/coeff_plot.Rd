@@ -20,6 +20,9 @@ coeff_plot(object, effect = NULL, labels = FALSE,
 
 \item{regression}{A logical value specifying whether only regressions should be plotted}
 }
+\value{
+A ggplot object that can be further customized using standard ggplot elements.
+}
 \description{
 This function plots a classic coefficient plot for a structural equation model. More ggplot functions (e.g., theme, labs, etc.) can be passed to the resulting object.
 }

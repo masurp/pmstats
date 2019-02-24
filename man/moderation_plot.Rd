@@ -25,6 +25,9 @@ moderation_plot(object, x1 = NULL, x2 = NULL, m = NULL,
 
 \item{mod_hist}{A logical value indicating whether a histogram of the moderator variable should be added above the moderation plot.}
 }
+\value{
+If mod_hist = TRUE, this function returns a "ggExtraPlot" (i.e. a "gtable"). If mod_hist = FALSE, it returns a ggplot object that can be further customized using standard ggplot elements.
+}
 \description{
 This functions creates a conditional effect plot that illustrates how an effect of x on y changes with changes in a continuous moderator variable. It also allows to plot a facetted version if the predictor variable x is a three-level factor.
 }

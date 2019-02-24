@@ -11,6 +11,7 @@
 #' @param y_lab A character value specifying the y label in the final plot.
 #' @param quantiles Number of quantiles that should be calculated.
 #' @param mod_hist A logical value indicating whether a histogram of the moderator variable should be added above the moderation plot. 
+#' @return If mod_hist = TRUE, this function returns a "ggExtraPlot" (i.e. a "gtable"). If mod_hist = FALSE, it returns a ggplot object that can be further customized using standard ggplot elements.
 #' @examples
 #' # Simulate an interaction
 #' set.seed(10)

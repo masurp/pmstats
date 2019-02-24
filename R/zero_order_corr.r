@@ -8,6 +8,7 @@
 #' @param print A logical value indicating whether the table should be formatted according to APA guidelines.
 #' @param digits A number specifying how many digit should be printed.
 #' @param sig Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.
+#' @return A tibble. 
 #' @examples 
 #' d <- mtcars
 #' 

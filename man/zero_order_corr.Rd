@@ -20,6 +20,9 @@ zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
 
 \item{sig}{Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.}
 }
+\value{
+A tibble.
+}
 \description{
 This function creates a zero-order correlation table. A vector with variables names can be included in order to replace the first column. Further arguments allow to transform the table into a APA-ready print format.
 }

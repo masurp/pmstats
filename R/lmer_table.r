@@ -4,6 +4,7 @@
 #' 
 #' @param object An object resulting from the function \code{lmer()} from the package \code{lmerTest}.
 #' @param print A logical value indicating whether the values should formatted according to APA-guidelines. 
+#' @return A tibble.
 #' @export
 lmer_table <- function(object,
                        print = FALSE){

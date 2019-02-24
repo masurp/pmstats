@@ -8,6 +8,7 @@
 #' @param regression A logical value specifying whether only regressions should be plotted
 #' @param y_limits Change the limits of the x-axis.
 #' @param y_intercept Defaults to a dashed vertical line at y = 0.
+#' @return A ggplot object that can be further customized using standard ggplot elements.
 #' @examples 
 #' model <- '
 #' # latent variables

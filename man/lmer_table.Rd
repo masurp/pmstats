@@ -11,6 +11,9 @@ lmer_table(object, print = FALSE)
 
 \item{print}{A logical value indicating whether the values should formatted according to APA-guidelines.}
 }
+\value{
+A tibble.
+}
 \description{
 This functions extracts the fixed effects from a lmer-model.
 }
