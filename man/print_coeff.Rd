@@ -8,7 +8,7 @@ print_coeff(object, effect = NULL, variable = NULL, b = TRUE,
   se = TRUE, ci = TRUE, p = TRUE, beta = FALSE)
 }
 \arguments{
-\item{object}{A dataframe resulting from \code{sem_table()}.}
+\item{object}{A dataframe resulting from \code{sem_table()} or \code{lmer_table()}.}
 
 \item{effect}{A character value indicating which coefficient should be printed (draws from the label column in the dataframe).}
 

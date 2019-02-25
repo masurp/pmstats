@@ -2,7 +2,7 @@
 #' 
 #' This function takes the output of \code{sem_table()} or \code{lmer_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Alternatively, the predictor variable can be named. Only one coefficient at a time can be printed.
 #' 
-#' @param object A dataframe resulting from \code{sem_table()}.
+#' @param object A dataframe resulting from \code{sem_table()} or \code{lmer_table()}.
 #' @param effect A character value indicating which coefficient should be printed (draws from the label column in the dataframe).
 #' @param variable Predictor variable that should be printed.
 #' @param b Should the unstandardized effect be printed?
