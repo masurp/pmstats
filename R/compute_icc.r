@@ -37,7 +37,8 @@ compute_icc <- function(...,
     temp <- icc(...) %>%
       as.tibble %>%
       bind_cols(., vars = names_vars[1]) %>%
-      select(variable = vars, icc = value)
+      select(variable = vars, 
+             icc = value)
     
   } else {
   
@@ -63,7 +64,10 @@ compute_icc <- function(...,
   if (isTRUE(print)) {
     temp <- temp %>%
       mutate_at(vars(icc), 
-                funs(printnum(., gt1 = F, zero = F, digits = digits)))
+                funs(printnum(., 
+                              gt1 = F, 
+                              zero = F, 
+                              digits = digits)))
   }
   
   return(temp)
