@@ -19,18 +19,14 @@ lmer_table <- function(object,
   cis <- confint(object) %>%
     as.tibble %>% slice(3:nrow(.))
   
-  var <- VarCorr(object) %>% 
-    as.data.frame %>%
-    select(predictor = grp, vcov)
-  
   temp <- cbind(coeffs, cis) %>%
     as.tibble %>%
-    set_colnames(c("predictor", "b", "SE", "df", "t", "p", "ll", "ul")) %>%
-    select(predictor, b, SE, ll, ul, p)
+    set_colnames(c("predictor", "b", "se", "df", "t", "p", "ll", "ul")) %>%
+    select(predictor, b, se, ll, ul, p)
   
   if (isTRUE(print)) {
     temp <- temp %>% 
-      mutate_at(vars(b, SE, ll, ul), funs(printnum(.))) %>% 
+      mutate_at(vars(b, se, ll, ul), funs(printnum(.))) %>% 
       mutate(p = printp(p))
   }
   

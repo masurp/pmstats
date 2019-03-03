@@ -28,6 +28,8 @@ print_coeff(object, effect = NULL, variable = NULL, b = TRUE,
 This function takes the output of \code{sem_table()} or \code{lmer_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Alternatively, the predictor variable can be named. Only one coefficient at a time can be printed.
 }
 \examples{
+# Example 1: Structural equation modelling
+
 model <- '
 # latent variables
 ind60 =~ x1 + x2 + x3
@@ -45,13 +47,24 @@ y3 ~~ y7
 y4 ~~ y8
 y6 ~~ y8
 '
-fit <- sem(model,
+fit <- lavaan::sem(model,
 data = PoliticalDemocracy)
 
-# First step
-results <- sem_table(fit, new_labels = c("H1", "H2", "H3))
+# First step (print = TRUE is mandatory!)
+results <- sem_table(fit, regressions = TRUE, new_labels = c("H1", "H2", "H3"), print = TRUE)
 
 # Second step
-print_coeff(results, effect = "H1)
+print_coeff(results, effect = "H1")
 print_coeff(results, "H2", se = F, beta = T)
+
+
+# Example 2: Multilevel model
+#' # Estimate a multilevel model
+model <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+
+# First step (print = TRUE is mandatory!)
+results <- lmer_table(model, print = TRUE)
+
+# Second step
+print_coeff(results, variable = "Days", ci = FALSE, p = FALSE)
 }

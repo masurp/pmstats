@@ -11,6 +11,8 @@
 #' @param p Should the p-value be printed?
 #' @param beta Should the standarized coefficient be printed?
 #' @examples 
+#' # Example 1: Structural equation modelling
+#' 
 #' model <- '
 #' # latent variables
 #' ind60 =~ x1 + x2 + x3
@@ -28,15 +30,26 @@
 #' y4 ~~ y8
 #' y6 ~~ y8
 #' '
-#' fit <- sem(model,
+#' fit <- lavaan::sem(model,
 #' data = PoliticalDemocracy)
 #' 
-#' # First step
-#' results <- sem_table(fit, new_labels = c("H1", "H2", "H3))
+#' # First step (print = TRUE is mandatory!)
+#' results <- sem_table(fit, regressions = TRUE, new_labels = c("H1", "H2", "H3"), print = TRUE)
 #' 
 #' # Second step
-#' print_coeff(results, effect = "H1)
+#' print_coeff(results, effect = "H1")
 #' print_coeff(results, "H2", se = F, beta = T)
+#' 
+#' 
+#' # Example 2: Multilevel model
+#' #' # Estimate a multilevel model
+#' model <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+#' 
+#' # First step (print = TRUE is mandatory!)
+#' results <- lmer_table(model, print = TRUE)
+#' 
+#' # Second step
+#' print_coeff(results, variable = "Days", ci = FALSE, p = FALSE)
 #' @export
 print_coeff <- function(object,
                         effect = NULL,
@@ -64,7 +77,7 @@ print_coeff <- function(object,
       paste0("$b = ", temp$b, "$")
     }, 
     if (isTRUE(se)) {
-      paste0(", $SE = ", temp$SE, "$")
+      paste0(", $SE = ", temp$se, "$")
     },
     if (isTRUE(ci)) {
       paste0(", 95\\% CI $[", temp$ll, ", ", temp$ul, "]$")
