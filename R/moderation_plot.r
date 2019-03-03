@@ -39,11 +39,11 @@ moderation_plot <- function(object,
   library(ggExtra)
   
   # subfunction
-  conditional.effects <-  function(model, x, m, quantiles = 10){
+  conditional.effects <-  function(model, x, m, quantile = quantiles){
     interact = paste0(x,':',m)
     beta.hat = coef(model) 
     covs = vcov(model)
-    z0  = quantile(model$model[,m], seq(0 , 1, 1/quantiles))
+    z0  = quantile(model$model[,m], seq(0 , 1, 1/quantile))
     dy.dx = beta.hat[x] + beta.hat[interact]*z0
     se.dy.dx = sqrt(covs[x, x] + z0^2*covs[interact, interact] + 2*z0*covs[x, interact])
     upr = dy.dx+1.96*se.dy.dx
@@ -54,8 +54,7 @@ moderation_plot <- function(object,
   # main function
   temp <- conditional.effects(object, 
                               x = x1, 
-                              m = m, 
-                              quantiles = 500) %>%
+                              m = m) %>%
     as.tibble %>%
     mutate(grp = x1) 
   
@@ -63,8 +62,7 @@ moderation_plot <- function(object,
   if (!is.null(x2)) {
     temp2 <- conditional.effects(object, 
                                  x = x2, 
-                                 m = m, 
-                                 quantiles = 500) %>%
+                                 m = m) %>%
       as.tibble %>%
       mutate(grp = x2)
     
