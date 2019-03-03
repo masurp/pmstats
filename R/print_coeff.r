@@ -10,26 +10,30 @@
 #' @param ci Should the confidence intervals be printed?
 #' @param p Should the p-value be printed?
 #' @param beta Should the standarized coefficient be printed?
+#' @return A string including a latex code snippet, to be used in Rmarkdown documents.
 #' @examples 
-#' # Example 1: Structural equation modelling
+#' ## Example 1: Reporting effects from a structural equation modelling
 #' 
+#' # Estimate the structural equation model
 #' model <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3 + y4
-#' dem65 =~ y5 + y6 + y7 + y8
-#' 
-#' # regressions
-#' dem60 ~ ind60
-#' dem65 ~ ind60 + dem60
-#' 
-#' # residual covariances
-#' y1 ~~ y5
-#' y2 ~~ y4 + y6
-#' y3 ~~ y7
-#' y4 ~~ y8
-#' y6 ~~ y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3 + y4
+#'   dem65 =~ y5 + y6 + y7 + y8
+#'   
+#'   # regressions
+#'   dem60 ~ ind60
+#'   dem65 ~ ind60 + dem60
+#'   
+#'   # residual covariances
+#'   y1 ~~ y5
+#'   y2 ~~ y4 + y6
+#'   y3 ~~ y7
+#'   y4 ~~ y8
+#'   y6 ~~ y8
 #' '
+#' 
+#' # Fitting model
 #' fit <- lavaan::sem(model,
 #' data = PoliticalDemocracy)
 #' 
@@ -41,8 +45,10 @@
 #' print_coeff(results, "H2", se = F, beta = T)
 #' 
 #' 
-#' # Example 2: Multilevel model
-#' #' # Estimate a multilevel model
+#' 
+#' ## Example 2: Reporting effects from a multilevel model
+#' 
+#' # Estimate the multilevel model
 #' model <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 #' 
 #' # First step (print = TRUE is mandatory!)
