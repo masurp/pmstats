@@ -16,3 +16,26 @@ cfa_invariance_test(..., model_names = NULL, print = FALSE)
 \description{
 This function creates a tibble that display a classical Chisq-test of differently configured models.
 }
+\examples{
+model_1 <- '
+# latent variables
+ind60 =~ x1 + x2 + x3
+dem60 =~ y1 + y2 + y3 + y4
+dem65 =~ y5 + y6 + y7 + y8
+'
+fit_1 <- cfa(model_1, data = PoliticalDemocracy)
+
+model_2 <- '
+# latent variables
+ind60 =~ x1 + x2 + x3
+dem60 =~ y1 + y2 + y3
+dem65 =~ y5 + y6 + y7 + y8
+'
+fit_2 <- cfa(model_2, data = PoliticalDemocracy)
+
+# Model comparison
+cfa_invariance_test(fit_1, fit_2, print = TRUE)
+
+# Renaming model names
+cfa_invariance_test(fit_1, fit_2, model_names = c("Model 1: All variables", "Model 2: Some omissions"), print = TRUE)
+}
