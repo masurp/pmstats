@@ -27,12 +27,12 @@
 #' '
 #' fit <- sem(model,
 #' data = PoliticalDemocracy)
-#' fit_table(fit)
+#' fit_table(fit, reliability = F)
 #' @export
 fit_table <- function(object,
                       indices = c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"),
                       rmsea_ci = FALSE,
-                      reliability = TRUE,
+                      reliability = FALSE,
                       robust = FALSE,
                       print = FALSE) {
   # dependencies

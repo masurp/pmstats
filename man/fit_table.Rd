@@ -6,7 +6,7 @@
 \usage{
 fit_table(object, indices = c("chisq", "df", "pvalue", "cfi", "tli",
   "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"), rmsea_ci = FALSE,
-  reliability = TRUE, robust = FALSE, print = FALSE)
+  reliability = FALSE, robust = FALSE, print = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{cfa()} or \code{sem()} from the package 'lavaan'.}
@@ -42,5 +42,5 @@ y6 ~~ y8
 '
 fit <- sem(model,
 data = PoliticalDemocracy)
-fit_table(fit)
+fit_table(fit, reliability = F)
 }
