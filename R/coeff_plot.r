@@ -31,7 +31,7 @@
 #' data = PoliticalDemocracy)
 #' 
 #' # Creating output table
-#' coeff_plot(fit, regression = T, y_limits = c(0,3)) + theme_minimal()
+#' coeff_plot(fit, regression = T, y_limits = c(-1,2.5)) + theme_minimal()
 #' @export
 coeff_plot <- function(object,
                        effect = NULL,
