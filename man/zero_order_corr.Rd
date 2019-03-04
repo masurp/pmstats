@@ -20,7 +20,7 @@ zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
 
 \item{sig}{Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.}
 
-\item{...}{Further arguments that can be passed to \code{corr.test()}.}
+\item{...}{Further arguments that can be passed to \code{corr.test()} (e.g., Alternative methods to compute the bivariate correlations by specifying method = "spearman").}
 }
 \value{
 A tibble.

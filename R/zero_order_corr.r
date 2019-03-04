@@ -8,7 +8,7 @@
 #' @param print A logical value indicating whether the table should be formatted according to APA guidelines.
 #' @param digits A number specifying how many digit should be printed.
 #' @param sig Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.
-#' @param ... Further arguments that can be passed to \code{corr.test()}.
+#' @param ... Further arguments that can be passed to \code{corr.test()} (e.g., Alternative methods to compute the bivariate correlations by specifying method = "spearman").
 #' @return A tibble. 
 #' @examples 
 #' d <- mtcars
