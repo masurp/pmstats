@@ -9,7 +9,7 @@
 #' @param m The name of the continuous moderator variable.
 #' @param x_lab A character value specifying the x label in the final plot.
 #' @param y_lab A character value specifying the y label in the final plot.
-#' @param quantiles Number of quantiles that should be calculated.
+#' @param quantil Number of quantiles that should be calculated.
 #' @param mod_hist A logical value indicating whether a histogram of the moderator variable should be added above the moderation plot. 
 #' @return If mod_hist = TRUE, this function returns a "ggExtraPlot" (i.e. a "gtable"). If mod_hist = FALSE, it returns a ggplot object that can be further customized using standard ggplot elements.
 #' @examples
@@ -32,7 +32,7 @@ moderation_plot <- function(object,
                             m = NULL,
                             x_lab = "Moderator",
                             y_lab = "Conditional effect of x on y",
-                            quantiles = 100,
+                            quantil = 100,
                             mod_hist = TRUE){
   # dependencies
   library(tidyverse)
@@ -43,11 +43,11 @@ moderation_plot <- function(object,
   }
   
   # subfunction
-  conditional.effects <-  function(model, x, m, quantile = quantiles){
+  conditional.effects <-  function(model, x, m, quantiles = quantil){
     interact = paste0(x,':',m)
     beta.hat = coef(model) 
     covs = vcov(model)
-    z0  = quantile(model$model[,m], seq(0 , 1, 1/quantile))
+    z0  = quantile(model$model[,m], seq(0 , 1, 1/quantiles))
     dy.dx = beta.hat[x] + beta.hat[interact]*z0
     se.dy.dx = sqrt(covs[x, x] + z0^2*covs[interact, interact] + 2*z0*covs[x, interact])
     upr = dy.dx+1.96*se.dy.dx
