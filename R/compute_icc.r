@@ -12,7 +12,7 @@
 #' mod2 <- lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 #'
 #' # Computing the ICC for the first model
-#' compute_icc(mod, digits = 3)
+#' compute_icc(mod1, digits = 3)
 #' 
 #' # Compute ICCs for both models
 #' compute_icc(mod1, mod2, print = T)
@@ -36,7 +36,7 @@ compute_icc <- function(...,
     
     temp <- icc(...) %>%
       as.tibble %>%
-      bind_cols(., vars = names_vars[1]) %>%
+      bind_cols(., vars = names_vars) %>%
       select(variable = vars, 
              icc = value)
     
@@ -53,7 +53,6 @@ compute_icc <- function(...,
     select(model,
            variable = vars, 
            icc = value)
-  
   }
   
   if (!is.null(var_names)) {
