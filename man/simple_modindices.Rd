@@ -4,7 +4,7 @@
 \alias{simple_modindices}
 \title{Simple function compute modification indices}
 \usage{
-simple_modindices(object, arrange = TRUE, brief = TRUE)
+simple_modindices(object, arrange = TRUE, brief = TRUE, ...)
 }
 \arguments{
 \item{object}{An object of class lavaan.}
@@ -12,6 +12,8 @@ simple_modindices(object, arrange = TRUE, brief = TRUE)
 \item{arrange}{Should the modification indices be sorted from large to small?}
 
 \item{brief}{If true, only modification indices are shown.}
+
+\item{...}{Further argument that can be passed to the function \code{modindices()}.}
 }
 \description{
 Simple function compute modification indices

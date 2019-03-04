@@ -3,15 +3,17 @@
 #' @param object An object of class lavaan.
 #' @param arrange Should the modification indices be sorted from large to small?
 #' @param brief If true, only modification indices are shown.
+#' @param ... Further argument that can be passed to the function \code{modindices()}.
 #' @export
 simple_modindices <- function(object,
                               arrange = TRUE,
-                              brief = TRUE) {
+                              brief = TRUE,
+                              ...) {
   # dependencies
   library(lavaan)
   library(tidyverse)
   
-  temp <- modindices(object) %>%
+  temp <- modindices(object, ...) %>%
     as.tibble
   
   if (isTRUE(arrange)) {
