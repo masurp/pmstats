@@ -2,7 +2,6 @@
 #' 
 #' This functions creates a conditional effect plot that illustrates how an effect of x on y changes with changes in a continuous moderator variable. It also allows to plot a facetted version if the predictor variable x is a three-level factor.
 #' 
-#' 
 #' @param object An object of class \code{"lm"} or \code{"lmer"} that includes an interaction.
 #' @param x1 The name of the predictor variable. Can be numeric or the first level of a factor variable.
 #' @param x2 If the factor variabel has more than two levels, this can be the second level.
