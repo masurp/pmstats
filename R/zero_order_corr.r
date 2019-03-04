@@ -8,6 +8,7 @@
 #' @param print A logical value indicating whether the table should be formatted according to APA guidelines.
 #' @param digits A number specifying how many digit should be printed.
 #' @param sig Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.
+#' @param ... Further arguments that can be passed to \code{corr.test()}.
 #' @return A tibble. 
 #' @examples 
 #' d <- mtcars
@@ -23,7 +24,8 @@ zero_order_corr <- function(data,
                             upper_tri = TRUE,
                             print = FALSE,
                             digits = 2,
-                            sig = TRUE) {
+                            sig = TRUE,
+                            ...) {
   # dependencies
   library(tidyverse)
   library(psych)
@@ -31,13 +33,13 @@ zero_order_corr <- function(data,
   library(papaja)
   
   # primary function
-  stars <- corr.test(data)$p %>%
+  stars <- corr.test(data, ...)$p %>%
     as.data.frame %>%
     rownames_to_column("Variables") %>%
     as.tibble
   stars[upper.tri(stars)] <- NA
   
-  temp <- corr.test(data)$r %>%
+  temp <- corr.test(data, ...)$r %>%
     as.data.frame %>%
     rownames_to_column("Variables") %>%
     as.tibble
