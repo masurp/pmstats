@@ -16,6 +16,7 @@ destandardize <- function(b = NULL,
                           Beta = NULL, 
                           sd_x, 
                           sd_y){
+  
   if (is.null(b) & is.null(Beta)) {
     message("You need to provide either an unstandarized (b) or standarized (Beta) coefficient!")
   }

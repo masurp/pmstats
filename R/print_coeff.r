@@ -1,10 +1,10 @@
 #' Prints individual coefficients for inline reporting
 #' 
-#' This function takes the output of \code{sem_table()} or \code{lmer_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Alternatively, the predictor variable can be named. Only one coefficient at a time can be printed.
+#' This function takes the output of \code{lm_table}, \code{sem_table()} or \code{lmer_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Alternatively, the predictor variable can be named. Attention: Only one coefficient at a time can be printed.
 #' 
-#' @param object A dataframe resulting from \code{sem_table()} or \code{lmer_table()}.
-#' @param effect A character value indicating which coefficient should be printed (draws from the label column in the dataframe).
-#' @param variable Predictor variable that should be printed.
+#' @param object A dataframe resulting from \code{sem_table()} or \code{lmer_table()}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).
+#' @param var_label A character value indicating which coefficient should be printed (draws from the label column in the dataframe).
+#' @param var_predict Predictor variable that should be printed.
 #' @param b Should the unstandardized effect be printed?
 #' @param se Should the standard error be printed?
 #' @param ci Should the confidence intervals be printed?
@@ -42,7 +42,7 @@
 #' 
 #' # Second step
 #' print_coeff(results, effect = "H1")
-#' print_coeff(results, "H2", se = F, beta = T)
+#' print_coeff(results, "H2", se = FALSE, beta = TRUE)
 #' 
 #' 
 #' 
@@ -58,8 +58,8 @@
 #' print_coeff(results, variable = "Days", ci = FALSE, p = FALSE)
 #' @export
 print_coeff <- function(object,
-                        effect = NULL,
-                        variable = NULL,
+                        var_label = NULL,
+                        var_predict = NULL,
                         b = TRUE,
                         se = TRUE,
                         ci = TRUE,
@@ -68,14 +68,14 @@ print_coeff <- function(object,
   # dependencies
   library(tidyverse)
   
-  if (!is.null(effect)) {
+  if (!is.null(var_label)) {
     temp <- object %>%
-      subset(., label == effect)
-  } else if (!is.null(variable)) {
+      subset(., label == var_label)
+  } else if (!is.null(var_predict)) {
     temp <- object %>%
-      subset(., predictor == variable)
+      subset(., predictor == var_predict)
   } else {
-    message("You need to provide the label of the effect or the predictor variable!")
+    message("You need to provide the existing label of the relationship or the name of the predictor variable!")
   }
   
   print_coeff <- paste0(
@@ -83,7 +83,7 @@ print_coeff <- function(object,
       paste0("$b = ", temp$b, "$")
     }, 
     if (isTRUE(se)) {
-      paste0(", $SE = ", temp$se, "$")
+      paste0(", $se = ", temp$se, "$")
     },
     if (isTRUE(ci)) {
       paste0(", 95\\% CI $[", temp$ll, ", ", temp$ul, "]$")
