@@ -1,8 +1,8 @@
 #' Prints individual coefficients for inline reporting
 #' 
-#' This function takes the output of \code{lm_table}, \code{sem_table()} or \code{lmer_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Alternatively, the predictor variable can be named. Attention: Only one coefficient at a time can be printed.
+#' This function takes the output of \code{result_table} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
 #' 
-#' @param object A dataframe resulting from \code{sem_table()} or \code{lmer_table()}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).
+#' @param object A dataframe resulting from \code{result_table}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).
 #' @param var_label A character value indicating which coefficient should be printed (draws from the label column in the dataframe).
 #' @param var_predict Predictor variable that should be printed.
 #' @param b Should the unstandardized effect be printed?
@@ -10,7 +10,7 @@
 #' @param ci Should the confidence intervals be printed?
 #' @param p Should the p-value be printed?
 #' @param beta Should the standarized coefficient be printed?
-#' @return A string including a latex code snippet, to be used in Rmarkdown documents.
+#' @return A string representing a latex code that can be used in inline reporting in Rmarkdown documents.
 #' @examples 
 #' ## Example 1: Reporting effects from a structural equation modelling
 #' 
@@ -38,12 +38,11 @@
 #' data = PoliticalDemocracy)
 #' 
 #' # First step (print = TRUE is mandatory!)
-#' results <- sem_table(fit, regressions = TRUE, new_labels = c("H1", "H2", "H3"), print = TRUE)
+#' results <- result_table(fit, regressions = TRUE, new_labels = c("H1", "H2", "H3"), print = TRUE)
 #' 
 #' # Second step
-#' print_coeff(results, effect = "H1")
+#' print_coeff(results, var_label = "H1")
 #' print_coeff(results, "H2", se = FALSE, beta = TRUE)
-#' 
 #' 
 #' 
 #' ## Example 2: Reporting effects from a multilevel model
@@ -52,10 +51,10 @@
 #' model <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 #' 
 #' # First step (print = TRUE is mandatory!)
-#' results <- lmer_table(model, print = TRUE)
+#' results <- result_table(model, print = TRUE)
 #' 
 #' # Second step
-#' print_coeff(results, variable = "Days", ci = FALSE, p = FALSE)
+#' print_coeff(results, var_predict = "Days", ci = FALSE, p = FALSE)
 #' @export
 print_coeff <- function(object,
                         var_label = NULL,
@@ -65,39 +64,61 @@ print_coeff <- function(object,
                         ci = TRUE,
                         p = TRUE,
                         beta = FALSE) {
+  
   # dependencies
   library(tidyverse)
   
+  # Get relevant subset of the results table
   if (!is.null(var_label)) {
+    
     temp <- object %>%
       subset(., label == var_label)
+    
   } else if (!is.null(var_predict)) {
+    
     temp <- object %>%
       subset(., predictor == var_predict)
+    
   } else {
-    message("You need to provide the existing label of the relationship or the name of the predictor variable!")
+    
+    message("You need to provide either the label of the relationship or the name of the predictor variable!")
+    
   }
   
+  # Transform parameters into printable latex code
   print_coeff <- paste0(
+    
     if (isTRUE(b)) {
+      
       paste0("$b = ", temp$b, "$")
+      
     }, 
     if (isTRUE(se)) {
+      
       paste0(", $se = ", temp$se, "$")
+      
     },
     if (isTRUE(ci)) {
+      
       paste0(", 95\\% CI $[", temp$ll, ", ", temp$ul, "]$")
+      
     },
-    if(isTRUE(p)){ 
+    if (isTRUE(p)) { 
+      
       paste0(", $\\textit{p} " , 
              if (temp$p != "< .001") {
+               
                paste0("= ", temp$p, "$")
-             } else {paste0(temp$p, "$")})
+               
+             } else {
+               paste0(temp$p, "$")})
+      
     },
     if (isTRUE(beta)) {
+      
       paste0(", $\\beta = ", temp$beta, "$")
+      
     }
   )
-  
   return(print_coeff)
 }

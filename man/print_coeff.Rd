@@ -4,15 +4,15 @@
 \alias{print_coeff}
 \title{Prints individual coefficients for inline reporting}
 \usage{
-print_coeff(object, effect = NULL, variable = NULL, b = TRUE,
+print_coeff(object, var_label = NULL, var_predict = NULL, b = TRUE,
   se = TRUE, ci = TRUE, p = TRUE, beta = FALSE)
 }
 \arguments{
-\item{object}{A dataframe resulting from \code{sem_table()} or \code{lmer_table()}.}
+\item{object}{A dataframe resulting from \code{result_table}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).}
 
-\item{effect}{A character value indicating which coefficient should be printed (draws from the label column in the dataframe).}
+\item{var_label}{A character value indicating which coefficient should be printed (draws from the label column in the dataframe).}
 
-\item{variable}{Predictor variable that should be printed.}
+\item{var_predict}{Predictor variable that should be printed.}
 
 \item{b}{Should the unstandardized effect be printed?}
 
@@ -25,10 +25,10 @@ print_coeff(object, effect = NULL, variable = NULL, b = TRUE,
 \item{beta}{Should the standarized coefficient be printed?}
 }
 \value{
-A string including a latex code snippet, to be used in Rmarkdown documents.
+A string representing a latex code that can be used in inline reporting in Rmarkdown documents.
 }
 \description{
-This function takes the output of \code{sem_table()} or \code{lmer_table()} and transforms it into latex-code to be used in a rmarkdown file. Individual effects in the original sem_table()-file need to be labelled. Alternatively, the predictor variable can be named. Only one coefficient at a time can be printed.
+This function takes the output of \code{result_table} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
 }
 \examples{
 ## Example 1: Reporting effects from a structural equation modelling
@@ -57,12 +57,11 @@ fit <- lavaan::sem(model,
 data = PoliticalDemocracy)
 
 # First step (print = TRUE is mandatory!)
-results <- sem_table(fit, regressions = TRUE, new_labels = c("H1", "H2", "H3"), print = TRUE)
+results <- result_table(fit, regressions = TRUE, new_labels = c("H1", "H2", "H3"), print = TRUE)
 
 # Second step
-print_coeff(results, effect = "H1")
-print_coeff(results, "H2", se = F, beta = T)
-
+print_coeff(results, var_label = "H1")
+print_coeff(results, "H2", se = FALSE, beta = TRUE)
 
 
 ## Example 2: Reporting effects from a multilevel model
@@ -71,8 +70,8 @@ print_coeff(results, "H2", se = F, beta = T)
 model <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 
 # First step (print = TRUE is mandatory!)
-results <- lmer_table(model, print = TRUE)
+results <- result_table(model, print = TRUE)
 
 # Second step
-print_coeff(results, variable = "Days", ci = FALSE, p = FALSE)
+print_coeff(results, var_predict = "Days", ci = FALSE, p = FALSE)
 }
