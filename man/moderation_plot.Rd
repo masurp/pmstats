@@ -6,7 +6,7 @@
 \usage{
 moderation_plot(object, x1 = NULL, x2 = NULL, m = NULL,
   x_lab = "Moderator", y_lab = "Conditional effect of x on y",
-  quantiles = 100, mod_hist = TRUE)
+  quantil = 100, mod_hist = TRUE)
 }
 \arguments{
 \item{object}{An object of class \code{"lm"} or \code{"lmer"} that includes an interaction.}
@@ -21,7 +21,7 @@ moderation_plot(object, x1 = NULL, x2 = NULL, m = NULL,
 
 \item{y_lab}{A character value specifying the y label in the final plot.}
 
-\item{quantiles}{Number of quantiles that should be calculated.}
+\item{quantil}{Number of quantiles that should be calculated.}
 
 \item{mod_hist}{A logical value indicating whether a histogram of the moderator variable should be added above the moderation plot.}
 }
