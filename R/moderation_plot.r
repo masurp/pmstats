@@ -38,6 +38,10 @@ moderation_plot <- function(object,
   library(tidyverse)
   library(ggExtra)
   
+  if (is.null(x1) | is.null(m)) {
+    message("You need to specify the predictor and moderator to plot the interaction.")
+  }
+  
   # subfunction
   conditional.effects <-  function(model, x, m, quantile = quantiles){
     interact = paste0(x,':',m)
@@ -118,3 +122,4 @@ moderation_plot <- function(object,
   return(plot)
 }
 
+moderation_plot(model, "x", m = "z")
