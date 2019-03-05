@@ -7,7 +7,7 @@
 #' @param var_predict Predictor variable that should be printed.
 #' @param b Should the unstandardized effect be printed?
 #' @param se Should the standard error be printed?
-#' @param ci Should the confidence intervals be printed?
+#' @param ci Should the confidence intervals (if bayesian: high credibility intervals) be printed?
 #' @param p Should the p-value be printed?
 #' @param beta Should the standarized coefficient be printed?
 #' @return A string representing a latex code that can be used in inline reporting in Rmarkdown documents.
@@ -60,6 +60,7 @@ print_coeff <- function(object,
                         var_label = NULL,
                         var_predict = NULL,
                         b = TRUE,
+                        median = TRUE,
                         se = TRUE,
                         ci = TRUE,
                         p = TRUE,
@@ -86,6 +87,30 @@ print_coeff <- function(object,
   }
   
   # Transform parameters into printable latex code
+  if ("rhat" %in% names(object)) {
+    print_coeff <- paste0(
+      
+      if (isTRUE(median)) {
+        
+        paste0("$Mdn. = ", temp$median, "$")
+        
+      }, 
+      if (isTRUE(se)) {
+        
+        paste0(", $se = ", temp$se, "$")
+        
+      },
+      if (isTRUE(ci)) {
+        
+        paste0(", 90\\% HDI $[", temp$ll, ", ", temp$ul, "]$")
+        
+      }
+    )
+    
+    
+  }
+  
+  
   print_coeff <- paste0(
     
     if (isTRUE(b)) {

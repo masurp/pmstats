@@ -5,7 +5,7 @@
 \title{Prints individual coefficients for inline reporting}
 \usage{
 print_coeff(object, var_label = NULL, var_predict = NULL, b = TRUE,
-  se = TRUE, ci = TRUE, p = TRUE, beta = FALSE)
+  median = TRUE, se = TRUE, ci = TRUE, p = TRUE, beta = FALSE)
 }
 \arguments{
 \item{object}{A dataframe resulting from \code{result_table}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).}
@@ -18,7 +18,7 @@ print_coeff(object, var_label = NULL, var_predict = NULL, b = TRUE,
 
 \item{se}{Should the standard error be printed?}
 
-\item{ci}{Should the confidence intervals be printed?}
+\item{ci}{Should the confidence intervals (if bayesian: high credibility intervals) be printed?}
 
 \item{p}{Should the p-value be printed?}
 
