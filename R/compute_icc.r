@@ -20,6 +20,7 @@
 compute_icc <- function(...,
                         var_names = NULL,
                         digits = 2,
+                        percent = TRUE,
                         print = FALSE){
   
   # dependencies
@@ -37,8 +38,8 @@ compute_icc <- function(...,
     temp <- icc(...) %>%
       as.tibble %>%
       bind_cols(., vars = names_vars) %>%
-      select(variable = vars, 
-             icc = value)
+      dplyr::select(variable = vars, 
+                    icc = value)
     
   } else {
   
@@ -50,14 +51,19 @@ compute_icc <- function(...,
     as.tibble %>%
     bind_cols(., vars = names_vars) %>%
     mutate(model = c(1:length(object_list))) %>%
-    select(model,
-           variable = vars, 
-           icc = value)
+    dplyr::select(model,
+                  variable = vars, 
+                  icc = value)
   }
   
   if (!is.null(var_names)) {
     temp <- temp %>%
       mutate(variables = var_names)
+  }
+  
+  if (isTRUE(percent)) {
+    temp <- temp %>%
+      mutate(percent = icc*100)
   }
   
   if (isTRUE(print)) {
@@ -67,6 +73,10 @@ compute_icc <- function(...,
                               gt1 = F, 
                               zero = F, 
                               digits = digits)))
+    if(isTRUE(percent)) {
+      temp <- temp %>%
+        mutate(percent = printnum(percent, digits = 1))
+    }
   }
   
   return(temp)

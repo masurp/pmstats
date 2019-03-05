@@ -108,7 +108,7 @@ print_coeff <- function(object,
     )
     
     
-  }
+  } else {
   
   
   print_coeff <- paste0(
@@ -145,5 +145,8 @@ print_coeff <- function(object,
       
     }
   )
+  
+  }
+  
   return(print_coeff)
 }
