@@ -2,10 +2,11 @@
 % Please edit documentation in R/result_table.r
 \name{result_table}
 \alias{result_table}
-\title{Result table for linear models, multilevel models and structural equation models}
+\title{Result table for linear models, (bayesian) multilevel models and structural equation models}
 \usage{
 result_table(object, new_labels = NULL, var_label = NULL,
-  labels = FALSE, regressions = FALSE, std = TRUE, print = FALSE)
+  labels = FALSE, regressions = FALSE, std = TRUE, hdi_prob = 0.9,
+  typical = "median", print = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}.}
@@ -18,12 +19,16 @@ result_table(object, new_labels = NULL, var_label = NULL,
 
 \item{regressions}{A logical value specifying whether only regressions should be included. This argument only works with objects of class \code{lavaan}.}
 
-\item{std}{A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan})}
+\item{std}{A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan}).}
+
+\item{hdi_prob}{Vector of scalars between 0 and 1, indicating the mass within the credible interval that is to be estimated (works only with objects of class \code{brmsfit}).}
+
+\item{typical}{The typical value that will represent the Bayesian point estimate. By default, the posterior median is returned (possible values: "median", "mean", "weighted.mean", or "mode")}
 
 \item{print}{A logical value indicating whether the resulting table should be formatted according to APA-guidelines.}
 }
 \description{
-This function creates a printable results table based objects of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}. Several arguments can be specified in order to customize the output.
+This function creates a printable results table based objects of class \code{lm}, \code{lmerModLmerTest}, \code{brmsfit} or \code{lavaan}. Several arguments can be specified in order to customize the output.
 }
 \examples{
 ## Example 1: Linear model
@@ -57,4 +62,15 @@ fit.sem <- sem(model.sem, data = PoliticalDemocracy)
 result_table(fit.sem, regressions = TRUE)
 result_table(fit.sem, labels = TRUE)
 result_table(fit.sem, labels = TRUE, new_labels = c("H1", "H2", "H3"), std = FALSE, print = TRUE)
+
+
+# Example 4: Bayesian multilevel modelling
+## Probit regression using the binomial family
+ntrials <- sample(1:10, 100, TRUE)
+success <- rbinom(100, size = ntrials, prob = 0.4)
+x <- rnorm(100)
+data <- data.frame(ntrials, success, x)
+fit <- brm(success | trials(ntrials) ~ x, data = data,
+           family = binomial("probit"))
+result_table(fit, hdi_prob = .95, print = TRUE)
 }

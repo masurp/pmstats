@@ -1,13 +1,15 @@
-#' Result table for linear models, multilevel models and structural equation models
+#' Result table for linear models, (bayesian) multilevel models and structural equation models
 #' 
-#' This function creates a printable results table based objects of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}. Several arguments can be specified in order to customize the output. 
+#' This function creates a printable results table based objects of class \code{lm}, \code{lmerModLmerTest}, \code{brmsfit} or \code{lavaan}. Several arguments can be specified in order to customize the output. 
 #' 
 #' @param object An object of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}. 
 #' @param new_labels A character vector with new labels for the paths in the model (needs to have the same number of values as paths in the model, potentially including the intercept). 
 #' @param var_label When using lavaan for SEM, paths can be labelled in the model. With this argument, one can specify which of the labelled paths should be printed (takes a single character value or a character ). This argument only works with objects of class \code{lavaan}.
 #' @param labels A logical value specifying whether only paths with labels should be included. This argument only works with objects of class \code{lavaan}.
 #' @param regressions A logical value specifying whether only regressions should be included. This argument only works with objects of class \code{lavaan}.
-#' @param std A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan})
+#' @param std A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan}).
+#' @param hdi_prob Vector of scalars between 0 and 1, indicating the mass within the credible interval that is to be estimated (works only with objects of class \code{brmsfit}).
+#' @param typical The typical value that will represent the Bayesian point estimate. By default, the posterior median is returned (possible values: "median", "mean", "weighted.mean", or "mode")
 #' @param print A logical value indicating whether the resulting table should be formatted according to APA-guidelines.
 #' @examples 
 #' ## Example 1: Linear model
@@ -41,6 +43,17 @@
 #' result_table(fit.sem, regressions = TRUE)
 #' result_table(fit.sem, labels = TRUE)
 #' result_table(fit.sem, labels = TRUE, new_labels = c("H1", "H2", "H3"), std = FALSE, print = TRUE)
+#' 
+#' 
+#' # Example 4: Bayesian multilevel modelling
+#' ## Probit regression using the binomial family
+#' ntrials <- sample(1:10, 100, TRUE)
+#' success <- rbinom(100, size = ntrials, prob = 0.4)
+#' x <- rnorm(100)
+#' data <- data.frame(ntrials, success, x)
+#' fit <- brm(success | trials(ntrials) ~ x, data = data,
+#'            family = binomial("probit"))
+#' result_table(fit, hdi_prob = .95, print = TRUE)
 #' @export
 result_table <- function(object,
                          new_labels = NULL,
@@ -48,6 +61,8 @@ result_table <- function(object,
                          labels = FALSE,
                          regressions = FALSE,
                          std = TRUE,
+                         hdi_prob = .90,
+                         typical = "median",
                          print = FALSE){
   
   # dependencies 
@@ -56,8 +71,9 @@ result_table <- function(object,
   library(papaja)
   library(magrittr)
   library(QuantPsyc)
+  library(sjstats)
   
-  if (class(object) == "lm") {
+  if (is.element("lm", class(object))) {
     
     # get coefficients
     coefs <- summary(object)$coeff
@@ -77,9 +93,9 @@ result_table <- function(object,
       as.tibble
     
     if (isTRUE(std)) {
-    names(beta) <- temp$predictor
-    temp <- cbind(temp, beta) %>%
-      as.tibble
+      names(beta) <- temp$predictor
+      temp <- cbind(temp, beta) %>%
+        as.tibble
     }
     
     if (!is.null(new_labels)) {
@@ -89,9 +105,9 @@ result_table <- function(object,
         dplyr::select(predictor, label, everything(), -new_labels) %>%
         as.tibble
     }
-      
     
-  } else if (class(object)[1] == "lmerModLmerTest") {
+    # --- extracting results from multilevel models --- #
+  } else if (is.element("lmerModLmerTest", class(object))) {
     
     # get coefficients
     coeffs <- summary(object)$coef %>%
@@ -117,7 +133,8 @@ result_table <- function(object,
         as.tibble
     }
     
-  } else if (class(object)[1] == "lavaan") {
+    # --- extracting results from SEM --- #
+  } else if (is.element("lavaan", class(object))) {
     
     # get Coefficients
     if(!is.null(var_label)){
@@ -139,13 +156,13 @@ result_table <- function(object,
     
     temp <- coeffs %>% 
       dplyr::select(outcome = lhs, 
-             predictor = rhs,
-             b = est,
-             se = se,
-             ll = ci.lower, 
-             ul = ci.upper, 
-             p = pvalue,
-             beta = "std.all") %>%
+                    predictor = rhs,
+                    b = est,
+                    se = se,
+                    ll = ci.lower, 
+                    ul = ci.upper, 
+                    p = pvalue,
+                    beta = "std.all") %>%
       as.tibble
     
     if (!isTRUE(std)) {
@@ -160,9 +177,27 @@ result_table <- function(object,
         dplyr::select(outcome, predictor, label, everything(), -new_labels) %>%
         as.tibble
     }
-  }
+    
+    # --- extracting results from bayesian multilevel models --- #
+  } else if (is.element("brmsfit", class(object))) {
+    temp <- object %>%
+      tidy_stan(., prob = hdi_prob, typical = typical) %>%
+      as.tibble %>%
+      set_colnames(c("predictor", "median", "se", "ll", "ul", "ratio", "rhat", "mcse"))
+    
+    if (!is.null(new_labels)) {
+      temp <- temp %>%
+        cbind(., new_labels) %>%
+        mutate(label = as.character(new_labels)) %>%
+        dplyr::select(predictor, label, everything(), -new_labels) %>%
+        as.tibble
+    }
+  } 
   
-  if (isTRUE(print)) {
+  if (isTRUE(print) & is.element("brmsfit", class(object))) {
+    temp <- temp %>%
+      mutate_at(vars(median, se, ll, ul, ratio, rhat, mcse), funs(printnum(.)))
+  } else if (isTRUE(print)) {
     temp <- temp %>% 
       mutate_at(vars(b, se, ll, ul), funs(printnum(.))) %>% 
       mutate(p = printp(p))
@@ -177,4 +212,3 @@ result_table <- function(object,
 }
 
 
-  
