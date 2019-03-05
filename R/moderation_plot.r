@@ -19,11 +19,11 @@
 #' y <- 0.5*x + 1.5*(z*x) + rnorm(500, 0, 3.5)
 #'
 #' # Estimate linear model
-#' model <- lm(y ~ x + z + x:z)
+#' mod.lm <- lm(y ~ x + z + x:z)
 #' summary(model)
 #'
 #' # Plot model
-#' moderation_plot(model, x1 = "x", m = "z")
+#' moderation_plot(mod.lm, x1 = "x", m = "z")
 #' @export
 moderation_plot <- function(object,
                             x1 = NULL,
@@ -55,7 +55,7 @@ moderation_plot <- function(object,
   }
   
   # main function
-  temp <- conditional.effects(object, 
+  temp <- conditional.effects(model = object, 
                               x = x1, 
                               m = m) %>%
     as.tibble %>%
@@ -63,7 +63,7 @@ moderation_plot <- function(object,
   
   # Check if a second level factor variable is specified
   if (!is.null(x2)) {
-    temp2 <- conditional.effects(object, 
+    temp2 <- conditional.effects(model = object, 
                                  x = x2, 
                                  m = m) %>%
       as.tibble %>%
@@ -120,5 +120,3 @@ moderation_plot <- function(object,
   
   return(plot)
 }
-
-moderation_plot(model, "x", m = "z")
