@@ -24,7 +24,7 @@ zero_order_corr <- function(data,
                             upper_tri = TRUE,
                             print = FALSE,
                             digits = 2,
-                            sig = TRUE,
+                            sig = FALSE,
                             ...) {
   # dependencies
   library(tidyverse)
