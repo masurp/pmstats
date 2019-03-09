@@ -4,20 +4,22 @@
 \alias{result_table}
 \title{Result table for linear models, (bayesian) multilevel models and structural equation models}
 \usage{
-result_table(object, new_labels = NULL, var_label = NULL,
-  labels = FALSE, regressions = FALSE, std = TRUE, hdi_prob = 0.9,
-  typical = "median", print = FALSE)
+result_table(object, var_predict = NULL, new_labels = NULL,
+  sem_labels = NULL, sem_regressions = FALSE, sem_labelled = FALSE,
+  std = TRUE, hdi_prob = 0.9, typical = "median", print = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}.}
 
+\item{var_predict}{A character value or character vector indicating which paths should be included in the output. Each path can be printed individually by passing the predictor variable to this argument.}
+
 \item{new_labels}{A character vector with new labels for the paths in the model (needs to have the same number of values as paths in the model, potentially including the intercept).}
 
-\item{var_label}{When using lavaan for SEM, paths can be labelled in the model. With this argument, one can specify which of the labelled paths should be printed (takes a single character value or a character ). This argument only works with objects of class \code{lavaan}.}
+\item{sem_labels}{When using lavaan for SEM, paths can be labelled in the model. With this argument, one can specify which of the labelled paths should be printed (takes a single character value or a character vector). This argument only works with objects of class \code{lavaan}.}
 
-\item{labels}{A logical value specifying whether only paths with labels should be included. This argument only works with objects of class \code{lavaan}.}
+\item{sem_regressions}{A logical value specifying whether only regressions should be included. This argument only works with objects of class \code{lavaan}.}
 
-\item{regressions}{A logical value specifying whether only regressions should be included. This argument only works with objects of class \code{lavaan}.}
+\item{sem_labelled}{A logical value specifying whether only paths with labels should be included. This argument only works with objects of class \code{lavaan}.}
 
 \item{std}{A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan}).}
 
@@ -33,12 +35,15 @@ This function creates a printable results table based objects of class \code{lm}
 \examples{
 ## Example 1: Linear model
 mod.lm <- lm(mpg ~ cyl, mtcars)
-result_table(mod.lm, new_labels = c("", "H1"), print = TRUE)
+result_table(mod.lm, 
+             new_labels = c("", "H1"), 
+             print = TRUE)
 
 ## Example 2: Multilevel model
 mod.lmer <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 result_table(mod.lmer)
-result_table(mod.lmer, new_labels = c(1, 2))
+result_table(mod.lmer, 
+             new_labels = c(1, 2))
 
 ## Example 3: Structural equation model
 model.sem <- '
@@ -59,18 +64,31 @@ model.sem <- '
   y6 ~~ y8
 '
 fit.sem <- sem(model.sem, data = PoliticalDemocracy)
-result_table(fit.sem, regressions = TRUE)
-result_table(fit.sem, labels = TRUE)
-result_table(fit.sem, labels = TRUE, new_labels = c("H1", "H2", "H3"), std = FALSE, print = TRUE)
+result_table(fit.sem, 
+             sem_regressions = TRUE)
+result_table(fit.sem, 
+             sem_labelled = TRUE)
+result_table(fit.sem, 
+             sem_labelled = TRUE, 
+             new_labels = c("H1", "H2", "H3"), 
+             std = FALSE, 
+             print = TRUE)
 
 
 # Example 4: Bayesian multilevel modelling
-## Probit regression using the binomial family
-ntrials <- sample(1:10, 100, TRUE)
-success <- rbinom(100, size = ntrials, prob = 0.4)
-x <- rnorm(100)
-data <- data.frame(ntrials, success, x)
-fit <- brm(success | trials(ntrials) ~ x, data = data,
-           family = binomial("probit"))
-result_table(fit, hdi_prob = .95, print = TRUE)
+library(multilevel)
+set.seed(15324)
+d <- sim.icc(gsize = 10,
+             ngrp = 100,
+             icc1 = .30,
+             nitems = 2, 
+             item.cor = .50)
+fit <- brm(VAR2 ~ VAR1 + (1|GRP), data = d,
+           chains = 1)
+result_table(fit, 
+             hdi_prob = .95, 
+             print = TRUE)
+result_table(fit, 
+             typical = "mode",
+             var_predict = "b_VAR1")
 }
