@@ -177,7 +177,6 @@ result_table <- function(object,
                       beta = "std.all") %>%
         as.tibble
     } else {
-    
     temp <- coeffs %>% 
       dplyr::select(outcome = lhs, 
                     predictor = rhs,
