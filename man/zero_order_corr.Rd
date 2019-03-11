@@ -5,7 +5,7 @@
 \title{Zero-order correlation table}
 \usage{
 zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
-  print = FALSE, digits = 2, sig = FALSE, ...)
+  print = FALSE, digits = 2, sig = FALSE, descriptives = TRUE, ...)
 }
 \arguments{
 \item{data}{A data frame containing all variables that should be investigated.}
@@ -19,6 +19,8 @@ zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
 \item{digits}{A number specifying how many digit should be printed.}
 
 \item{sig}{Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.}
+
+\item{descriptives}{Logical value indicating whether the mean and standard deviations of all variables should be included as second and third column.}
 
 \item{...}{Further arguments that can be passed to \code{corr.test()} (e.g., Alternative methods to compute the bivariate correlations by specifying method = "spearman").}
 }

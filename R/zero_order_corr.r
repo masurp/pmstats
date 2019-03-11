@@ -8,6 +8,7 @@
 #' @param print A logical value indicating whether the table should be formatted according to APA guidelines.
 #' @param digits A number specifying how many digit should be printed.
 #' @param sig Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.
+#' @param descriptives Logical value indicating whether the mean and standard deviations of all variables should be included as second and third column. 
 #' @param ... Further arguments that can be passed to \code{corr.test()} (e.g., Alternative methods to compute the bivariate correlations by specifying method = "spearman").
 #' @return A tibble. 
 #' @examples 
@@ -25,6 +26,7 @@ zero_order_corr <- function(data,
                             print = FALSE,
                             digits = 2,
                             sig = FALSE,
+                            descriptives = TRUE,
                             ...) {
   # dependencies
   library(tidyverse)
@@ -62,12 +64,13 @@ zero_order_corr <- function(data,
   if (isTRUE(print)) {
     temp <- temp %>%
       mutate_at(vars(2:length(.)), 
-                function(x) printnum(x, gt1 = F, digits = digits)) %>%
+                function(x) printnum(x, gt1 = F, 
+                                     digits = digits)) %>%
       mutate_at(vars(2:length(.)), 
                 funs(ifelse(. == "NA", "", .)))
   }
   
-  if (isTRUE(sig)) {
+  if (isTRUE(sig) & isTRUE(print)) {
     stars <- as.data.frame(stars < .05)
   
     for(i in 1:length(temp)) {
@@ -79,7 +82,27 @@ zero_order_corr <- function(data,
           }
       } 
     }
+  } 
+  
+  if (isTRUE(descriptives)) {
+    
+    temp <- data %>%  
+      describe %>%
+      as.data.frame %>%
+      select(mean, sd) %>%
+      as.tibble %>%
+      bind_cols(temp) %>%
+      select(Variables, M = mean, SD = sd, everything())
+    
+    if (isTRUE(print)) {
+      temp <- temp %>%
+        mutate_at(vars(M, SD), 
+                  funs(printnum(., digits = digits)))
+    }
   }
+  
+  temp <- temp %>%
+    select(-length(temp))
   
   return(temp)
   
