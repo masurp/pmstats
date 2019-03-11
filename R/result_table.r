@@ -164,6 +164,20 @@ result_table <- function(object,
         parameterEstimates(standardized = TRUE)
     }
     
+    if (isTRUE(sem_labelled)) {
+      temp <- coeffs %>% 
+        dplyr::select(outcome = lhs, 
+                      predictor = rhs,
+                      label,
+                      b = est,
+                      se = se,
+                      ll = ci.lower, 
+                      ul = ci.upper, 
+                      p = pvalue,
+                      beta = "std.all") %>%
+        as.tibble
+    } else {
+    
     temp <- coeffs %>% 
       dplyr::select(outcome = lhs, 
                     predictor = rhs,
@@ -174,6 +188,7 @@ result_table <- function(object,
                     p = pvalue,
                     beta = "std.all") %>%
       as.tibble
+    }
     
     if (!isTRUE(std)) {
       temp <- temp %>%
