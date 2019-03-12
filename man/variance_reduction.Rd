@@ -13,7 +13,16 @@ variance_reduction(object, ..., red = TRUE)
 
 \item{red}{A logical value indicating wether only the explained variance should be reported (defaults to TRUE).}
 }
+\value{
+A data fram containing the explained variance on both levels.
+}
 \description{
 Function to compute the amount explained variance on each level by a random-intercept multilevel model. 
 The amount of explained variance is computed by comparing the relevant models to the baseline (null-) model (i.e., the bare random-intercept model without any predictors).
+}
+\examples{
+m0 <- lme4::lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
+m1 <- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+
+variance_reduction(m0, m1, red = F)
 }

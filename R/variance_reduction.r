@@ -7,6 +7,12 @@
 #' @param object An object of class merMod (more specifically, an object of subclass lmerMod). This first object needs to be the null model with no predictors. All other models will be compared to this baseline model. 
 #' @param ... Up to four objects of class merMod.
 #' @param red A logical value indicating wether only the explained variance should be reported (defaults to TRUE).
+#' @return A data fram containing the explained variance on both levels.
+#' @examples 
+#' m0 <- lme4::lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
+#' m1 <- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+#' 
+#' variance_reduction(m0, m1, red = F)
 #' @export
 variance_reduction <- function(object, 
                                ..., 
