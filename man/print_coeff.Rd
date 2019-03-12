@@ -2,13 +2,13 @@
 % Please edit documentation in R/print_coeff.r
 \name{print_coeff}
 \alias{print_coeff}
-\title{Prints individual coefficients for inline reporting}
+\title{Prints individual coefficients for RMarkdown inline reporting}
 \usage{
 print_coeff(object, var_label = NULL, var_predict = NULL, b = TRUE,
   median = TRUE, se = TRUE, ci = TRUE, p = TRUE, beta = FALSE)
 }
 \arguments{
-\item{object}{A dataframe resulting from \code{result_table}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).}
+\item{object}{A dataframe resulting from \code{\link[pmstats]{result_table}}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).}
 
 \item{var_label}{A character value indicating which coefficient should be printed (draws from the label column in the dataframe).}
 
@@ -28,7 +28,7 @@ print_coeff(object, var_label = NULL, var_predict = NULL, b = TRUE,
 A string representing a latex code that can be used in inline reporting in Rmarkdown documents.
 }
 \description{
-This function takes the output of \code{result_table} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
+This function takes the output of \code{\link[pmstats]{result_table}} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
 }
 \examples{
 ## Example 1: Reporting effects from a structural equation modelling

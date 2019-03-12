@@ -1,8 +1,8 @@
-#' Prints individual coefficients for inline reporting
+#' Prints individual coefficients for RMarkdown inline reporting
 #' 
-#' This function takes the output of \code{result_table} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
+#' This function takes the output of \code{\link[pmstats]{result_table}} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
 #' 
-#' @param object A dataframe resulting from \code{result_table}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).
+#' @param object A dataframe resulting from \code{\link[pmstats]{result_table}}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).
 #' @param var_label A character value indicating which coefficient should be printed (draws from the label column in the dataframe).
 #' @param var_predict Predictor variable that should be printed.
 #' @param b Should the unstandardized effect be printed?
