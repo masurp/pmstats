@@ -2,24 +2,24 @@
 % Please edit documentation in R/add_fscores.r
 \name{add_fscores}
 \alias{add_fscores}
-\title{Adds factor scores computed from CFA to data frame}
+\title{Computes and adds factor scores based on CFA}
 \usage{
-add_fscores(data, id = NULL, object, to_wide = FALSE, group = NULL,
-  rename_vars = NULL)
+add_fscores(data, object, rename_vars = NULL, id = NULL,
+  to_wide = FALSE, group = NULL)
 }
 \arguments{
 \item{data}{The data frame that was originally passed to \code{cfa()} or \code{sem()}.}
 
-\item{id}{Variable that identifies each individual case in the data frame. Only necessary if the data frame is in the long format.}
+\item{object}{An object of class \code{lavaan} created by using \code{cfa()}.}
 
-\item{object}{An object of class \code{lavaan} created by using \code{cfa()}
+\item{rename_vars}{A vector that represents new names for the factor scores.}
+
+\item{id}{Variable that identifies each individual case in the data frame. Only necessary if the data frame is in the long format. 
 or \code{sem()}.}
 
 \item{to_wide}{A logical value indicating whether the multigroup factor scores should be passed to long or to a wide format data frame.}
 
 \item{group}{A vector representing the grouping variable in the long format that was passed to data.}
-
-\item{rename_vars}{A vector that represents new names for the factor scores.}
 }
 \description{
 Creates and adds factor scores to the data frame that was used to estimate the CFA.

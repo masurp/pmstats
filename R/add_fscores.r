@@ -1,21 +1,21 @@
-#'Adds factor scores computed from CFA to data frame
+#' Computes and adds factor scores based on CFA
 #'
-#'Creates and adds factor scores to the data frame that was used to estimate the CFA. 
+#' Creates and adds factor scores to the data frame that was used to estimate the CFA. 
 #'
 #'@param data The data frame that was originally passed to \code{cfa()} or \code{sem()}.
+#'@param object An object of class \code{lavaan} created by using \code{cfa()}.
+#'@param rename_vars A vector that represents new names for the factor scores.
 #'@param id Variable that identifies each individual case in the data frame. Only necessary if the data frame is in the long format. 
-#'@param object An object of class \code{lavaan} created by using \code{cfa()}
 #'  or \code{sem()}.
 #'@param to_wide A logical value indicating whether the multigroup factor scores should be passed to long or to a wide format data frame.
 #'@param group A vector representing the grouping variable in the long format that was passed to data.
-#'@param rename_vars A vector that represents new names for the factor scores.
 #' @export
 add_fscores <- function(data,
-                        id = NULL,
                         object,
+                        rename_vars = NULL,
+                        id = NULL,
                         to_wide = FALSE,
-                        group = NULL,
-                        rename_vars = NULL){
+                        group = NULL){
   # dependencies
   library(lavaan)
   library(tidyverse)
