@@ -4,16 +4,14 @@
 \alias{moderation_plot}
 \title{Interaction plot for continuous moderators}
 \usage{
-moderation_plot(object, x1 = NULL, x2 = NULL, m = NULL,
-  x_lab = "Moderator", y_lab = "Conditional effect of x on y",
-  quantil = 100, mod_hist = TRUE)
+moderation_plot(object, x = NULL, m = NULL, x_lab = "Moderator",
+  y_lab = "Conditional effect of x on y", quantil = 100,
+  mod_hist = TRUE)
 }
 \arguments{
-\item{object}{An object of class \code{"lm"} or \code{"lmer"} that includes an interaction.}
+\item{object}{An object of class \code{\link[base]{lm}} or \code{\link[lme4]{lmer}} that includes an interaction.}
 
-\item{x1}{The name of the predictor variable. Can be numeric or the first level of a factor variable.}
-
-\item{x2}{If the factor variabel has more than two levels, this can be the second level.}
+\item{x}{The name of the predictor variable.}
 
 \item{m}{The name of the continuous moderator variable.}
 
@@ -29,7 +27,7 @@ moderation_plot(object, x1 = NULL, x2 = NULL, m = NULL,
 If mod_hist = TRUE, this function returns a "ggExtraPlot" (i.e. a "gtable"). If mod_hist = FALSE, it returns a ggplot object that can be further customized using standard ggplot elements.
 }
 \description{
-This functions creates a conditional effect plot that illustrates how an effect of x on y changes with changes in a continuous moderator variable. It also allows to plot a facetted version if the predictor variable x is a three-level factor.
+This functions creates a conditional effect plot that illustrates how an effect of x on y changes with changes in a continuous moderator variable.
 }
 \examples{
 # Simulate an interaction
@@ -40,8 +38,8 @@ y <- 0.5*x + 1.5*(z*x) + rnorm(500, 0, 3.5)
 
 # Estimate linear model
 mod.lm <- lm(y ~ x + z + x:z)
-summary(model)
+summary(mod.lm)
 
 # Plot model
-moderation_plot(mod.lm, x1 = "x", m = "z")
+moderation_plot(mod.lm, x = "x", m = "z")
 }

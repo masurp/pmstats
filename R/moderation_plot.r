@@ -1,10 +1,9 @@
 #' Interaction plot for continuous moderators
 #' 
-#' This functions creates a conditional effect plot that illustrates how an effect of x on y changes with changes in a continuous moderator variable. It also allows to plot a facetted version if the predictor variable x is a three-level factor.
+#' This functions creates a conditional effect plot that illustrates how an effect of x on y changes with changes in a continuous moderator variable. 
 #' 
-#' @param object An object of class \code{"lm"} or \code{"lmer"} that includes an interaction.
-#' @param x1 The name of the predictor variable. Can be numeric or the first level of a factor variable.
-#' @param x2 If the factor variabel has more than two levels, this can be the second level.
+#' @param object An object of class \code{\link[base]{lm}} or \code{\link[lme4]{lmer}} that includes an interaction.
+#' @param x The name of the predictor variable.
 #' @param m The name of the continuous moderator variable.
 #' @param x_lab A character value specifying the x label in the final plot.
 #' @param y_lab A character value specifying the y label in the final plot.
@@ -20,14 +19,13 @@
 #'
 #' # Estimate linear model
 #' mod.lm <- lm(y ~ x + z + x:z)
-#' summary(model)
+#' summary(mod.lm)
 #'
 #' # Plot model
-#' moderation_plot(mod.lm, x1 = "x", m = "z")
+#' moderation_plot(mod.lm, x = "x", m = "z")
 #' @export
 moderation_plot <- function(object,
-                            x1 = NULL,
-                            x2 = NULL,
+                            x = NULL,
                             m = NULL,
                             x_lab = "Moderator",
                             y_lab = "Conditional effect of x on y",
@@ -37,7 +35,7 @@ moderation_plot <- function(object,
   library(tidyverse)
   library(ggExtra)
   
-  if (is.null(x1) | is.null(m)) {
+  if (is.null(x) | is.null(m)) {
     message("You need to specify the predictor and moderator to plot the interaction.")
   }
   
@@ -56,25 +54,12 @@ moderation_plot <- function(object,
   
   # main function
   temp <- conditional.effects(model = object, 
-                              x = x1, 
+                              x = x, 
                               m = m) %>%
     as.tibble %>%
-    mutate(grp = x1) 
+    mutate(grp = x) 
   
-  # Check if a second level factor variable is specified
-  if (!is.null(x2)) {
-    temp2 <- conditional.effects(model = object, 
-                                 x = x2, 
-                                 m = m) %>%
-      as.tibble %>%
-      mutate(grp = x2)
-    
-    temp <- bind_rows(temp, temp2)
-    
-  }
-  
-  # If not, print a classic interaction plot
-  if (is.null(x2)) {
+  # Print a classic interaction plot
     plot <- ggplot(temp, 
                    aes(x = m,
                        y = b, 
@@ -98,25 +83,6 @@ moderation_plot <- function(object,
                          fill = "darkgrey",
                          size = 2)
     }
-    
-  # If a second factor level is specified, print facetted plot
-  } else {
-    
-    plot <- ggplot(temp, 
-                   aes(x = m,
-                       y = b, 
-                       ymin = lwr,
-                       ymax = upr)) +
-      geom_smooth(stat = "identity",
-                  color = "black") +
-      geom_hline(yintercept = 0, 
-                 linetype = "dashed", 
-                 color = "darkgrey") +
-      facet_wrap(~grp) + 
-      theme_bw() + 
-      labs(x = x_lab,
-           y = y_lab)
-  }
   
   return(plot)
 }
