@@ -4,7 +4,7 @@
 \alias{zero_order_corr}
 \title{Zero-order correlation table}
 \usage{
-zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
+zero_order_corr(data, var_names = NULL, rm.upper_tri = TRUE,
   print = FALSE, digits = 2, sig = FALSE, descriptives = TRUE, ...)
 }
 \arguments{
@@ -12,7 +12,7 @@ zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
 
 \item{var_names}{A vector with fitting variable names.}
 
-\item{upper_tri}{Should the upper triangle be omitted?}
+\item{rm.upper_tri}{Should the upper triangle be omitted?}
 
 \item{print}{A logical value indicating whether the table should be formatted according to APA guidelines.}
 
@@ -22,7 +22,7 @@ zero_order_corr(data, var_names = NULL, upper_tri = TRUE,
 
 \item{descriptives}{Logical value indicating whether the mean and standard deviations of all variables should be included as second and third column.}
 
-\item{...}{Further arguments that can be passed to \code{corr.test()} (e.g., Alternative methods to compute the bivariate correlations by specifying method = "spearman").}
+\item{...}{Further arguments that can be passed to \code{corr.test()} (e.g., alternative methods to compute the bivariate correlations by specifying method = "spearman").}
 }
 \value{
 A tibble.

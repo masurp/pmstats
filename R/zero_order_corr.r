@@ -4,12 +4,12 @@
 #' 
 #' @param data A data frame containing all variables that should be investigated.
 #' @param var_names A vector with fitting variable names.
-#' @param upper_tri Should the upper triangle be omitted?
+#' @param rm.upper_tri Should the upper triangle be omitted?
 #' @param print A logical value indicating whether the table should be formatted according to APA guidelines.
 #' @param digits A number specifying how many digit should be printed.
 #' @param sig Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.
 #' @param descriptives Logical value indicating whether the mean and standard deviations of all variables should be included as second and third column. 
-#' @param ... Further arguments that can be passed to \code{corr.test()} (e.g., Alternative methods to compute the bivariate correlations by specifying method = "spearman").
+#' @param ... Further arguments that can be passed to \code{corr.test()} (e.g., alternative methods to compute the bivariate correlations by specifying method = "spearman").
 #' @return A tibble. 
 #' @examples 
 #' d <- mtcars
@@ -22,7 +22,7 @@
 #' @export
 zero_order_corr <- function(data,
                             var_names = NULL,
-                            upper_tri = TRUE,
+                            rm.upper_tri = TRUE,
                             print = FALSE,
                             digits = 2,
                             sig = FALSE,
@@ -57,7 +57,7 @@ zero_order_corr <- function(data,
     set_colnames(c("Variables", cols)) %>%
     mutate(Variables = paste(cols, Variables))
   
-  if (isTRUE(upper_tri)) {
+  if (isTRUE(rm.upper_tri)) {
     temp[upper.tri(temp)] <- NA
   }
   
@@ -89,10 +89,10 @@ zero_order_corr <- function(data,
     temp <- data %>%  
       describe %>%
       as.data.frame %>%
-      select(mean, sd) %>%
+      dplyr::select(mean, sd) %>%
       as.tibble %>%
       bind_cols(temp) %>%
-      select(Variables, M = mean, SD = sd, everything())
+      dplyr::select(Variables, M = mean, SD = sd, everything())
     
     if (isTRUE(print)) {
       temp <- temp %>%
@@ -102,7 +102,7 @@ zero_order_corr <- function(data,
   }
   
   temp <- temp %>%
-    select(-length(temp))
+    dplyr::select(-length(temp))
   
   return(temp)
   
