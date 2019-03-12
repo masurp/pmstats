@@ -1,28 +1,33 @@
 #' Compare fit of several CFA or SEM models
 #' 
-#' This function produces fit indices for several CFA or SEM models. This can be handy when investigating measurement invariance or when comparing models in general. It imports the function \code{fit_table()} from the same package (pmstats) to perform the calculations.
+#' This function produces fit indices for several CFA or SEM models. This can be handy when investigating measurement invariance or when comparing models in general. It imports the function \code{\link[pmstats]{fit_table} to perform the calculations.
 #' 
 #' @param ... Lavaan fit objects (e.g., with base, weak, strong and strict invariance constraints).
-#' @param print Logical value indicating whether the output should be formatted according to APA guidelines. 
+#' @param model_names If desired, this argument can be used to pass a character vector to the function containing new names for the models (the vector's length needs to equal the number of models!).
+#' @param print Logical value indicating whether the output should be formatted according to APA guidelines. #' @return A data frame including one row per model that was passed to the function. The output includes the most commonly reported fit indices for structural equation models. 
 #' @examples 
+#' library(lavaan)
 #' model_1 <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3 + y4
-#' dem65 =~ y5 + y6 + y7 + y8
-#' '
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3 + y4
+#'   dem65 =~ y5 + y6 + y7 + y8
+#'   '
 #' fit_1 <- cfa(model_1, data = PoliticalDemocracy)
-#' 
+#'   
 #' model_2 <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3
-#' dem65 =~ y5 + y6 + y7 + y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3
+#'   dem65 =~ y5 + y6 + y7 + y8
 #' '
-#' fit_2 <- cfa(model_2, data = PoliticalDemocracy)
+#' fit_2 <- lavaan::cfa(model_2, data = PoliticalDemocracy)
 #' 
 #' # Model comparison
-#' cfa_invariance_fit(fit_1, fit_2, print = TRUE)
+#' cfa_invariance_fit(fit_1, fit_2)
+#' cfa_invariance_fit(fit_1, fit_2,
+#'                    model_names = c("M1", "M2"),
+#'                    print = TRUE)
 #' @export
 cfa_invariance_fit <- function(...,
                                model_names = NULL,

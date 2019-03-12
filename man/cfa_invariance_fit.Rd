@@ -9,28 +9,34 @@ cfa_invariance_fit(..., model_names = NULL, print = FALSE)
 \arguments{
 \item{...}{Lavaan fit objects (e.g., with base, weak, strong and strict invariance constraints).}
 
-\item{print}{Logical value indicating whether the output should be formatted according to APA guidelines.}
+\item{model_names}{If desired, this argument can be used to pass a character vector to the function containing new names for the models (the vector's length needs to equal the number of models!).}
+
+\item{print}{Logical value indicating whether the output should be formatted according to APA guidelines. #' @return A data frame including one row per model that was passed to the function. The output includes the most commonly reported fit indices for structural equation models.}
 }
 \description{
-This function produces fit indices for several CFA or SEM models. This can be handy when investigating measurement invariance or when comparing models in general. It imports the function \code{fit_table()} from the same package (pmstats) to perform the calculations.
+Compare fit of several CFA or SEM models
 }
 \examples{
+library(lavaan)
 model_1 <- '
-# latent variables
-ind60 =~ x1 + x2 + x3
-dem60 =~ y1 + y2 + y3 + y4
-dem65 =~ y5 + y6 + y7 + y8
-'
+  # latent variables
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  '
 fit_1 <- cfa(model_1, data = PoliticalDemocracy)
-
+  
 model_2 <- '
-# latent variables
-ind60 =~ x1 + x2 + x3
-dem60 =~ y1 + y2 + y3
-dem65 =~ y5 + y6 + y7 + y8
+  # latent variables
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3
+  dem65 =~ y5 + y6 + y7 + y8
 '
-fit_2 <- cfa(model_2, data = PoliticalDemocracy)
+fit_2 <- lavaan::cfa(model_2, data = PoliticalDemocracy)
 
 # Model comparison
-cfa_invariance_fit(fit_1, fit_2, print = TRUE)
+cfa_invariance_fit(fit_1, fit_2)
+cfa_invariance_fit(fit_1, fit_2,
+                   model_names = c("M1", "M2"),
+                   print = TRUE)
 }
