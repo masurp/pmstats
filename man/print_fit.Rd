@@ -8,12 +8,12 @@ print_fit(fit_table, indices = c("chisq", "df", "pvalue", "cfi", "tli",
   "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
 }
 \arguments{
-\item{fit_table}{A dataframe resulting from \code{fit_table()}.}
+\item{fit_table}{A dataframe resulting from \code{\link[pmstats]{fit_table}}.}
 
 \item{indices}{Vector of the indices that should be in the ouput.}
 }
 \description{
-This function takes the output of \code{fit_table()} and transforms it into latex-code to be used in a rmarkdown file.
+This function takes the output of \code{\link[pmstats]{fit_table}} and transforms it into latex-code to be used in a rmarkdown file.
 }
 \examples{
 model <- '

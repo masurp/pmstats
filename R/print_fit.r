@@ -1,8 +1,8 @@
 #' Prints fit indices for inline reporting
 #' 
-#' This function takes the output of \code{fit_table()} and transforms it into latex-code to be used in a rmarkdown file. 
+#' This function takes the output of \code{\link[pmstats]{fit_table}} and transforms it into latex-code to be used in a rmarkdown file. 
 #' 
-#' @param fit_table A dataframe resulting from \code{fit_table()}.
+#' @param fit_table A dataframe resulting from \code{\link[pmstats]{fit_table}}.
 #' @param indices Vector of the indices that should be in the ouput.
 #' @examples 
 #' model <- '
