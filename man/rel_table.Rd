@@ -9,35 +9,36 @@ rel_table(object, var = NULL, total = TRUE, print = FALSE)
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{cfa()} or \code{sem()} from the package 'lavaan'.}
 
-\item{var}{Character value that indicates which variables should be printed.}
+\item{var}{Character value that indicates which variables should be printed. If not specified, all variables will be returned.}
 
 \item{total}{Logical value indicating if total estimates should be printed.}
 
 \item{print}{Logical value indicating whether the resulting table should be formatted acccording to APA guidelines.}
 }
 \description{
-Creates a table in the tibble format that includes reliability values (Cronbach's alpha, omegas, and average variance extracted).
+Creates a table that includes reliability parameters (Cronbach's alpha, omegas, and average variance extracted).
 }
 \examples{
+library(lavaan)
 model <- '
-# latent variables
-ind60 =~ x1 + x2 + x3
-dem60 =~ y1 + y2 + y3 + y4
-dem65 =~ y5 + y6 + y7 + y8
-
-# regressions
-dem60 ~ ind60
-dem65 ~ ind60 + dem60
-
-# residual covariances
-y1 ~~ y5
-y2 ~~ y4 + y6
-y3 ~~ y7
-y4 ~~ y8
-y6 ~~ y8
+  # latent variables
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  
+  # regressions
+  dem60 ~ ind60
+  dem65 ~ ind60 + dem60
+  
+  # residual covariances
+  y1 ~~ y5
+  y2 ~~ y4 + y6
+  y3 ~~ y7
+  y4 ~~ y8
+  y6 ~~ y8
 '
 fit <- sem(model,
-data = PoliticalDemocracy)
+           data = PoliticalDemocracy)
 
 rel_table(fit)
 }
