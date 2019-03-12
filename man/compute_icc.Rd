@@ -4,15 +4,17 @@
 \alias{compute_icc}
 \title{Intraclass Correlation Coefficient}
 \usage{
-compute_icc(..., var_names = NULL, digits = 2, percent = TRUE,
-  print = FALSE)
+compute_icc(..., var_names = NULL, digits_icc = 2,
+  digits_percent = 1, percent = TRUE, print = FALSE)
 }
 \arguments{
 \item{...}{One or more objects of class \code{lmer}.}
 
 \item{var_names}{By default, the function extracts the name(s) of the dependent variable(s) from the objects. If you provide a vector with new names here, these new names will be used.}
 
-\item{digits}{How many digits should be printed?}
+\item{digits_icc}{How many digits should be printed for the ICC (only works with \code{print = TRUE})?}
+
+\item{digits_percent}{How many digits should be printed for the percentage (only works with \code{print = TRUE})?}
 
 \item{print}{Logical value indicating whether the table should be formatted according to APA guidelines.}
 }
@@ -20,13 +22,14 @@ compute_icc(..., var_names = NULL, digits = 2, percent = TRUE,
 This function computes the intraclass correlation coefficients for one or several models.
 }
 \examples{
+library(lme4)
 # Estimate a multilevel model
 mod1 <- lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
 mod2 <- lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 
 # Computing the ICC for the first model
-compute_icc(mod1, digits = 3)
+compute_icc(mod1, digits_icc = 4, digits_percent = 2, print = TRUE)
 
 # Compute ICCs for both models
-compute_icc(mod1, mod2, print = T)
+compute_icc(mod1, mod2)
 }
