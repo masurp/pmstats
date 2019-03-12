@@ -10,22 +10,23 @@
 #' @param y_intercept Defaults to a dashed vertical line at y = 0.
 #' @return A ggplot object that can be further customized using standard ggplot elements.
 #' @examples 
+#' library(lavaan)
 #' model <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3 + y4
-#' dem65 =~ y5 + y6 + y7 + y8
-#' 
-#' # regressions
-#' dem60 ~ a*ind60
-#' dem65 ~ b*ind60 + c*dem60
-#' 
-#' # residual covariances
-#' y1 ~~ y5
-#' y2 ~~ y4 + y6
-#' y3 ~~ y7
-#' y4 ~~ y8
-#' y6 ~~ y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3 + y4
+#'   dem65 =~ y5 + y6 + y7 + y8
+#'   
+#'   # regressions
+#'   dem60 ~ a*ind60
+#'   dem65 ~ b*ind60 + c*dem60
+#'   
+#'   # residual covariances
+#'   y1 ~~ y5
+#'   y2 ~~ y4 + y6
+#'   y3 ~~ y7
+#'   y4 ~~ y8
+#'   y6 ~~ y8
 #' '
 #' fit <- sem(model,
 #' data = PoliticalDemocracy)
