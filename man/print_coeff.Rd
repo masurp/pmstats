@@ -33,6 +33,7 @@ This function takes the output of \code{\link[pmstats]{result_table}} and transf
 \examples{
 ## Example 1: Reporting effects from a structural equation modelling
 
+library(lavaan)
 # Estimate the structural equation model
 model <- '
   # latent variables
@@ -51,27 +52,51 @@ model <- '
   y4 ~~ y8
   y6 ~~ y8
 '
-
 # Fitting model
-fit <- lavaan::sem(model,
-data = PoliticalDemocracy)
+fit <- sem(model,
+           data = PoliticalDemocracy)
 
 # First step (print = TRUE is mandatory!)
-results <- result_table(fit, regressions = TRUE, new_labels = c("H1", "H2", "H3"), print = TRUE)
+results <- result_table(fit, 
+                        regressions = TRUE, 
+                        new_labels = c("H1", "H2", "H3"), 
+                        print = TRUE)
 
 # Second step
-print_coeff(results, var_label = "H1")
-print_coeff(results, "H2", se = FALSE, beta = TRUE)
+print_coeff(results, 
+            var_label = "H1")
+print_coeff(results, "H2", 
+            se = FALSE, 
+            beta = TRUE)
 
 
 ## Example 2: Reporting effects from a multilevel model
 
 # Estimate the multilevel model
-model <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+model <- lmerTest::lmer(Reaction ~ 1 + Days + (1 | Subject), 
+                        data = sleepstudy)
 
 # First step (print = TRUE is mandatory!)
 results <- result_table(model, print = TRUE)
 
 # Second step
-print_coeff(results, var_predict = "Days", ci = FALSE, p = FALSE)
+print_coeff(results, 
+            var_predict = "Days", 
+            ci = FALSE, 
+            p = FALSE)
+
+
+## Example 3: Reporting effects from a Bayesian multilevel model
+
+# Estimate the Bayesian multilevel model (using "brms")
+model_bayes <- brms::brm(Reaction ~ 1 + Days + (1 | Subject), 
+                         data = sleepstudy,
+                         chains = 1)
+
+# First step (print = TRUE is mandatory!)
+results_bayes <- result_table(model_bayes, print = TRUE)
+
+# Second step
+print_coeff(results_bayes, 
+            var_predict = "b_Days")
 }
