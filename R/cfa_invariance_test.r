@@ -6,6 +6,7 @@
 #' @param model_names Do you want to rename the models? Provide a vector with the respective model names.
 #' @param print A logical value indicating whether table shoud be formatted according to APA-guidelines.
 #' @examples 
+#' library(lavaan)
 #' model_1 <- '
 #'   # latent variables
 #'   ind60 =~ x1 + x2 + x3
