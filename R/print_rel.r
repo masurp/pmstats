@@ -1,30 +1,31 @@
 #' Print reliabilities of a latent factor 
 #' 
-#' This function takes the output of \code{rel_table()} and transforms it into latex-code to be used in a rmarkdown file. 
+#' This function takes the output of \code{\link[pmstats]{rel_table}} and transforms it into latex-code to be used in a rmarkdown file. 
 #' 
-#' @param rel_table A dataframe resulting from \code{rel_table()}.
+#' @param rel_table A dataframe resulting from \code{\link[pmstats]{rel_table}}.
 #' @param indices Vector of the indices that should be in the ouput.
 #' @param list Logical value indicating whether each estimate should be printed separately and put into a list.
 #' @examples 
+#' library(lavaan)
 #' model <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3 + y4
-#' dem65 =~ y5 + y6 + y7 + y8
-#' 
-#' # regressions
-#' dem60 ~ ind60
-#' dem65 ~ ind60 + dem60
-#' 
-#' # residual covariances
-#' y1 ~~ y5
-#' y2 ~~ y4 + y6
-#' y3 ~~ y7
-#' y4 ~~ y8
-#' y6 ~~ y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3 + y4
+#'   dem65 =~ y5 + y6 + y7 + y8
+#'   
+#'   # regressions
+#'   dem60 ~ ind60
+#'   dem65 ~ ind60 + dem60
+#'   
+#'   # residual covariances
+#'   y1 ~~ y5
+#'   y2 ~~ y4 + y6
+#'   y3 ~~ y7
+#'   y4 ~~ y8
+#'   y6 ~~ y8
 #' '
 #' fit <- sem(model,
-#' data = PoliticalDemocracy)
+#'            data = PoliticalDemocracy)
 #' 
 #' # First step
 #' table <- rel_table(fit)
