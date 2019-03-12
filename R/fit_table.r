@@ -1,33 +1,40 @@
-#' Creates a table with relevant fit indices for an SEM of CFA
+#' Creates a table with relevant fit indices for an SEM or CFA
 #' 
-#' Coming soon
+#' This function returns a data frame that contains the fit indices for a SEM or CFA model. The type of indices can be chosen (available are all indices that can be obtained using the function \code{\link[lavaan]{inspect}}). Reliability indices (alpha, omega, average variance extracted) can added if desired (will be computed by using the function \code{\link[semTools]{reliability}}).
 #' 
 #' @param object An object of class \code{lavaan} created by using \code{cfa()} or \code{sem()} from the package 'lavaan'.
 #' @param indices Vector of the indices that should be in the ouput.
-#' @param reliability Logical value indicating whether Cronbach's alpha, McDonald's omega (composite reliability), and the average variance extracted should be included-
+#' @param rmsea_ci Logical vector indicating whether the confidence intervals of the RMSEA should be included (important for reporting the fit in an RMarkdown document using \code{\link[pmstats]{print_fit}})
+#' @param reliability Logical value indicating whether Cronbach's alpha, McDonald's omega (composite reliability), and the average variance extracted should be included. 
 #' @param robust Logical value indicating whether the model was fitted with a robust estimator. If yes, scaled indices will be used. 
 #' @param print Logical value indicating whether the table should be formatted according to APA guidelines. 
+#' @return A data frame containing the fit indices of the model. 
 #' @examples 
+#' library(lavaan)
 #' model <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3 + y4
-#' dem65 =~ y5 + y6 + y7 + y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3 + y4
+#'   dem65 =~ y5 + y6 + y7 + y8
 #' 
-#' # regressions
-#' dem60 ~ ind60
-#' dem65 ~ ind60 + dem60
+#'   # regressions
+#'   dem60 ~ ind60
+#'   dem65 ~ ind60 + dem60
 #' 
-#' # residual covariances
-#' y1 ~~ y5
-#' y2 ~~ y4 + y6
-#' y3 ~~ y7
-#' y4 ~~ y8
-#' y6 ~~ y8
+#'   # residual covariances
+#'   y1 ~~ y5
+#'   y2 ~~ y4 + y6
+#'   y3 ~~ y7
+#'   y4 ~~ y8
+#'   y6 ~~ y8
 #' '
 #' fit <- sem(model,
 #' data = PoliticalDemocracy)
-#' fit_table(fit, reliability = F)
+#' 
+#' # Create table of fit indices
+#' fit_table(fit)
+#' fit_table(fit, indices = c("cfi", "tli"))
+#' fit_table(fit, rmsea_ci = TRUE, print = TRUE)
 #' @export
 fit_table <- function(object,
                       indices = c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"),
@@ -72,10 +79,16 @@ fit_table <- function(object,
    fit_indices <- fit_indices %>%
     mutate_at(vars(chisq), 
               funs(printnum(.))) %>% 
-    mutate_at(vars(cfi, tli, rmsea, rmsea.ci.lower, rmsea.ci.upper, srmr), 
+    mutate_at(vars(cfi, tli, rmsea, srmr), 
               funs(printnum(., gt1 = F, zero = F))) %>% 
     mutate_at(vars(pvalue), 
               funs(printp(.)))
+   
+     if (isTRUE(rmsea_ci)) {
+       fit_indices <- fit_indices %>%
+         mutate_at(vars(rmsea.ci.lower, rmsea.ci.upper), 
+                   funs(printnum(., gt1 = FALSE, zero = F)))
+     }
   }
   
   if (isTRUE(reliability) & isTRUE(print)) {
@@ -84,7 +97,7 @@ fit_table <- function(object,
                 funs(printnum(., gt1 = F, zero = F)))
   }
 
-  if(!isTRUE(rmsea_ci)){
+  if("rmsea.ci.lower" %in% names(fit_indices) & !isTRUE(rmsea_ci)){
     fit_indices <- fit_indices %>%
       select(-rmsea.ci.lower, -rmsea.ci.upper)
   }
