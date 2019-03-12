@@ -17,6 +17,7 @@ cfa_invariance_test(..., model_names = NULL, print = FALSE)
 This function creates a data frame that display a classical Chisqare-test of differently configured SEM/CFA models. This function is similarly written as \code{\link[pmstats]{cfa_invariance_fit}}. Both functions are meant to be used together.
 }
 \examples{
+library(lavaan)
 model_1 <- '
   # latent variables
   ind60 =~ x1 + x2 + x3
