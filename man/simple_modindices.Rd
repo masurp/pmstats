@@ -16,5 +16,5 @@ simple_modindices(object, arrange = TRUE, brief = TRUE, ...)
 \item{...}{Further argument that can be passed to the function \code{modindices()}.}
 }
 \description{
-Simple function compute modification indices
+This is simply a convenient function that allows to extract modification indices from a fitted lavaan object. It uses the function \code{\link[lavaan]{modindices}} to compute modification indices, yet provides additional options to arrange them in descending order and exclude any additional information.
 }
