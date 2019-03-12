@@ -2,34 +2,34 @@
 % Please edit documentation in R/cfa_invariance_test.r
 \name{cfa_invariance_test}
 \alias{cfa_invariance_test}
-\title{Model comparison using ANOVA}
+\title{SEM model comparison (Chisquare-test)}
 \usage{
 cfa_invariance_test(..., model_names = NULL, print = FALSE)
 }
 \arguments{
-\item{...}{Four lavaan fit objects with base, weak, strong and strict invariance constraints.}
+\item{...}{Objects objects of class \code{lavaan} (e.g., with base, weak, strong and strict invariance constraints).}
 
 \item{model_names}{Do you want to rename the models? Provide a vector with the respective model names.}
 
-\item{print}{A logical value indicating whether table shoud be formatted according to APA.}
+\item{print}{A logical value indicating whether table shoud be formatted according to APA-guidelines.}
 }
 \description{
-This function creates a tibble that display a classical Chisq-test of differently configured models.
+This function creates a data frame that display a classical Chisqare-test of differently configured SEM/CFA models. This function is similarly written as \code{\link[pmstats]{cfa_invariance_fit}}. Both functions are meant to be used together.
 }
 \examples{
 model_1 <- '
-# latent variables
-ind60 =~ x1 + x2 + x3
-dem60 =~ y1 + y2 + y3 + y4
-dem65 =~ y5 + y6 + y7 + y8
+  # latent variables
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
 '
 fit_1 <- cfa(model_1, data = PoliticalDemocracy)
 
 model_2 <- '
-# latent variables
-ind60 =~ x1 + x2 + x3
-dem60 =~ y1 + y2 + y3
-dem65 =~ y5 + y6 + y7 + y8
+  # latent variables
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3
+  dem65 =~ y5 + y6 + y7 + y8
 '
 fit_2 <- cfa(model_2, data = PoliticalDemocracy)
 

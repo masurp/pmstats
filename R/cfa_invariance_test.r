@@ -1,24 +1,24 @@
-#' Model comparison using ANOVA
+#' SEM model comparison (Chisquare-test)
 #' 
-#' This function creates a tibble that display a classical Chisq-test of differently configured models.
+#' This function creates a data frame that display a classical Chisqare-test of differently configured SEM/CFA models. This function is similarly written as \code{\link[pmstats]{cfa_invariance_fit}}. Both functions are meant to be used together.
 #' 
-#' @param ... Four lavaan fit objects with base, weak, strong and strict invariance constraints.
+#' @param ... Objects objects of class \code{lavaan} (e.g., with base, weak, strong and strict invariance constraints). 
 #' @param model_names Do you want to rename the models? Provide a vector with the respective model names.
-#' @param print A logical value indicating whether table shoud be formatted according to APA.
+#' @param print A logical value indicating whether table shoud be formatted according to APA-guidelines.
 #' @examples 
 #' model_1 <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3 + y4
-#' dem65 =~ y5 + y6 + y7 + y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3 + y4
+#'   dem65 =~ y5 + y6 + y7 + y8
 #' '
 #' fit_1 <- cfa(model_1, data = PoliticalDemocracy)
 #' 
 #' model_2 <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3
-#' dem65 =~ y5 + y6 + y7 + y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3
+#'   dem65 =~ y5 + y6 + y7 + y8
 #' '
 #' fit_2 <- cfa(model_2, data = PoliticalDemocracy)
 #' 
@@ -49,7 +49,8 @@ cfa_invariance_test <- function(...,
   # function
   temp <- anova(...) %>%
     as.tibble %>%
-    set_colnames(c("df", "aic", "bic", "chisq", "diff_chisq", "diff_df", "p"))
+    select(-"Chisq diff", -"Df diff") %>%
+    set_colnames(c("df", "aic", "bic", "chisq", "p"))
   
   temp <- temp %>%
     bind_cols(model = model) %>%
@@ -62,11 +63,13 @@ cfa_invariance_test <- function(...,
   
   if (isTRUE(print)) {
     temp2 <- temp %>%
-      mutate(p = as.character(p)) %>%
-      set_colnames(c("model", "df", "AIC", "BIC", "Chisq", "\\Delta Chisq", "\\Delta df", "p"))
-    temp2[2:length_dots,8] <- temp[2:length_dots,8] %>% 
+      mutate(p = as.character(p))
+    temp2[2:length_dots,6] <- temp[2:length_dots,6] %>% 
       mutate(p = printp(p))
+    temp2[is.na(temp2)] <- ""
+    
     return(temp2)
+    
   } else {
   
   return(temp)
