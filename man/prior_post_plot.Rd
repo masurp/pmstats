@@ -7,15 +7,15 @@
 prior_post_plot(object, extra_key = FALSE, scales = "free")
 }
 \arguments{
-\item{object}{A tibble resulting from the function \code{prior_post_values.r} or any similarly created tibble.}
+\item{object}{A data frame resulting from the function \code{\link[pmstats]{prior_post_values}} or any similarly created data frame.}
 
-\item{extra_key}{Logical value indicating whether there is more than one key to facet the plots (the second key needs to be named "key2").}
+\item{extra_key}{Logical value indicating whether there is more than one key to facet the plots (note: if you used the function \code{\link[pmstats]{prior_post_values}} to get the values and did not modify it further, the first key is automatically called "key". A potential second key needs to be named "key2").}
 
-\item{scales}{Should the scales be the same of different?}
+\item{scales}{Should scales be fixed ("fixed"), free ("free", the default), or free in one dimension ("free_x", "free_y")?}
 }
 \value{
 A ggplot object.
 }
 \description{
-This functions takes the output of \code{prior_post_values.r} and creates overlaying density plots for each effect.
+This functions takes the output of \code{\link[pmstats]{prior_post_values}} and creates overlaying density plots for each effect.
 }
