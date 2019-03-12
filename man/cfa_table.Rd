@@ -8,8 +8,6 @@ cfa_table(object, latent_var = NULL, items = NULL, brief = TRUE,
   std = "std.all", print = FALSE, group = FALSE)
 }
 \arguments{
-\item{object}{An object of class \code{lavaan} created by using \code{cfa} or \code{sem()}.}
-
 \item{latent_var}{If more than one variable is specified in the CFA, which one should be shown? If left NULL, items of all latent variable will be evaluated.}
 
 \item{items}{A data frame containing item codes and formulations.}
@@ -23,18 +21,22 @@ cfa_table(object, latent_var = NULL, items = NULL, brief = TRUE,
 \item{new_labels}{A vector that needs to have the length of the number of effects that can be used to included a separate column with Hypotheses labels.}
 }
 \description{
-This functions extracts the factor loadings from a lavaan object.
+This functions extracts factor loadings from a fitted \code{lavaan} object.
 }
 \examples{
+library(lavaan)
 model <- '
-# latent variables
-ind60 =~ x1 + x2 + x3
-dem60 =~ y1 + y2 + y3 + y4
-dem65 =~ y5 + y6 + y7 + y8
+  # latent variables
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
 '
 fit <- sem(model,
-data = PoliticalDemocracy)
+           data = PoliticalDemocracy)
 
 # Creating output table
-cfa_table(fit, latent_var = "dem65", brief = FALSE)
+cfa_table(fit, 
+          latent_var = "dem65", 
+          brief = FALSE,
+          print = TRUE)
 }

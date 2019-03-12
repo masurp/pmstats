@@ -1,8 +1,8 @@
 #' Table with items and factor loadings
 #' 
-#' This functions extracts the factor loadings from a lavaan object. 
+#' This functions extracts factor loadings from a fitted \code{lavaan} object. 
 #' 
-#' @param object An object of class \code{lavaan} created by using \code{cfa} or \code{sem()}.
+#' @param object An object of class \code{lavaan} created by using \code{\link[lavaan]{cfa}} or \code{\link[lavaan]{sem}}}.
 #' @param latent_var If more than one variable is specified in the CFA, which one should be shown? If left NULL, items of all latent variable will be evaluated. 
 #' @param items A data frame containing item codes and formulations.
 #' @param brief A logical value specifying whether only standardized factor loadings should be shown.
@@ -10,17 +10,21 @@
 #' @param print A logical value indicating whether the values should formatted according to APA-guidelines. 
 #' @param std Indicates which standarized coefficient should be used (defaults to "std.all").
 #' @examples 
+#' library(lavaan)
 #' model <- '
-#' # latent variables
-#' ind60 =~ x1 + x2 + x3
-#' dem60 =~ y1 + y2 + y3 + y4
-#' dem65 =~ y5 + y6 + y7 + y8
+#'   # latent variables
+#'   ind60 =~ x1 + x2 + x3
+#'   dem60 =~ y1 + y2 + y3 + y4
+#'   dem65 =~ y5 + y6 + y7 + y8
 #' '
 #' fit <- sem(model,
-#' data = PoliticalDemocracy)
+#'            data = PoliticalDemocracy)
 #' 
 #' # Creating output table
-#' cfa_table(fit, latent_var = "dem65", brief = FALSE)
+#' cfa_table(fit, 
+#'           latent_var = "dem65", 
+#'           brief = FALSE,
+#'           print = TRUE)
 #' @export
 cfa_table <- function(object,
                       latent_var = NULL,
