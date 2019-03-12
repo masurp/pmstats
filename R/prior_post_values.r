@@ -1,8 +1,8 @@
 #' Extracting the prior and posterior distributions from brmsfit-objects
 #' 
-#' This functions extract the posterior distribution values from a brmsfit-object and simulates the prior distribution values
+#' This functions extract the posterior distribution values from a brmsfit-object and simulates the prior distribution values (mean and standard deviation of priors need to be provided). This function is still very much in development and is meant to interact with \code{\link[pmstats]{prior_post_plot}}. Use at your own risk!
 #' 
-#' @param object An object of class \code{brmsfit}.
+#' @param object An object of class \code{\link[brms]{brmsfit}}.
 #' @param var_names Optional a vector that includes new names for the effects (variables) that should be extracted.
 #' @param post_effects Which effect should be extracted?
 #' @param prior_means What are means of the prior distributions (needs to be in the same order as the post_effects)?

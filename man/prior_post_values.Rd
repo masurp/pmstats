@@ -8,7 +8,7 @@ prior_post_values(object, var_names = NULL, post_effects = NULL,
   prior_means = NULL, prior_sd = NULL, n_sim = 10000)
 }
 \arguments{
-\item{object}{An object of class \code{brmsfit}.}
+\item{object}{An object of class \code{\link[brms]{brmsfit}}.}
 
 \item{var_names}{Optional a vector that includes new names for the effects (variables) that should be extracted.}
 
@@ -22,5 +22,5 @@ prior_post_values(object, var_names = NULL, post_effects = NULL,
 A tibble.
 }
 \description{
-This functions extract the posterior distribution values from a brmsfit-object and simulates the prior distribution values
+This functions extract the posterior distribution values from a brmsfit-object and simulates the prior distribution values (mean and standard deviation of priors need to be provided). This function is still very much in development and is meant to interact with \code{\link[pmstats]{prior_post_plot}}. Use at your own risk!
 }
