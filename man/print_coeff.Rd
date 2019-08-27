@@ -5,7 +5,8 @@
 \title{Prints individual coefficients for RMarkdown inline reporting}
 \usage{
 print_coeff(object, var_label = NULL, var_predict = NULL, b = TRUE,
-  median = TRUE, se = TRUE, ci = TRUE, p = TRUE, beta = FALSE)
+  median = TRUE, se = TRUE, ci = TRUE, p = TRUE, beta = FALSE,
+  anova_effect = NULL)
 }
 \arguments{
 \item{object}{A dataframe resulting from \code{\link[pmstats]{result_table}}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).}

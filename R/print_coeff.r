@@ -89,10 +89,19 @@ print_coeff <- function(object,
                         se = TRUE,
                         ci = TRUE,
                         p = TRUE,
-                        beta = FALSE) {
+                        beta = FALSE,
+                        anova_effect = NULL) {
   
   # dependencies
   library(tidyverse)
+  
+  if ("term" %in% names(object)) {
+    object <- object %>%
+      mutate(predictor = term)
+    res.df <- object %>%
+      subset(term == "Residuals") %>%
+      select(df)
+  }
   
   # Get relevant subset of the results table
   if (!is.null(var_label)) {
@@ -131,7 +140,17 @@ print_coeff <- function(object,
         
       }
     )
-    
+  
+  } else if ("sumsq" %in% names(object)) {
+      print_coeff <- paste0(
+        "$F(", temp$df, ", ", res.df, ") = ", temp$statistic, 
+        "$, $\\textit{p} ", printp(temp$p.value), "$",
+        if ("etasq" %in% anova_effect) {
+          paste0(", $\\hat{\\eta}^2_G = ", printnum(temp$etasq), "$")
+        } else if ("cohens.f" %in% anova_effect) {
+          paste0(", $\\texit{f} = ", printnum(temp$cohens.f), "$")
+        }
+      )
     
   } else {
   
