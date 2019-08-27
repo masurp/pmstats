@@ -143,7 +143,7 @@ print_coeff <- function(object,
   
   } else if ("sumsq" %in% names(object)) {
       print_coeff <- paste0(
-        "$F(", temp$df, ", ", res.df, ") = ", temp$statistic, 
+        "$F(", temp$df, ", ", res.df, ") = ", printnum(temp$statistic, 2), 
         "$, $\\textit{p} ", printp(temp$p.value), "$",
         if ("etasq" %in% anova_effect) {
           paste0(", $\\hat{\\eta}^2_G = ", printnum(temp$etasq), "$")
