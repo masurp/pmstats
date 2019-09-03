@@ -1,6 +1,6 @@
 #' Prints individual coefficients for RMarkdown inline reporting
 #' 
-#' This function takes the output of \code{\link[pmstats]{result_table}} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
+#' This function takes the output of \code{\link[pmstats]{result_table}} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed. Alternatively, it also takes output of \code{\link[sjstats]{anova_stats}} and transforms it into latex-code.
 #' 
 #' @param object A dataframe resulting from \code{\link[pmstats]{result_table}}. Important: The dataframe needs to be print-ready (i.e, the argument \code{print = TRUE} must be used!).
 #' @param var_label A character value indicating which coefficient should be printed (draws from the label column in the dataframe).
@@ -10,6 +10,7 @@
 #' @param ci Should the confidence intervals (if bayesian: high credibility intervals) be printed?
 #' @param p Should the p-value be printed?
 #' @param beta Should the standarized coefficient be printed?
+#' @param anova_effect Which effect size should be reported (e.g., "cohens.f", "etasq", or "partial.etasq") 
 #' @return A string representing a latex code that can be used in inline reporting in Rmarkdown documents.
 #' @examples 
 #' ## Example 1: Reporting effects from a structural equation modelling
@@ -80,6 +81,18 @@
 #' # Second step
 #' print_coeff(results_bayes, 
 #'             var_predict = "b_Days")
+#'             
+#' ## Example 4: Reporting results from ANOVAs
+#' x <- rep(c(1,0), 50)
+#' y <- 2*x + rnorm(100, 0, 1)
+#' 
+#' # First step
+#' m <- aov(y ~ x)
+#' 
+#' # Second step (sjstats::anova_stats() needs to be used)
+#' print_coeff(anova_stats(m), 
+#'             var_predict = "x", 
+#'             anova_effect = "etasq")
 #' @export
 print_coeff <- function(object,
                         var_label = NULL,
@@ -94,13 +107,14 @@ print_coeff <- function(object,
   
   # dependencies
   library(tidyverse)
+  library(papaja)
   
   if ("term" %in% names(object)) {
     object <- object %>%
       mutate(predictor = term)
     res.df <- object %>%
-      subset(term == "Residuals") %>%
-      select(df)
+      subset(predictor == "Residuals") %>%
+      dplyr::select(df)
   }
   
   # Get relevant subset of the results table
@@ -143,12 +157,21 @@ print_coeff <- function(object,
   
   } else if ("sumsq" %in% names(object)) {
       print_coeff <- paste0(
-        "$F(", temp$df, ", ", res.df, ") = ", printnum(temp$statistic, 2), 
-        "$, $\\textit{p} ", printp(temp$p.value), "$",
+        
+        "$F(", temp$df, ", ", res.df, ") = ", printnum(temp$statistic, gt1 = T, digits = 2), 
+        "$, $p ", printp(temp$p.value), "$",
+        
         if ("etasq" %in% anova_effect) {
-          paste0(", $\\hat{\\eta}^2_G = ", printnum(temp$etasq), "$")
+          
+          paste0(", $\\hat{\\eta}^2_G = ", printnum(temp$etasq, gt1 = T, digits = 3), "$")
+          
         } else if ("cohens.f" %in% anova_effect) {
-          paste0(", $\\texit{f} = ", printnum(temp$cohens.f), "$")
+          
+          paste0(", $f = ", printnum(temp$cohens.f, gt1 = T, digits = 3), "$")
+          
+        } else if ("partial.etasq" %in% anova_effect) {
+          
+          paste0(", partial $\\hat{\\eta}^2_G = ", printnum(temp$partial.etasq, gt1 = T, digits = 3), "$")
         }
       )
     
@@ -174,7 +197,7 @@ print_coeff <- function(object,
     },
     if (isTRUE(p)) { 
       
-      paste0(", $\\textit{p} " , 
+      paste0(", $p " , 
              if (temp$p != "< .001") {
                
                paste0("= ", temp$p, "$")

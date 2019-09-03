@@ -24,12 +24,14 @@ print_coeff(object, var_label = NULL, var_predict = NULL, b = TRUE,
 \item{p}{Should the p-value be printed?}
 
 \item{beta}{Should the standarized coefficient be printed?}
+
+\item{anova_effect}{Which effect size should be reported (e.g., "cohens.f", "etasq", or "partial.etasq")}
 }
 \value{
 A string representing a latex code that can be used in inline reporting in Rmarkdown documents.
 }
 \description{
-This function takes the output of \code{\link[pmstats]{result_table}} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed.
+This function takes the output of \code{\link[pmstats]{result_table}} and transforms it into latex-code to be used in a rmarkdown file. There are two ways to specify which relationship or effect should be printed: 1) If the relationships are labelled in the result table that is passed to the function, the argument \code{var_label} can be used to specify which effect should be printed; 2) If the result table does not contain an labels, the argument \code{var_predict} can be used to specify the predictor variable of the effect that should be printed. Alternatively, it also takes output of \code{\link[sjstats]{anova_stats}} and transforms it into latex-code.
 }
 \examples{
 ## Example 1: Reporting effects from a structural equation modelling
@@ -100,4 +102,16 @@ results_bayes <- result_table(model_bayes, print = TRUE)
 # Second step
 print_coeff(results_bayes, 
             var_predict = "b_Days")
+            
+## Example 4: Reporting results from ANOVAs
+x <- rep(c(1,0), 50)
+y <- 2*x + rnorm(100, 0, 1)
+
+# First step
+m <- aov(y ~ x)
+
+# Second step (sjstats::anova_stats() needs to be used)
+print_coeff(anova_stats(m), 
+            var_predict = "x", 
+            anova_effect = "etasq")
 }
