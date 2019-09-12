@@ -22,7 +22,7 @@ The amount of explained variance is computed by comparing the relevant models to
 }
 \examples{
 m0 <- lme4::lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-m1<- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+m1 <- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 
 variance_reduction(m0, m1, print = T, digits = 3)
 }
