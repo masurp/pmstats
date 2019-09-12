@@ -22,13 +22,13 @@
 #' 
 #' # Run function
 #' pseudo_r2(m1, m2, digits = 3)
+#' @export
 pseudo_r2 <- function(...,
                       type = c("McFadden", 
                                "Nagelkerke",
                                "CoxSnell"),
                       digits = 2) {
   
-  library(DescTools)
   library(tidyverse)
   library(magrittr)
   library(papaja)
@@ -38,7 +38,7 @@ pseudo_r2 <- function(...,
   
   # Create Pseudo R2
   temp <- l_temp %>% 
-    map_dfc(., function(x) PseudoR2(x, 
+    map_dfc(., function(x) DescTools::PseudoR2(x, 
                                     which = type) %>%
             as.data.frame %>%
             rownames_to_column("pseudoR2") %>%
