@@ -35,5 +35,5 @@ m1 <- glm(y~x1, data=d, family="binomial")
 m2 <- glm(y~x1+x2, data=d, family="binomial")
 
 # Run function
-pseudo_r2(m1, m2)
+pseudo_r2(m1, m2, digits = 3)
 }

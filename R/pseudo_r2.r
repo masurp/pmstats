@@ -21,7 +21,7 @@
 #' m2 <- glm(y~x1+x2, data=d, family="binomial")
 #' 
 #' # Run function
-#' pseudo_r2(m1, m2)
+#' pseudo_r2(m1, m2, digits = 3)
 pseudo_r2 <- function(...,
                       type = c("McFadden", 
                                "Nagelkerke",

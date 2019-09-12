@@ -10,17 +10,19 @@
 #' @return A data fram containing the explained variance on both levels.
 #' @examples 
 #' m0 <- lme4::lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-#' m1 <- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+#' m1<- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 #' 
-#' variance_reduction(m0, m1, red = F)
+#' variance_reduction(m0, m1, print = T, digits = 3)
 #' @export
 variance_reduction <- function(object, 
-                               ..., 
-                               red = TRUE){
+                               ...,
+                               digits = 2, 
+                               print = FALSE){
   
   # dependencies
   library(tidyverse)
   library(magrittr)
+  library(papaja)
   
   # subfunction
   get_var <- function(model, no = 0){
@@ -39,6 +41,35 @@ variance_reduction <- function(object,
     
   } else if (length(object_list) == 1) {
   
+    temp <- object %>% 
+      get_var %>%
+      left_join(
+        object_list[[1]] %>%
+          get_var(no = 1)
+      ) %>% 
+      mutate(m1 = 1 - m1_var / m0_var) %>%
+      select(level, m1)
+   
+  } else if (length(object_list) == 2) {
+    
+    tab_2 <- object %>% 
+      get_var %>%
+      left_join(
+        object_list[[1]] %>%
+          get_var(no = 1)
+      ) %>% 
+      mutate(m1 = 1 - m1_var / m0_var) 
+    
+    temp <- tab_2 %>%
+      left_join(
+        object_list[[2]] %>%
+          get_var(no = 2)
+        ) %>%
+      mutate(m2 = 1 - m2_var / m0_var) %>%
+      select(level, m1, m2) 
+    
+  } else if (length(object_list) == 3) {
+    
     tab_2 <- object %>% 
       get_var %>%
       left_join(
@@ -46,116 +77,62 @@ variance_reduction <- function(object,
           get_var(no = 1)
       ) %>% 
       mutate(m1_red = 1 - m1_var / m0_var) 
-    if (red == TRUE) {
-      tab_2 %>%
-        dplyr::select(level, 
-                      contains("red"))
-    } else {
-      tab_2 %>%
-        dplyr::select(level,
-                      m0_var, m1_var,
-                      m1_red)
-    }
-   
-  } else if (length(object_list) == 2) {
-    
-    tab_2 <- m0 %>% 
-      get_var %>%
-      left_join(
-        object_list[[1]] %>%
-          get_var(no = 1)
-      ) %>% 
-      mutate(m1_red = 1 - m1_var / m0_var) 
-    
-    tab_3 <- tab_2 %>%
-      left_join(
-        object_list[[2]] %>%
-          get_var(no = 2)
-        ) %>%
-      mutate(m2_red = 1 - m2_var / m0_var) 
-    
-    if (red == TRUE) {
-      tab_3 %>%
-        dplyr::select(level, 
-               contains("red"))
-    } else {
-      tab_3 %>%
-        dplyr::select(level,
-                      m0_var, m1_var, m2_var,
-                      m1_red, m2_red)
-    }
-  } else if (length(object_list) == 3) {
-    tab_2 <- m0 %>% 
-      get_var %>%
-      left_join(
-        object_list[[1]] %>%
-          get_var(no = 1)
-      ) %>% 
-      mutate(m1_red = 1 - m1_var / m0_var) 
     
     tab_3 <- tab_2 %>%
       left_join(
         object_list[[2]] %>%
           get_var(no = 2)
       ) %>%
-      mutate(m2_red = 1 - m2_var / m0_var)
+      mutate(m2 = 1 - m2_var / m0_var)
     
-    tab_4 <- tab_3 %>%
+    temp <- tab_3 %>%
       left_join(
         object_list[[3]] %>%
           get_var(no = 3)
       ) %>%
-      mutate(m3_red = 1 - m3_var / m0_var)
+      mutate(m3 = 1 - m3_var / m0_var) %>%
+      select(level, m1, m2, m3) 
     
-    if (red == TRUE) {
-      tab_4 %>%
-        dplyr::select(level, 
-                      contains("red"))
-    } else {
-      tab_4 %>%
-        dplyr::select(level,
-                      m0_var, m1_var, m2_var, m3_var,
-                      m1_red, m2_red, m3_red)
-    }
   } else {
-    tab_2 <- m0 %>% 
+    
+    tab_2 <- object %>% 
       get_var %>%
       left_join(
         object_list[[1]] %>%
           get_var(no = 1)
       ) %>% 
-      mutate(m1_red = 1 - m1_var / m0_var) 
+      mutate(m1 = 1 - m1_var / m0_var) 
     
     tab_3 <- tab_2 %>%
       left_join(
         object_list[[2]] %>%
           get_var(no = 2)
       ) %>%
-      mutate(m2_red = 1 - m2_var / m0_var)
+      mutate(m2 = 1 - m2_var / m0_var)
     
     tab_4 <- tab_3 %>%
       left_join(
         object_list[[3]] %>%
           get_var(no = 3)
       ) %>%
-      mutate(m3_red = 1 - m3_var / m0_var)
+      mutate(m3 = 1 - m3_var / m0_var)
     
-    tab_5 <- tab_4 %>%
+    temp <- tab_4 %>%
       left_join(
         object_list[[4]] %>%
           get_var(no = 4)
       ) %>%
-      mutate(m4_red = 1 - m4_var / m0_var)
-    
-    if (red == TRUE) {
-      tab_5 %>%
-        dplyr::select(level, 
-                      contains("red"))
-    } else {
-      tab_5 %>%
-        dplyr::select(level,
-                      m0_var, m1_var, m2_var, m3_var, m4_var,
-                      m1_red, m2_red, m3_red, m4_red)
-    }
+      mutate(m4 = 1 - m4_var / m0_var) %>%
+      select(level, m1, m2, m3, m4) 
   }
+  
+  temp <- temp %>% 
+    mutate_if(is.numeric, round, digits = digits) %>%
+    as.tibble
+  
+  if (print == TRUE) {
+    temp <- temp %>%
+      mutate_if(is.numeric, printnum, gt1 = TRUE, digits = digits)
+  }
+  return(temp)
 }

@@ -4,7 +4,7 @@
 \alias{variance_reduction}
 \title{Explained variance for two-level random intercept models}
 \usage{
-variance_reduction(object, ..., red = TRUE)
+variance_reduction(object, ..., digits = 2, print = FALSE)
 }
 \arguments{
 \item{object}{An object of class merMod (more specifically, an object of subclass lmerMod). This first object needs to be the null model with no predictors. All other models will be compared to this baseline model.}
@@ -22,7 +22,7 @@ The amount of explained variance is computed by comparing the relevant models to
 }
 \examples{
 m0 <- lme4::lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-m1 <- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+m1<- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 
-variance_reduction(m0, m1, red = F)
+variance_reduction(m0, m1, print = T, digits = 3)
 }
