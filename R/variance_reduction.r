@@ -10,7 +10,7 @@
 #' @return A data fram containing the explained variance on both levels.
 #' @examples 
 #' m0 <- lme4::lmer(Reaction ~ 1 + (1 | Subject), sleepstudy)
-#' m1<- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+#' m1 <- lme4::lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
 #' 
 #' variance_reduction(m0, m1, print = T, digits = 3)
 #' @export
@@ -76,7 +76,7 @@ variance_reduction <- function(object,
         object_list[[1]] %>%
           get_var(no = 1)
       ) %>% 
-      mutate(m1_red = 1 - m1_var / m0_var) 
+      mutate(m1 = 1 - m1_var / m0_var) 
     
     tab_3 <- tab_2 %>%
       left_join(
@@ -127,12 +127,17 @@ variance_reduction <- function(object,
   }
   
   temp <- temp %>% 
-    mutate_if(is.numeric, round, digits = digits) %>%
+    mutate_if(is.numeric, 
+              round, 
+              digits = digits) %>%
     as.tibble
   
   if (print == TRUE) {
     temp <- temp %>%
-      mutate_if(is.numeric, printnum, gt1 = TRUE, digits = digits)
+      mutate_if(is.numeric, 
+                printnum, 
+                gt1 = TRUE, 
+                digits = digits)
   }
   return(temp)
 }
