@@ -4,7 +4,7 @@
 \alias{extract_gof}
 \title{Computes goodness-of-fit indices from "lm" objects}
 \usage{
-extract_gof(..., digits = 2)
+extract_gof(..., digits = 2, print = TRUE)
 }
 \arguments{
 \item{...}{objects of class \code{"lm"}.}

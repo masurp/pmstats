@@ -8,14 +8,16 @@
 #' y <- 2*x + rnorm(100, 0, 1)  
 #' m <- lm(y ~ x)
 #' 
-#' extract_gof(m)
+#' extract_gof(m, print = T)
 #' @export
 # Extracting goodness-of-fit indices from lm() objects
 extract_gof <- function(...,
-                        digits = 2) {
+                        digits = 2,
+                        print = TRUE) {
   
   library(tidyverse)
   library(magrittr)
+  library(papaja)
   
   # Create list of objects
   l <- list(...)
@@ -25,14 +27,18 @@ extract_gof <- function(...,
                   function(x) bind_cols(aic = AIC(x), 
                                         bic = BIC(x), 
                                         logLik = logLik(x), 
-                                        deviance = deviance(x)) %>%
-                    mutate_if(is.numeric, 
-                              round, 
-                              digits = digits)) %>% 
+                                        deviance = deviance(x))) %>%
     t %>%
     as.data.frame %>%
     rownames_to_column("gof") %>%
-    set_colnames(c("gof", "value")) %>%
     as_tibble
+    
+    if (print == T) {
+      temp <- temp %>%
+        mutate_if(is.numeric, 
+                printnum, 
+                digits = digits,
+                gt1 = T)
+    }
   return(temp)
 }
