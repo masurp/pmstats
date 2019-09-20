@@ -140,7 +140,7 @@ print_coeff <- function(object,
       
       if (isTRUE(median)) {
         
-        paste0("$Mdn. = ", temp$median, "$")
+        paste0("$Mdn = ", temp$median, "$")
         
       }, 
       if (isTRUE(se)) {
