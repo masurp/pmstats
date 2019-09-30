@@ -136,7 +136,7 @@ print_coeff <- function(object,
   
   # Transform parameters into printable latex code
   if ("rhat" %in% names(object)) {
-    print_coeff <- paste0(
+    temp <- paste0(
       
       if (isTRUE(median)) {
         
@@ -156,7 +156,7 @@ print_coeff <- function(object,
     )
   
   } else if ("sumsq" %in% names(object)) {
-      print_coeff <- paste0(
+      temp <- paste0(
         
         "$F(", temp$df, ", ", res.df, ") = ", printnum(temp$statistic, gt1 = T, digits = 2), 
         "$, $p ", printp(temp$p.value), "$",
@@ -178,7 +178,7 @@ print_coeff <- function(object,
   } else {
   
   
-  print_coeff <- paste0(
+  temp <- paste0(
     
     if (isTRUE(b)) {
       
@@ -215,5 +215,5 @@ print_coeff <- function(object,
   
   }
   
-  return(print_coeff)
+  return(temp)
 }
