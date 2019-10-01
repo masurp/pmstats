@@ -111,7 +111,7 @@ y <- 2*x + rnorm(100, 0, 1)
 m <- aov(y ~ x)
 
 # Second step (sjstats::anova_stats() needs to be used)
-print_coeff(anova_stats(m), 
+print_coeff(sjstats::anova_stats(m), 
             var_predict = "x", 
             anova_effect = "etasq")
 }

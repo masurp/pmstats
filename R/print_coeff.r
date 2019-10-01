@@ -90,7 +90,7 @@
 #' m <- aov(y ~ x)
 #' 
 #' # Second step (sjstats::anova_stats() needs to be used)
-#' print_coeff(anova_stats(m), 
+#' print_coeff(sjstats::anova_stats(m), 
 #'             var_predict = "x", 
 #'             anova_effect = "etasq")
 #' @export
@@ -135,6 +135,8 @@ print_coeff <- function(object,
   }
   
   # Transform parameters into printable latex code
+  
+  ## Bayesian models
   if ("rhat" %in% names(object)) {
     temp <- paste0(
       
@@ -154,65 +156,85 @@ print_coeff <- function(object,
         
       }
     )
-  
+    
+  ## Analysis of Variance
   } else if ("sumsq" %in% names(object)) {
-      temp <- paste0(
+    temp <- paste0(
+      
+      "$F(", temp$df, ", ", res.df, ") = ", printnum(temp$statistic, 
+                                                     gt1 = T, 
+                                                     digits = 2), 
+      "$",
+      if (isTRUE(p)) {
+        temp <- temp %>%
+          mutate(p = printp(p.value))
         
-        "$F(", temp$df, ", ", res.df, ") = ", printnum(temp$statistic, gt1 = T, digits = 2), 
-        "$, $p ", printp(temp$p.value), "$",
+        paste0(", $p " , 
+               if (temp$p != "< .001") {
+                 
+                 paste0("= ", temp$p, "$")
+                 
+               } else {
+                 paste0(temp$p, "$")})
         
-        if ("etasq" %in% anova_effect) {
-          
-          paste0(", $\\hat{\\eta}^2_G = ", printnum(temp$etasq, gt1 = T, digits = 3), "$")
-          
-        } else if ("cohens.f" %in% anova_effect) {
-          
-          paste0(", $f = ", printnum(temp$cohens.f, gt1 = T, digits = 3), "$")
-          
-        } else if ("partial.etasq" %in% anova_effect) {
-          
-          paste0(", partial $\\hat{\\eta}^2_G = ", printnum(temp$partial.etasq, gt1 = T, digits = 3), "$")
-        }
-      )
+      },
+      if ("etasq" %in% anova_effect) {
+        
+        paste0(", $\\hat{\\eta}^2_G = ", printnum(temp$etasq, gt1 = T, digits = 3), "$")
+        
+      } else if ("cohens.f" %in% anova_effect) {
+        
+        paste0(", $f = ", printnum(temp$cohens.f, gt1 = T, digits = 3), "$")
+        
+      } else if ("partial.etasq" %in% anova_effect) {
+        
+        paste0(", partial $\\hat{\\eta}^2_G = ", printnum(temp$partial.etasq, gt1 = T, digits = 3), "$")
+      }
+    )
     
   } else {
-  
-  
-  temp <- paste0(
     
-    if (isTRUE(b)) {
+    
+    temp <- paste0(
       
-      paste0("$b = ", temp$b, "$")
-      
-    }, 
-    if (isTRUE(se)) {
-      
-      paste0(", $se = ", temp$se, "$")
-      
-    },
-    if (isTRUE(ci)) {
-      
-      paste0(", 95\\% CI $[", temp$ll, ", ", temp$ul, "]$")
-      
-    },
-    if (isTRUE(p)) { 
-      
-      paste0(", $p " , 
-             if (temp$p != "< .001") {
-               
-               paste0("= ", temp$p, "$")
-               
-             } else {
-               paste0(temp$p, "$")})
-      
-    },
-    if (isTRUE(beta)) {
-      
-      paste0(", $\\beta = ", temp$beta, "$")
-      
-    }
-  )
-  
+      if (isTRUE(b)) {
+        
+        paste0("$b = ", temp$b, "$")
+        
+      }, 
+      if (isTRUE(se)) {
+        
+        paste0(", $se = ", temp$se, "$")
+        
+      },
+      if ("Odds Ratio" %in% names(object)) {
+        
+        paste0(", Odds Ratio = ", temp$or, "$")
+        
+      },
+      if (isTRUE(ci)) {
+        
+        paste0(", 95\\% CI $[", temp$ll, ", ", temp$ul, "]$")
+        
+      },
+      if (isTRUE(p)) { 
+        
+        paste0(", $p " , 
+               if (temp$p != "< .001") {
+                 
+                 paste0("= ", temp$p, "$")
+                 
+               } else {
+                 paste0(temp$p, "$")})
+        
+      },
+      if (isTRUE(beta)) {
+        
+        paste0(", $\\beta = ", temp$beta, "$")
+        
+      }
+    )
+    
   }
   
   return(temp)
