@@ -207,7 +207,7 @@ print_coeff <- function(object,
         paste0(", $se = ", temp$se, "$")
         
       },
-      if ("Odds Ratio" %in% names(object)) {
+      if ("or" %in% names(object)) {
         
         paste0(", Odds Ratio = ", temp$or, "$")
         
