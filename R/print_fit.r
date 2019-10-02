@@ -51,7 +51,7 @@ print_fit <- function(fit_table,
       },
     if(isTRUE("rmsea" %in% indices)) {
       paste0("; RMSEA = ", fit_table$rmsea,
-             ", 90% CI [", fit_table$rmsea.ci.lower, ",", fit_table$rmsea.ci.upper, "]")
+             ", 90% CI [", fit_table$rmsea.ci.lower, ", ", fit_table$rmsea.ci.upper, "]")
       },
     if(isTRUE("srmr" %in% indices)) {
       paste0("; SRMR = ", fit_table$srmr)
