@@ -35,5 +35,5 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("masurp/specr")
+devtools::install_github("masurp/pmstats")
 ```
