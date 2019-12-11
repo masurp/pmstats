@@ -10,15 +10,13 @@
 #' @param sig Logical value indicating whether stars should be printed when the effect is significant at alpha = .05. Defaults to true when print = TRUE.
 #' @param descriptives Logical value indicating whether the mean and standard deviations of all variables should be included as second and third column. 
 #' @param ... Further arguments that can be passed to \code{corr.test()} (e.g., alternative methods to compute the bivariate correlations by specifying method = "spearman").
-#' @return A tibble. 
+#' @return A data frame. 
 #' @examples 
-#' d <- mtcars
-#' 
 #' # Default
-#' zero_order_corr(d)
+#' zero_order_corr(mtcars)
 #' 
 #' # Customized for printing
-#' zero_order_corr(d, print = T, digits = 3, sig = TRUE)
+#' zero_order_corr(mtcars, print = T, digits = 3, sig = TRUE)
 #' @export
 zero_order_corr <- function(data,
                             var_names = NULL,
@@ -37,14 +35,12 @@ zero_order_corr <- function(data,
   # primary function
   stars <- corr.test(data, ...)$p %>%
     as.data.frame %>%
-    rownames_to_column("Variables") %>%
-    as.tibble
+    rownames_to_column("Variables")
   stars[upper.tri(stars)] <- NA
   
   temp <- corr.test(data, ...)$r %>%
     as.data.frame %>%
-    rownames_to_column("Variables") %>%
-    as.tibble
+    rownames_to_column("Variables")
   
   # customizations based on arguments
   if (!is.null(var_names)) {
@@ -90,19 +86,20 @@ zero_order_corr <- function(data,
       describe %>%
       as.data.frame %>%
       dplyr::select(mean, sd) %>%
-      as.tibble %>%
       bind_cols(temp) %>%
       dplyr::select(Variables, M = mean, SD = sd, everything())
-    
+    suppressWarnings(
     if (isTRUE(print)) {
       temp <- temp %>%
         mutate_at(vars(M, SD), 
                   funs(printnum(., digits = digits)))
     }
+    )
   }
   
   temp <- temp %>%
-    dplyr::select(-length(temp))
+    dplyr::select(-length(temp)) %>%
+    as.data.frame
   
   return(temp)
   
