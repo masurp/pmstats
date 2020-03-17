@@ -11,12 +11,12 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/specr)](https://CRAN.R-project.org/package=specr)
 <!-- badges: end -->
 
-This package includes some custom-made functions to facilitate
+This package includes some custom-made functions to facilitate some
 common statistical procedures as well as extracting and reporting
-results from various statistical models. The goal is to provide tools and functions to facilitate computational reproducibility using R and RMarkdown.
-
-Please note that at the moment, most functions are still highly costumized to my personal workflow. They may hence
-break in more general frameworks or when used in a different or non-intended way…
+results from various models in RMarkdown articles. Please note that most
+functions are highly costumized to my personal workflow. They may hence
+break in more general frameworks or when used in a different,
+non-intended way…
 
 ## Dependencies
 
@@ -38,9 +38,9 @@ You can install the development version from
 devtools::install_github("masurp/pmstats")
 ```
 
-# Some examples
+## Some examples
 
-## Printing a zero order correlation table
+### Printing a zero order correlation table
 
 ``` r
 library(pmstats)
@@ -64,7 +64,6 @@ papaja::apa_table(tab,
 ```
 
 
-
 | Variables |      M |     SD |       1 |       2 |       3 |       4 | 5       |
 | :-------- | -----: | -----: | ------: | ------: | ------: | ------: | :------ |
 | 1 mpg     |  20.09 |   6.03 |         |         |         |         |         |
@@ -74,7 +73,7 @@ papaja::apa_table(tab,
 | 5 drat    |   3.60 |   0.53 |   .68\* | \-.70\* | \-.71\* | \-.45\* |         |
 | 6 wt      |   3.22 |   0.98 | \-.87\* |   .78\* |   .89\* |   .66\* | \-.71\* |
 
-## Extracting result table from structural equation model
+### Extracting result table from structural equation model
 
 ``` r
 library(lavaan)
@@ -99,18 +98,27 @@ fit.sem <- sem(model.sem,
                data = PoliticalDemocracy)
 
 # Extracting results (only regression paths )
-(results <- result_table(fit.sem, 
+results <- result_table(fit.sem, 
                          sem_regressions = TRUE, 
                          new_labels = c("H1", "H2", "H3"), 
-                         print = TRUE))
-#> # A tibble: 3 x 9
-#>   outcome predictor label b     se    ll    ul    p      beta 
-#>   <chr>   <chr>     <chr> <chr> <chr> <chr> <chr> <chr>  <chr>
-#> 1 dem60   ind60     H1    1.48  0.40  0.70  2.27  < .001 .45  
-#> 2 dem65   ind60     H2    0.57  0.22  0.14  1.01  .010   .18  
-#> 3 dem65   dem60     H3    0.84  0.10  0.64  1.03  < .001 .89
+                         print = TRUE)
+```
 
-# Print specific results
+``` r
+papaja::apa_table(results, 
+                  format = "html",
+                  align = c(rep("c", 3), rep("r", 6)))
+```
+
+
+| outcome | predictor | label |    b |   se |   ll |   ul |       p | beta |
+| :-----: | :-------: | :---: | ---: | ---: | ---: | ---: | ------: | ---: |
+|  dem60  |   ind60   |  H1   | 1.48 | 0.40 | 0.70 | 2.27 | \< .001 |  .45 |
+|  dem65  |   ind60   |  H2   | 0.57 | 0.22 | 0.14 | 1.01 |    .010 |  .18 |
+|  dem65  |   dem60   |  H3   | 0.84 | 0.10 | 0.64 | 1.03 | \< .001 |  .89 |
+
+``` r
+# Print specific results for inline reporting
 print_coeff(results, "H2", 
             se = FALSE, 
             beta = TRUE)

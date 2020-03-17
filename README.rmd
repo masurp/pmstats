@@ -44,9 +44,9 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("masurp/pmstats")
 ```
 
-# Some examples
+## Some examples
 
-## Printing a zero order correlation table
+### Printing a zero order correlation table
 
 ```{r}
 library(pmstats)
@@ -63,7 +63,7 @@ papaja::apa_table(tab,
 ```
 
 
-## Extracting result table from structural equation model
+### Extracting result table from structural equation model
 
 ```{r}
 library(lavaan)
@@ -88,12 +88,20 @@ fit.sem <- sem(model.sem,
                data = PoliticalDemocracy)
 
 # Extracting results (only regression paths )
-(results <- result_table(fit.sem, 
+results <- result_table(fit.sem, 
                          sem_regressions = TRUE, 
                          new_labels = c("H1", "H2", "H3"), 
-                         print = TRUE))
+                         print = TRUE)
+```
 
-# Print specific results
+```{r results='asis'}
+papaja::apa_table(results, 
+                  format = "html",
+                  align = c(rep("c", 3), rep("r", 6)))
+```
+
+```{r}
+# Print specific results for inline reporting
 print_coeff(results, "H2", 
             se = FALSE, 
             beta = TRUE)
