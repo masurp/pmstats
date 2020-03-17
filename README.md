@@ -11,12 +11,12 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/specr)](https://CRAN.R-project.org/package=specr)
 <!-- badges: end -->
 
-This package includes some custom-made functions to facilitate some
+This package includes some custom-made functions to facilitate
 common statistical procedures as well as extracting and reporting
-results from various models in RMarkdown articles. Please note that most
-functions are highly costumized to my personal workflow. They may hence
-break in more general frameworks or when used in a different,
-non-intended way…
+results from various statistical models. The goal is to provide tools and functions to facilitate computational reproducibility using R and RMarkdown.
+
+Please note that at the moment, most functions are still highly costumized to my personal workflow. They may hence
+break in more general frameworks or when used in a different or non-intended way…
 
 ## Dependencies
 
