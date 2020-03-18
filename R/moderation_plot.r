@@ -41,15 +41,15 @@ moderation_plot <- function(object,
   
   # subfunction
   conditional.effects <-  function(model, x, m, quantiles = quantil){
-    interact = paste0(x,':',m)
-    beta.hat = coef(model) 
-    covs = vcov(model)
-    z0  = quantile(model$model[,m], seq(0 , 1, 1/quantiles))
-    dy.dx = beta.hat[x] + beta.hat[interact]*z0
-    se.dy.dx = sqrt(covs[x, x] + z0^2*covs[interact, interact] + 2*z0*covs[x, interact])
-    upr = dy.dx+1.96*se.dy.dx
-    lwr = dy.dx-1.96*se.dy.dx
-    data.frame(m = z0, b = dy.dx, lwr, upr)
+    interact <- paste0(x,':',m)
+    beta.hat <- coef(model) 
+    covs <- vcov(model)
+    z0  <- quantile(model$model[,m], seq(0 , 1, 1/quantiles))
+    dy.dx <- beta.hat[x] + beta.hat[interact]*z0
+    se.dy.dx <- sqrt(covs[x, x] + z0^2*covs[interact, interact] + 2*z0*covs[x, interact])
+    upr <- dy.dx + 1.96*se.dy.dx
+    lwr <- dy.dx - 1.96*se.dy.dx
+    data.frame(mod = z0, b = dy.dx, lwr, upr)
   }
   
   # main function
@@ -61,10 +61,11 @@ moderation_plot <- function(object,
   
   # Print a classic interaction plot
     plot <- ggplot(temp, 
-                   aes(x = m,
+                   aes(x = mod,
                        y = b, 
                        ymin = lwr,
                        ymax = upr)) +
+      geom_point(alpha = 0) +
       geom_smooth(stat = "identity",
                   color = "black") +
       geom_hline(yintercept = 0, 
