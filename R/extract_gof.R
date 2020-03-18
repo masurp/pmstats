@@ -23,6 +23,7 @@ extract_gof <- function(...,
   l <- list(...)
   
   # Extract indices from each object and transform into dataframe
+  suppressWarnings(
   temp <- map_dfr(l, 
                   function(x) bind_cols(aic = AIC(x), 
                                         bic = BIC(x), 
@@ -31,7 +32,9 @@ extract_gof <- function(...,
     t %>%
     as.data.frame %>%
     rownames_to_column("gof") %>%
-    as_tibble
+    as_tibble %>%
+    rename(value = "V1")
+  )
     
     if (print == T) {
       temp <- temp %>%
