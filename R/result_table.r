@@ -11,6 +11,7 @@
 #' @param std A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan}).
 #' @param ... Additional arguments that can be passed to \code{describe_posterior} from the package \code{bayestestR} (e.g., ci = .90 to adjust the probability of the credible intervals, by default 89% HDI are computed)
 #' @param print A logical value indicating whether the resulting table should be formatted according to APA-guidelines.
+#' @param digits How many digits should be printed? Defaults to 2.
 #' @examples 
 #' ## Example 1: Linear model
 #' mod.lm <- lm(mpg ~ cyl, mtcars)
@@ -70,6 +71,7 @@
 #'              new_labels = c("", "H1"),
 #'              rope = T,
 #'              print = T,
+#'              digits = 3,
 #'              ci = .95)
 #' @export
 result_table <- function(object,
@@ -81,6 +83,7 @@ result_table <- function(object,
                          std = TRUE,
                          rope = FALSE,
                          print = FALSE,
+                         digits = 2, 
                          ...){
   
   # dependencies 
@@ -103,12 +106,12 @@ result_table <- function(object,
       rownames_to_column("predictor") %>%
       set_colnames(., c("predictor", "b", "se", "t", "p", "ll", "ul")) %>%
       dplyr::select(predictor, b, se, ll, ul, p) %>%
-      as.tibble
+      as_tibble
     
     if (isTRUE(std)) {
       names(beta) <- temp$predictor
       temp <- cbind(temp, beta) %>%
-        as.tibble
+        as_tibble
     }
     
     if (!is.null(new_labels)) {
@@ -116,7 +119,7 @@ result_table <- function(object,
         cbind(., new_labels) %>%
         mutate(label = as.character(new_labels)) %>%
         dplyr::select(predictor, label, everything(), -new_labels) %>%
-        as.tibble
+        as_tibble
     }
     
     # --- extracting results from multilevel models --- #
@@ -127,11 +130,11 @@ result_table <- function(object,
       as.data.frame %>%
       rownames_to_column("predictor")
     cis <- confint(object) %>%
-      as.tibble %>% 
+      as_tibble %>% 
       slice(3:nrow(.))
 
     temp <- cbind(coeffs, cis) %>%
-      as.tibble %>%
+      as_tibble %>%
       set_colnames(c("predictor", "b", "se", "df", "t", "p", "ll", "ul")) %>%
       dplyr::select(predictor, b, se, ll, ul, p)
     
@@ -140,7 +143,7 @@ result_table <- function(object,
         cbind(., new_labels) %>%
         mutate(label = as.character(new_labels)) %>%
         dplyr::select(predictor, label, everything(), -new_labels) %>%
-        as.tibble
+        as_tibble
     }
     
     # --- extracting results from SEM --- #
@@ -175,7 +178,7 @@ result_table <- function(object,
                       ul = ci.upper, 
                       p = pvalue,
                       beta = "std.all") %>%
-        as.tibble
+        as_tibble
     } else {
     temp <- coeffs %>% 
       dplyr::select(outcome = lhs, 
@@ -186,7 +189,7 @@ result_table <- function(object,
                     ul = ci.upper, 
                     p = pvalue,
                     beta = "std.all") %>%
-      as.tibble
+      as_tibble
     }
     
     if (!isTRUE(std)) {
@@ -199,7 +202,7 @@ result_table <- function(object,
         cbind(., new_labels) %>%
         mutate(label = as.character(new_labels)) %>%
         dplyr::select(outcome, predictor, label, everything(), -new_labels) %>%
-        as.tibble
+        as_tibble
     }
     
     # --- extracting results from bayesian multilevel models --- #
@@ -223,27 +226,27 @@ result_table <- function(object,
         cbind(., new_labels) %>%
         mutate(label = as.character(new_labels)) %>%
         dplyr::select(predictor, label, everything(), -new_labels) %>%
-        as.tibble
+        as_tibble
     }
   } 
   
   # Printing
   if (isTRUE(print) & is.element("brmsfit", class(object))) {
     temp <- temp %>%
-      mutate_at(vars(median, ll, ul, rhat), funs(printnum(.))) %>%
+      mutate_at(vars(median, ll, ul, rhat), funs(printnum(., digits = digits))) %>%
       mutate(ess = printnum(ess, digits = 0))
     if(isTRUE(rope)) {
     temp <- temp %>%
-      mutate_at(vars(rope_ll, rope_ul, percent), funs(printnum(.)))
+      mutate_at(vars(rope_ll, rope_ul, percent), funs(printnum(., digits = digits)))
     }
     
   } else if (isTRUE(print)) {
     temp <- temp %>% 
-      mutate_at(vars(b, se, ll, ul), funs(printnum(.))) %>% 
+      mutate_at(vars(b, se, ll, ul), funs(printnum(., digits = digits))) %>% 
       mutate(p = printp(p))
     if ("beta" %in% names(temp)) {
       temp <- temp %>%
-        mutate(beta = printnum(beta, gt1 = F))
+        mutate(beta = printnum(beta, gt1 = F, digits = digits))
     }
   }
     

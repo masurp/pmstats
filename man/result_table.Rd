@@ -6,7 +6,7 @@
 \usage{
 result_table(object, var_predict = NULL, new_labels = NULL,
   sem_labels = NULL, sem_regressions = FALSE, sem_labelled = FALSE,
-  std = TRUE, rope = FALSE, print = FALSE, ...)
+  std = TRUE, rope = FALSE, print = FALSE, digits = 2, ...)
 }
 \arguments{
 \item{object}{An object of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}.}
@@ -24,6 +24,8 @@ result_table(object, var_predict = NULL, new_labels = NULL,
 \item{std}{A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan}).}
 
 \item{print}{A logical value indicating whether the resulting table should be formatted according to APA-guidelines.}
+
+\item{digits}{How many digits should be printed? Defaults to 2.}
 
 \item{...}{Additional arguments that can be passed to \code{describe_posterior} from the package \code{bayestestR} (e.g., ci = .90 to adjust the probability of the credible intervals, by default 89% HDI are computed)}
 }
@@ -89,5 +91,6 @@ result_table(fit,
              new_labels = c("", "H1"),
              rope = T,
              print = T,
+             digits = 3,
              ci = .95)
 }
