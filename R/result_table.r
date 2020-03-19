@@ -9,8 +9,7 @@
 #' @param sem_regressions A logical value specifying whether only regressions should be included. This argument only works with objects of class \code{lavaan}.
 #' @param sem_labelled A logical value specifying whether only paths with labels should be included. This argument only works with objects of class \code{lavaan}.
 #' @param std A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan}).
-#' @param hdi_prob Vector of scalars between 0 and 1, indicating the mass within the credible interval that is to be estimated (works only with objects of class \code{brmsfit}).
-#' @param typical The typical value that will represent the Bayesian point estimate. By default, the posterior median is returned (possible values: "median", "mean", "weighted.mean", or "mode")
+#' @param ... Additional arguments that can be passed to \code{describe_posterior} from the package \code{bayestestR} (e.g., ci = .90 to adjust the probability of the credible intervals, by default 89% HDI are computed)
 #' @param print A logical value indicating whether the resulting table should be formatted according to APA-guidelines.
 #' @examples 
 #' ## Example 1: Linear model
@@ -66,11 +65,12 @@
 #' fit <- brm(VAR2 ~ VAR1 + (1|GRP), data = d,
 #'            chains = 1)
 #' result_table(fit, 
-#'              hdi_prob = .95, 
 #'              print = TRUE)
-#' result_table(fit, 
-#'              typical = "mode",
-#'              var_predict = "b_VAR1")
+#' result_table(fit,
+#'              new_labels = c("", "H1"),
+#'              rope = T,
+#'              print = T,
+#'              ci = .95)
 #' @export
 result_table <- function(object,
                          var_predict = NULL,
@@ -79,9 +79,9 @@ result_table <- function(object,
                          sem_regressions = FALSE,
                          sem_labelled = FALSE,
                          std = TRUE,
-                         hdi_prob = .90,
-                         typical = "median",
-                         print = FALSE){
+                         rope = FALSE,
+                         print = FALSE,
+                         ...){
   
   # dependencies 
   library(tidyverse)
@@ -89,7 +89,7 @@ result_table <- function(object,
   library(papaja)
   library(magrittr)
   library(QuantPsyc)
-  library(sjstats)
+  library(bayestestR)
   
   if (is.element("lm", class(object))) {
     
@@ -205,9 +205,18 @@ result_table <- function(object,
     # --- extracting results from bayesian multilevel models --- #
   } else if (is.element("brmsfit", class(object))) {
     temp <- object %>%
-      tidy_stan(., prob = hdi_prob, typical = typical) %>%
-      as.tibble %>%
-      set_colnames(c("predictor", typical, "se", "ll", "ul", "ratio", "rhat", "mcse"))
+      describe_posterior(., ...) %>%
+      as_tibble
+    
+    if(isTRUE(rope)) {
+    temp <- temp %>%
+      select(Parameter, Median, CI_low, CI_high, ROPE_low, ROPE_high, ROPE_Percentage, ESS, Rhat) %>%
+      set_colnames(., c("predictor", "median", "ll", "ul", "rope_ll", "rope_ul", "percent", "ess", "rhat"))
+    } else {
+      temp <- temp %>%
+        select(Parameter, Median, CI_low, CI_high, ESS, Rhat) %>%
+      set_colnames(., c("predictor", "median", "ll", "ul", "ess", "rhat"))
+    }
     
     if (!is.null(new_labels)) {
       temp <- temp %>%
@@ -221,7 +230,12 @@ result_table <- function(object,
   # Printing
   if (isTRUE(print) & is.element("brmsfit", class(object))) {
     temp <- temp %>%
-      mutate_at(vars(median, se, ll, ul, ratio, rhat, mcse), funs(printnum(.)))
+      mutate_at(vars(median, ll, ul, rhat), funs(printnum(.))) %>%
+      mutate(ess = printnum(ess, digits = 0))
+    if(isTRUE(rope)) {
+    temp <- temp %>%
+      mutate_at(vars(rope_ll, rope_ul, percent), funs(printnum(.)))
+    }
     
   } else if (isTRUE(print)) {
     temp <- temp %>% 

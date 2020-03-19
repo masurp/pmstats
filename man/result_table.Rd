@@ -6,7 +6,7 @@
 \usage{
 result_table(object, var_predict = NULL, new_labels = NULL,
   sem_labels = NULL, sem_regressions = FALSE, sem_labelled = FALSE,
-  std = TRUE, hdi_prob = 0.9, typical = "median", print = FALSE)
+  std = TRUE, rope = FALSE, print = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}.}
@@ -23,11 +23,9 @@ result_table(object, var_predict = NULL, new_labels = NULL,
 
 \item{std}{A logical value indicating whether standarized coefficient should be included (works only with objects of class \code{lm} and \code{lavaan}).}
 
-\item{hdi_prob}{Vector of scalars between 0 and 1, indicating the mass within the credible interval that is to be estimated (works only with objects of class \code{brmsfit}).}
-
-\item{typical}{The typical value that will represent the Bayesian point estimate. By default, the posterior median is returned (possible values: "median", "mean", "weighted.mean", or "mode")}
-
 \item{print}{A logical value indicating whether the resulting table should be formatted according to APA-guidelines.}
+
+\item{...}{Additional arguments that can be passed to \code{describe_posterior} from the package \code{bayestestR} (e.g., ci = .90 to adjust the probability of the credible intervals, by default 89% HDI are computed)}
 }
 \description{
 This function creates a printable results table based objects of class \code{lm}, \code{lmerModLmerTest}, \code{brmsfit} or \code{lavaan}. Several arguments can be specified in order to customize the output.
@@ -86,9 +84,10 @@ d <- sim.icc(gsize = 10,
 fit <- brm(VAR2 ~ VAR1 + (1|GRP), data = d,
            chains = 1)
 result_table(fit, 
-             hdi_prob = .95, 
              print = TRUE)
-result_table(fit, 
-             typical = "mode",
-             var_predict = "b_VAR1")
+result_table(fit,
+             new_labels = c("", "H1"),
+             rope = T,
+             print = T,
+             ci = .95)
 }
