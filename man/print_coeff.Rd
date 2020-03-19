@@ -61,7 +61,7 @@ fit <- sem(model,
 
 # First step (print = TRUE is mandatory!)
 results <- result_table(fit, 
-                        regressions = TRUE, 
+                        sem_regressions = TRUE, 
                         new_labels = c("H1", "H2", "H3"), 
                         print = TRUE)
 
