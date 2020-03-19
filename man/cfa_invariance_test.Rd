@@ -18,13 +18,14 @@ This function creates a data frame that display a classical Chisqare-test of dif
 }
 \examples{
 library(lavaan)
+d <- PoliticalDemocracy \%>\% na.omit
 model_1 <- '
   # latent variables
   ind60 =~ x1 + x2 + x3
   dem60 =~ y1 + y2 + y3 + y4
   dem65 =~ y5 + y6 + y7 + y8
 '
-fit_1 <- cfa(model_1, data = PoliticalDemocracy)
+fit_1 <- cfa(model_1, data = d)
 
 model_2 <- '
   # latent variables
@@ -32,10 +33,10 @@ model_2 <- '
   dem60 =~ y1 + y2 + y3
   dem65 =~ y5 + y6 + y7 + y8
 '
-fit_2 <- cfa(model_2, data = PoliticalDemocracy)
+fit_2 <- cfa(model_2, data = d)
 
 # Model comparison
-cfa_invariance_test(fit_1, fit_2, print = TRUE)
+cfa_invariance_test(fit_1, fit_2)
 
 # Renaming model names
 cfa_invariance_test(fit_1, fit_2, model_names = c("Model 1: All variables", "Model 2: Some omissions"), print = TRUE)

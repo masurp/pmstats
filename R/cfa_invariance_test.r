@@ -7,13 +7,14 @@
 #' @param print A logical value indicating whether table shoud be formatted according to APA-guidelines.
 #' @examples 
 #' library(lavaan)
+#' d <- PoliticalDemocracy %>% na.omit
 #' model_1 <- '
 #'   # latent variables
 #'   ind60 =~ x1 + x2 + x3
 #'   dem60 =~ y1 + y2 + y3 + y4
 #'   dem65 =~ y5 + y6 + y7 + y8
 #' '
-#' fit_1 <- cfa(model_1, data = PoliticalDemocracy)
+#' fit_1 <- cfa(model_1, data = d)
 #' 
 #' model_2 <- '
 #'   # latent variables
@@ -21,10 +22,10 @@
 #'   dem60 =~ y1 + y2 + y3
 #'   dem65 =~ y5 + y6 + y7 + y8
 #' '
-#' fit_2 <- cfa(model_2, data = PoliticalDemocracy)
+#' fit_2 <- cfa(model_2, data = d)
 #' 
 #' # Model comparison
-#' cfa_invariance_test(fit_1, fit_2, print = TRUE)
+#' cfa_invariance_test(fit_1, fit_2)
 #' 
 #' # Renaming model names
 #' cfa_invariance_test(fit_1, fit_2, model_names = c("Model 1: All variables", "Model 2: Some omissions"), print = TRUE)
@@ -50,8 +51,7 @@ cfa_invariance_test <- function(...,
   # function
   temp <- anova(...) %>%
     as.tibble %>%
-    select(-"Chisq diff", -"Df diff") %>%
-    set_colnames(c("df", "aic", "bic", "chisq", "p"))
+    set_colnames(c("df", "aic", "bic", "chisq", "chisq_diff", "df_diff", "p"))
   
   temp <- temp %>%
     bind_cols(model = model) %>%
@@ -64,10 +64,11 @@ cfa_invariance_test <- function(...,
   
   if (isTRUE(print)) {
     temp2 <- temp %>%
-      mutate(p = as.character(p))
-    temp2[2:length_dots,6] <- temp[2:length_dots,6] %>% 
+      mutate(p = as.character(p),
+             chisq_diff = printnum(chisq_diff))
+    temp2[2:length_dots,8] <- temp[2:length_dots,8] %>% 
       mutate(p = printp(p))
-    temp2[is.na(temp2)] <- ""
+    temp2[1, 6:8] <- ""
     
     return(temp2)
     
