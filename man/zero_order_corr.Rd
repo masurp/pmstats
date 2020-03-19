@@ -25,17 +25,15 @@ zero_order_corr(data, var_names = NULL, rm.upper_tri = TRUE,
 \item{...}{Further arguments that can be passed to \code{corr.test()} (e.g., alternative methods to compute the bivariate correlations by specifying method = "spearman").}
 }
 \value{
-A tibble.
+A data frame.
 }
 \description{
 This function creates a zero-order correlation table. A vector with variables names can be included in order to replace the first column. Further arguments allow to transform the table into a APA-ready print format.
 }
 \examples{
-d <- mtcars
-
 # Default
-zero_order_corr(d)
+zero_order_corr(mtcars)
 
 # Customized for printing
-zero_order_corr(d, print = T, digits = 3, sig = TRUE)
+zero_order_corr(mtcars, print = T, digits = 3, sig = TRUE)
 }
