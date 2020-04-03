@@ -8,7 +8,7 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/specr)](https://CRAN.R-project.org/package=specr)
+status](https://www.r-pkg.org/badges/version/pmstats)](https://CRAN.R-project.org/package=pmstats)
 <!-- badges: end -->
 
 This package includes some custom-made functions to facilitate some
@@ -63,6 +63,18 @@ papaja::apa_table(tab,
                   align = c("l", rep("r", 6)))
 ```
 
+<caption>
+
+(\#tab:unnamed-chunk-3)
+
+</caption>
+
+<caption>
+
+\*\*
+
+</caption>
+
 | Variables |      M |     SD |       1 |       2 |       3 |       4 | 5       |
 | :-------- | -----: | -----: | ------: | ------: | ------: | ------: | :------ |
 | 1 mpg     |  20.09 |   6.03 |         |         |         |         |         |
@@ -109,6 +121,18 @@ papaja::apa_table(results,
                   align = c(rep("c", 3), rep("r", 6)))
 ```
 
+<caption>
+
+(\#tab:unnamed-chunk-5)
+
+</caption>
+
+<caption>
+
+\*\*
+
+</caption>
+
 | outcome | predictor | label |    b |   se |   ll |   ul |       p | beta |
 | :-----: | :-------: | :---: | ---: | ---: | ---: | ---: | ------: | ---: |
 |  dem60  |   ind60   |  H1   | 1.48 | 0.40 | 0.70 | 2.27 | \< .001 |  .45 |
@@ -138,20 +162,20 @@ summary(mod.lm)
 #> 
 #> Residuals:
 #>     Min      1Q  Median      3Q     Max 
-#> -9.9562 -2.5150  0.1018  2.6584 11.2728 
+#> -9.4127 -2.2223 -0.0098  2.1761 11.2284 
 #> 
 #> Coefficients:
 #>             Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)   0.1085     0.8280   0.131    0.896    
-#> x             0.2980     0.3732   0.799    0.425    
-#> z            -0.2317     0.3820  -0.607    0.544    
-#> x:z           1.6537     0.1711   9.667   <2e-16 ***
+#> (Intercept)   1.7221     0.7540   2.284   0.0228 *  
+#> x            -0.1030     0.3510  -0.293   0.7693    
+#> z            -0.5419     0.3359  -1.613   0.1074    
+#> x:z           1.6292     0.1553  10.490   <2e-16 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
-#> Residual standard error: 3.754 on 496 degrees of freedom
-#> Multiple R-squared:  0.6287, Adjusted R-squared:  0.6265 
-#> F-statistic:   280 on 3 and 496 DF,  p-value: < 2.2e-16
+#> Residual standard error: 3.413 on 496 degrees of freedom
+#> Multiple R-squared:  0.633,  Adjusted R-squared:  0.6307 
+#> F-statistic: 285.1 on 3 and 496 DF,  p-value: < 2.2e-16
 # Plot model
 moderation_plot(mod.lm, x = "x", m = "z")
 ```
