@@ -59,11 +59,8 @@ zero_order_corr <- function(data,
   
   if (isTRUE(print)) {
     temp <- temp %>%
-      mutate_at(vars(2:length(.)), 
-                function(x) printnum(x, gt1 = F, 
-                                     digits = digits)) %>%
-      mutate_at(vars(2:length(.)), 
-                funs(ifelse(. == "NA", "", .)))
+      mutate_at(vars(2:length(.)), round, digit = digits) %>%
+      mutate_at(vars(2:length(.)), ~replace(., is.na(.), ""))
   }
   
   if (isTRUE(sig) & isTRUE(print)) {
