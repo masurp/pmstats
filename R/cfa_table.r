@@ -49,12 +49,12 @@ cfa_table <- function(object,
   }
   
   coeffs <- temp %>% 
-    select(code = rhs,
-           b = est,
-           se,
-           ll = ci.lower, 
-           ul = ci.upper, 
-           beta = std) %>%
+    dplyr::select(code = rhs,
+                  b = est,
+                  se,
+                  ll = ci.lower, 
+                  ul = ci.upper, 
+                  beta = std) %>%
     as.tibble
   
   if (isTRUE(print)) {
@@ -65,13 +65,13 @@ cfa_table <- function(object,
   
   if (isTRUE(brief)) {
     coeffs <- coeffs %>%
-      select(code, beta)
+      dplyr::select(code, beta)
   }
   
   if (!is.null(items)) {
     coeffs <- coeffs %>%
       left_join(items) %>%
-      select(code, item, everything())
+      dplyr::select(code, item, everything())
   }
   
   if (isTRUE(group)) {
@@ -79,7 +79,7 @@ cfa_table <- function(object,
       bind_cols(object %>%
                   parameterEstimates(standardized = TRUE) %>%
                   subset(op == "=~") %>% select(group)) %>%
-      select(group, everything())
+      dplyr::select(group, everything())
   }
   
   return(coeffs)
