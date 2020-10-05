@@ -4,8 +4,7 @@
 \alias{pseudo_r2}
 \title{Pseudo R-Square for Logistic Regression Models}
 \usage{
-pseudo_r2(..., type = c("McFadden", "Nagelkerke", "CoxSnell"),
-  digits = 2)
+pseudo_r2(..., type = c("McFadden", "Nagelkerke", "CoxSnell"), digits = 2)
 }
 \arguments{
 \item{...}{one or several objects of type \code{glm}, \code{polr}, or \code{multinom}.}

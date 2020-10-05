@@ -4,9 +4,15 @@
 \alias{moderation_plot}
 \title{Interaction plot for continuous moderators}
 \usage{
-moderation_plot(object, x = NULL, m = NULL, x_lab = "Moderator",
-  y_lab = "Conditional effect of x on y", quantil = 100,
-  mod_hist = TRUE)
+moderation_plot(
+  object,
+  x = NULL,
+  m = NULL,
+  x_lab = "Moderator",
+  y_lab = "Conditional effect of x on y",
+  quantil = 100,
+  mod_hist = TRUE
+)
 }
 \arguments{
 \item{object}{An object of class \code{\link[base]{lm}} or \code{\link[lme4]{lmer}} that includes an interaction.}

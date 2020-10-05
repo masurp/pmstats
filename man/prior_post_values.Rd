@@ -4,8 +4,14 @@
 \alias{prior_post_values}
 \title{Extracting the prior and posterior distributions from brmsfit-objects}
 \usage{
-prior_post_values(object, var_names = NULL, post_effects = NULL,
-  prior_means = NULL, prior_sd = NULL, n_sim = 10000)
+prior_post_values(
+  object,
+  var_names = NULL,
+  post_effects = NULL,
+  prior_means = NULL,
+  prior_sd = NULL,
+  n_sim = 10000
+)
 }
 \arguments{
 \item{object}{An object of class \code{\link[brms]{brmsfit}}.}

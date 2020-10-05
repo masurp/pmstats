@@ -4,9 +4,15 @@
 \alias{fit_table}
 \title{Creates a table with relevant fit indices for an SEM or CFA}
 \usage{
-fit_table(object, indices = c("chisq", "df", "pvalue", "cfi", "tli",
-  "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"), rmsea_ci = FALSE,
-  reliability = FALSE, robust = FALSE, print = FALSE)
+fit_table(
+  object,
+  indices = c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower",
+    "rmsea.ci.upper", "srmr"),
+  rmsea_ci = FALSE,
+  reliability = FALSE,
+  robust = FALSE,
+  print = FALSE
+)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{cfa()} or \code{sem()} from the package 'lavaan'.}

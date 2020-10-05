@@ -14,7 +14,7 @@ cfa_invariance_fit(..., model_names = NULL, print = FALSE)
 \item{print}{Logical value indicating whether the output should be formatted according to APA guidelines. #' @return A data frame including one row per model that was passed to the function. The output includes the most commonly reported fit indices for structural equation models.}
 }
 \description{
-Compare fit of several CFA or SEM models
+
 }
 \examples{
 library(lavaan)

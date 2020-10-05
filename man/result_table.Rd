@@ -4,9 +4,19 @@
 \alias{result_table}
 \title{Result table for linear models, (bayesian) multilevel models and structural equation models}
 \usage{
-result_table(object, var_predict = NULL, new_labels = NULL,
-  sem_labels = NULL, sem_regressions = FALSE, sem_labelled = FALSE,
-  std = TRUE, rope = FALSE, print = FALSE, digits = 2, ...)
+result_table(
+  object,
+  var_predict = NULL,
+  new_labels = NULL,
+  sem_labels = NULL,
+  sem_regressions = FALSE,
+  sem_labelled = FALSE,
+  std = TRUE,
+  rope = FALSE,
+  print = FALSE,
+  digits = 2,
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{lm}, \code{lmerModLmerTest} or \code{lavaan}.}

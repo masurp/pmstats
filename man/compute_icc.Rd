@@ -4,8 +4,14 @@
 \alias{compute_icc}
 \title{Intraclass Correlation Coefficient}
 \usage{
-compute_icc(..., var_names = NULL, digits_icc = 2,
-  digits_percent = 1, percent = TRUE, print = FALSE)
+compute_icc(
+  ...,
+  var_names = NULL,
+  digits_icc = 2,
+  digits_percent = 1,
+  percent = TRUE,
+  print = FALSE
+)
 }
 \arguments{
 \item{...}{One or more objects of class \code{lmer}.}

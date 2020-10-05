@@ -4,8 +4,14 @@
 \alias{coeff_plot}
 \title{Coefficient plot for a SEM}
 \usage{
-coeff_plot(object, effect = NULL, labels = FALSE,
-  regressions = FALSE, y_limits = NULL, y_intercept = 0)
+coeff_plot(
+  object,
+  effect = NULL,
+  labels = FALSE,
+  regressions = FALSE,
+  y_limits = NULL,
+  y_intercept = 0
+)
 }
 \arguments{
 \item{object}{An object of class \code{lavaan} created by using \code{sem()} from the package 'lavaan'.}

@@ -4,8 +4,14 @@
 \alias{add_fscores}
 \title{Computes and adds factor scores based on CFA}
 \usage{
-add_fscores(data, object, rename_vars = NULL, id = NULL,
-  to_wide = FALSE, group = NULL)
+add_fscores(
+  data,
+  object,
+  rename_vars = NULL,
+  id = NULL,
+  to_wide = FALSE,
+  group = NULL
+)
 }
 \arguments{
 \item{data}{The data frame that was originally passed to \code{cfa()} or \code{sem()}.}

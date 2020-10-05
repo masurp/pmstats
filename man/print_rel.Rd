@@ -4,8 +4,12 @@
 \alias{print_rel}
 \title{Print reliabilities of a latent factor}
 \usage{
-print_rel(object, var = NULL, rel_values = c("alpha", "omega3",
-  "avevar"), list = F)
+print_rel(
+  object,
+  var = NULL,
+  rel_values = c("alpha", "omega3", "avevar"),
+  list = F
+)
 }
 \arguments{
 \item{list}{Logical value indicating whether each estimate should be printed separately and put into a list.}

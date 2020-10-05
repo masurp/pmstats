@@ -4,8 +4,15 @@
 \alias{cfa_table}
 \title{Table with items and factor loadings}
 \usage{
-cfa_table(object, latent_var = NULL, items = NULL, brief = TRUE,
-  std = "std.all", print = FALSE, group = FALSE)
+cfa_table(
+  object,
+  latent_var = NULL,
+  items = NULL,
+  brief = TRUE,
+  std = "std.all",
+  print = FALSE,
+  group = FALSE
+)
 }
 \arguments{
 \item{latent_var}{If more than one variable is specified in the CFA, which one should be shown? If left NULL, items of all latent variable will be evaluated.}

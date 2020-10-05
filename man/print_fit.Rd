@@ -4,8 +4,11 @@
 \alias{print_fit}
 \title{Prints fit indices for inline reporting}
 \usage{
-print_fit(fit_table, indices = c("chisq", "df", "pvalue", "cfi", "tli",
-  "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "srmr"))
+print_fit(
+  fit_table,
+  indices = c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "rmsea.ci.lower",
+    "rmsea.ci.upper", "srmr")
+)
 }
 \arguments{
 \item{fit_table}{A dataframe resulting from \code{\link[pmstats]{fit_table}}.}
